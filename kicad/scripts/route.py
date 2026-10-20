@@ -15,7 +15,7 @@ JAR = os.environ.get('FREEROUTING_JAR', 'freerouting.jar')
 WORK = os.environ.get('ROUTE_WORK', os.path.join(PROJ, 'build'))
 
 
-def main(passes=40):
+def main(passes=40, finish=False):
     os.makedirs(WORK, exist_ok=True)
     dsn, ses = os.path.join(WORK, 'jar-radio.dsn'), os.path.join(WORK, 'jar-radio.ses')
     # export in a child process: pcbnew can't load the same board twice in one
@@ -52,9 +52,10 @@ assert pcbnew.ExportSpecctraDSN(b, {dsn!r})
         raise SystemExit('freerouting produced no session file')
     board = pcbnew.LoadBoard(BOARD)
     import ses_import
-    print('imported tracks/vias:', ses_import.import_ses(board, ses))
-    import stitch
-    print('stitching vias:', stitch.add_stitching(board))
+    print('imported tracks/vias:', ses_import.import_ses(board, ses, replace=finish))
+    if not finish:
+        import stitch
+        print('stitching vias:', stitch.add_stitching(board))
     pcbnew.ZONE_FILLER(board).Fill(board.Zones())
     pcbnew.SaveBoard(BOARD, board)
     rpt = os.path.join(WORK, 'drc.rpt')
@@ -73,4 +74,5 @@ def summary(rpt):
 
 
 if __name__ == '__main__':
-    main()
+    import sys
+    main(finish='--finish' in sys.argv)

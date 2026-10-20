@@ -27,7 +27,12 @@ def find(node, key):
             yield c
 
 
-def import_ses(board, path):
+def import_ses(board, path, replace=False):
+    """replace=True: delete every track/via first and take all of them from
+    the session (used when re-routing a board that already had copper)."""
+    if replace:
+        for t in list(board.GetTracks()):
+            board.Remove(t)
     tree = parse(tokenize(open(path).read()))
     routes = next(find(tree, 'routes'))
     res = next(find(routes, 'resolution'))
@@ -48,7 +53,7 @@ def import_ses(board, path):
     for net in find(next(find(routes, 'network_out')), 'net'):
         ni = board.FindNet(net[1])
         for w in find(net, 'wire'):
-            if any(isinstance(c, list) and c[0] == 'type' and c[1] == 'protect' for c in w):
+            if not replace and any(isinstance(c, list) and c[0] == 'type' and c[1] == 'protect' for c in w):
                 continue
             path = next(find(w, 'path'))
             layer, width = path[1], float(path[2]) * scale
@@ -60,7 +65,7 @@ def import_ses(board, path):
                 tr.SetWidth(pcbnew.FromMM(width)); tr.SetLayer(layers[layer]); tr.SetNet(ni)
                 board.Add(tr); n_tr += 1
         for v in find(net, 'via'):
-            if any(isinstance(c, list) and c[0] == 'type' and c[1] == 'protect' for c in v):
+            if not replace and any(isinstance(c, list) and c[0] == 'type' and c[1] == 'protect' for c in v):
                 continue
             dia, drill = vias.get(v[1], (0.6, 0.3))
             if v[1] not in vias:
