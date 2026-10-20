@@ -194,6 +194,21 @@
     </tbody>
   </table></div>
 
+
+  <h3>LCSC BOM quote, 100 radios (your upload): $384.72 total ≈ $3.85 per radio</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Part</th><th>Problem</th><th>What to do</th></tr></thead>
+    <tbody>
+      <tr><td><b>Si4825 C2654605</b></td><td><b>Backordered: only 96 in stock</b>, $0.99 at 100</td><td>Buy the prototype quantity now. For 100+, ask LCSC for lead time, or check Digi-Key/Mouser (Skyworks lists it active)</td></tr>
+      <tr><td><b>Pot RK0971111Z0P C470569</b></td><td><b>$1.55 each</b> (40% of the whole BOM), 101 in stock, listed as through-hole</td><td>Check its drawing (shaft must point up out of the lid). It needs JLC's through-hole service. The RV097NS kit is cheaper ($1.15 with knob) but hand-soldered</td></tr>
+      <tr><td>ESD PESD5V0F1BL C5139344</td><td>Backordered (50 in stock)</td><td>Pick any in-stock bidirectional ESD diode ≤1 pF, 5 V, DFN1006 / SOD-882 (or SOD-523; I'll switch the footprint)</td></tr>
+      <tr><td>47k C25819</td><td>0 in stock at LCSC</td><td>Any in-stock 47k 0603 1% (another brand), or 51k</td></tr>
+      <tr><td>Green LED C72043</td><td>0 in stock</td><td>Drop it (red off = full), or any in-stock green 0603</td></tr>
+      <tr><td>XH socket C23067528</td><td>700 in stock, not in JLC's library</td><td>JLC can assemble LCSC parts you pre-order into your JLC parts library ("Order parts" → assembly), or switch to a JLC-stocked XH</td></tr>
+      <tr><td>Crystal C32346</td><td>LCSC has 353k; JLC showed 0</td><td>Same pre-order route, or pick an in-stock JLC crystal</td></tr>
+    </tbody>
+  </table></div>
+
   <h3>Bulk price / Basic-vs-Extended check</h3>
   <ol>
     <li><b>JLCPCB quote page (shows Basic / Extended / Preferred for every line at once):</b> jlcpcb.com → Order now → upload <code>kicad/jlcpcb/jar-radio-gerbers.zip</code> → turn on "PCB Assembly" (Economic, top side) → Next → upload <code>BOM.csv</code> and <code>CPL.csv</code>. The parts page lists each line's type, stock and price, with a "Change" button to swap parts. Nothing is charged until checkout. These files are a quoting placeholder only; the real top-side layout comes later.</li>
