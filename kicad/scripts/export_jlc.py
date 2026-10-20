@@ -51,7 +51,7 @@ def bom():
 def cpl():
     tmp = os.path.join(OUT, 'pos-raw.csv')
     run('kicad-cli', 'pcb', 'export', 'pos', BOARD, '-o', tmp, '--side', 'both', '--format', 'csv', '--units', 'mm',
-        '--exclude-dnp')
+        )
     path = os.path.join(OUT, 'CPL.csv')
     placed = {p['ref'] for p in circuit.P if not (p.get('dnp') or p.get('hand') or p.get('nobom'))}
     with open(tmp) as f, open(path, 'w', newline='') as o:

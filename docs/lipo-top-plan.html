@@ -161,6 +161,50 @@
   </table></div>
   <div class="col"><p class="muted">Even with about 11 Extended parts the fee is ≈$33 per order. That's ≈$0.33 per radio at 100 units, so after the 22 µF and LED swaps further hunting has small returns.</p></div>
 
+
+  <h3>Update: pot, amp gain, parts and pinout (rev F.2)</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Item</th><th>Change</th></tr></thead>
+    <tbody>
+      <tr><td>Volume/power pot</td><td><b>Alps RK0971111Z0P (C470569)</b>: 20 kΩ with switch, placed by JLC. Its footprint is still my provisional RV097 pattern, so I need the Alps drawing (pin positions, mounting tabs, shaft direction).</td></tr>
+      <tr><td>Amp input for the 20 k pot</td><td>R7 22k → <b>47k</b>, R8 220k → <b>560k</b> (gain 2·560/47 ≈ 24), C11 220n → <b>100n</b> (34 Hz). At full volume the tuner sees 20k ∥ 47k ≈ 14k, above its 10k minimum.</td></tr>
+      <tr><td>Capacitors</td><td>47 µF ×2 → <b>22 µF 0805 ×3</b> (C45783): two on TUNE1, one on the switched rail.</td></tr>
+      <tr><td>LEDs</td><td>Top-side 0603: red <b>C2286</b>, green <b>C72043</b>.</td></tr>
+      <tr><td>Battery socket</td><td>Right-angle JST-PH <b>C295747</b> on top.</td></tr>
+      <tr><td>Reset chip U5</td><td>XC61CN2702MR-G (C112139). <b>Pinout fixed from the Torex datasheet: SOT-23 pin 1 = VOUT, 2 = VSS, 3 = VIN.</b> My earlier guess had VIN and VSS swapped.</td></tr>
+      <tr><td>Speaker socket J4</td><td>XH placeholder until the speaker is chosen.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Bulk price / Basic-vs-Extended check</h3>
+  <ol>
+    <li><b>JLCPCB quote page (shows Basic / Extended / Preferred for every line at once):</b> jlcpcb.com → Order now → upload <code>kicad/jlcpcb/jar-radio-gerbers.zip</code> → turn on "PCB Assembly" (Economic, top side) → Next → upload <code>BOM.csv</code> and <code>CPL.csv</code>. The parts page lists each line's type, stock and price, with a "Change" button to swap parts. Nothing is charged until checkout. These files are a quoting placeholder only; the real top-side layout comes later.</li>
+    <li><b>LCSC BOM tool (pricing at volume):</b> lcsc.com → BOM Tool → upload <code>kicad/jlcpcb/LCSC_BOM_check_100pcs.csv</code>. It's pre-multiplied for 100 radios.</li>
+    <li><b>Finding cheaper Basic swaps:</b> the JLC parts search has a "Basic Parts" filter. The free <b>jlcparts</b> site (yaqwsx.github.io/jlcparts) lists the whole JLC library as a filterable table with Basic/Preferred columns, which is much faster for "any 47k 0603 Basic".</li>
+  </ol>
+
+  <h3>Speaker: INGHAi HDK-4008BB-2 (C22371323)?</h3>
+  <ul>
+    <li>A 40 mm, 8 Ω, 1.5 W, 93 dB driver with resonance 550 Hz. <b>The listed response is 550 Hz – 4.5 kHz</b>, which is telephone-band: voices are clear, music has neither bass nor sparkle. It's in the same quality class as the FUET FS40MS. The GSPK4935 is a little louder (95 dB), has its own back box, and is likely the fullest of the three.</li>
+    <li><b>"SMD" matters:</b> it has solder pads, not leads with a plug. Either solder a short lead with an XH plug onto it (handwork), or, interestingly, have JLC solder it straight onto the <b>top</b> face. The grille holes then become back-vents into the jar (the jar is the speaker's box) and there are no wires at all. That needs its datasheet: height, pad layout, and whether it can survive reflow soldering.</li>
+    <li>Suggest: order 2–3 samples of each (≈$1 each) and compare in a jar before deciding.</li>
+  </ul>
+
+  <h3>Battery ideas besides the pouch</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Cell</th><th>Size</th><th>Capacity / runtime</th><th>Fits?</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td><b>502530 pouch</b> (current)</td><td>5 × 25 × 30 mm</td><td>~400 mAh / 5–7 h</td><td>Yes</td><td>Cheapest and lightest, with protection built in. Not user-replaceable.</td></tr>
+      <tr><td>Bigger pouch, 603040 / 703040</td><td>6–7 × 30 × 40 mm</td><td>700–1000 mAh / 9–14 h</td><td>Probably (on a thin speaker)</td><td>Same circuit, just more runtime. The easiest upgrade.</td></tr>
+      <tr><td><b>18350 Li-ion</b> in a PCB holder</td><td>Ø18 × 35 mm (holder ~22 × 42)</td><td>900–1200 mAh / 12–17 h</td><td>Yes, inside</td><td>Steel can, robust, replaceable. <b>No common non-rechargeable cell is that size</b>, so nobody can put an alkaline in it and have the charger cook it. Needs on-board protection (DW01A + FS8205A) unless protected cells are used.</td></tr>
+      <tr><td>16340 Li-ion</td><td>Ø16 × 34 mm</td><td>~700 mAh / 9–10 h</td><td>Yes</td><td><b>Risk:</b> a CR123A (3 V primary lithium) fits the same holder, and charging one can make it vent or explode. I'd avoid it.</td></tr>
+      <tr><td>14500 Li-ion (AA size)</td><td>Ø14.5 × 50 mm</td><td>~800 mAh / 10–12 h</td><td>Tight</td><td><b>Risk:</b> people will fit AA alkalines and the charger will try to charge them. Avoid.</td></tr>
+      <tr><td>18650</td><td>Ø18 × 65 mm</td><td>2500–3500 mAh / 30–45 h</td><td>No</td><td>Too long for the ~72 mm inside circle with a holder, and too tall standing up.</td></tr>
+      <tr><td>LiFePO4 18350 / 14500</td><td>as above</td><td>~500–600 mAh</td><td>Yes</td><td>Safest chemistry, but 3.2 V: it needs a different charger chip and runs close to the amp's 3.0 V minimum. Not worth it here.</td></tr>
+    </tbody>
+  </table></div>
+  <div class="col"><p class="muted">My pick if you want replaceable cells: <b>18350 in a PCB holder + DW01A/FS8205A protection</b>. Otherwise stay with the pouch and simply go up a size if runtime matters.</p></div>
+
   <h3>Open questions for this revision</h3>
   <ol class="qlist">
     <li><b>Q-T1 · Visible parts on the lid.</b> All the chips will show on the outside. Keep the bare "circuit-board lid" look, or plan a cover (smoked acrylic or wood disc under the band, with holes for knob, USB and sockets)?<div class="rec">Bare board for the prototypes. Decide on a cover after seeing them. A cover changes nothing on the PCB except the logos, which would move onto it.</div></li>
