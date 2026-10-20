@@ -18,14 +18,17 @@ WORK = os.environ.get('ROUTE_WORK', os.path.join(PROJ, 'build'))
 def main(passes=40):
     os.makedirs(WORK, exist_ok=True)
     dsn, ses = os.path.join(WORK, 'jar-radio.dsn'), os.path.join(WORK, 'jar-radio.ses')
-    board = pcbnew.LoadBoard(BOARD)
-    # zones are refilled after routing; leave them out of the router's view
-    # remove the GND pours before export so Freerouting routes every GND pad
-    # with real copper instead of assuming the plane reaches it
-    for z in list(board.Zones()):
-        if not z.GetIsRuleArea():
-            board.Remove(z)
-    pcbnew.ExportSpecctraDSN(board, dsn)
+    # export in a child process: pcbnew can't load the same board twice in one
+    # process. GND pours are removed first so Freerouting routes every GND pad
+    # with real copper instead of assuming the plane reaches it.
+    subprocess.run(['python3', '-c', f"""
+import pcbnew
+b = pcbnew.LoadBoard({BOARD!r})
+for z in list(b.Zones()):
+    if not z.GetIsRuleArea():
+        b.Remove(z)
+assert pcbnew.ExportSpecctraDSN(b, {dsn!r})
+"""], check=True)
     text = open(dsn).read()
     nets = ' '.join(f'"{n}"' if re.search(r'[^A-Za-z0-9_]', n) else n for n in sorted(gen_pcb.POWER_NETS - {'GND'}))
     power = f'    (class Power {nets}\n      (circuit (use_via "Via[0-1]_800:400_um"))\n      (rule (width 500) (clearance 200))\n    )\n'

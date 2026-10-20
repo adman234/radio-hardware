@@ -11,8 +11,10 @@ D1,B5819W,B5819W SL,C8598,Basic,1,0.02,0.015,JLC,D_SOD-123,est,ok
 D2,RED charging,24-21SURC/S530-A3/TR8,C2892757,Extended,1,0.0471,0.0377,JLC,LED_1206_3216Metric_ReverseMount_Hole1.8x2.4mm,LCSC quote,ok
 D3,GREEN full,25-21/GHC-YSU/2A,C4749157,Extended,1,0.0673,0.0673,JLC,LED_1206_3216Metric_ReverseMount_Hole1.8x2.4mm,LCSC quote,ok
 D4,ESD <=1pF,PESD5V0F1BL (TBD),,Extended,1,0.05,0.03,JLC,D_SOD-882,est,"need part: ESD <=1 pF, SOD-882"
-J2,BATT (PH),B2B-PH-SM4-TB(LF)(SN),,Extended,1,0.15,0.11,JLC,JST_PH_B2B-PH-SM4-TB_1x02-1MP_P2.00mm_Vertical,est,need C-number (vertical SMD PH)
+J1,USB-C 5V,TYPE-C 6PLTH6.8-DJ,C5156600,Extended? (top side),1,0.05,0.047,JLC,USB_C_Receptacle_ShouHan_TYPE-C-6PLTH6.8-DJ_Vertical,est,ok; needs 2-sided assembly
+J2,BATT (PH),B2B-PH-SM4-TB(LF)(SN),,Extended,1,0.15,0.11,JLC,JST_PH_B2B-PH-SM4-TB_1x02-1MP_P2.00mm_Vertical,est,"need C-number (vertical SMD PH, used twice)"
 J3,ANT (XH),GT-A2501WRS-102SBT01,C23067528,Extended,1,0.1,0.08,JLC,Connector_XH-SMD_GSwitch_GT-A2501WRS-102_1x02_P2.50mm_Horizontal,est,ok
+J4,SPK (PH),B2B-PH-SM4-TB(LF)(SN),,Extended,1,0.15,0.11,JLC,JST_PH_B2B-PH-SM4-TB_1x02-1MP_P2.00mm_Vertical,est,"need C-number (vertical SMD PH, used twice)"
 L1,56nH,LQW18AN56NJ00D,,Extended,1,0.1,0.06,JLC,L_0603_1608Metric,est,need C-number
 Q1,AO3401A,AO3401A,C15127,Basic,1,0.04,0.03,JLC,SOT-23,est,ok
 "R1,R16",100k,0603WAF1003T5E,C25803,Basic,2,0.001,0.001,JLC,R_0603_1608Metric,est,ok
@@ -34,11 +36,10 @@ U3,TP4056,TP4056-42-ESOP8,C16581,Extended,1,0.17,0.087,JLC,SOIC-8-1EP_3.9x4.9mm_
 U4,XC6206P332MR,XC6206P332MR,C5446,Basic,1,0.075,0.059,JLC,SOT-23,est,ok
 U5,XC61CN2702MR,XC61CN2702MR,,Extended,1,0.1,0.06,JLC,SOT-23,est,need C-number; confirm SOT-23 pinout
 Y1,32.768kHz,Q13FC13500004,C32346,Basic,1,0.1,0.1,JLC,Crystal_SMD_3215-2Pin_3.2x1.5mm,est,ok
-J1,USB-C 5V,TYPE-C 6PLTH6.8-DJ,C5156600,Hand (top),1,0.05,0.047,Hand,USB_C_Receptacle_ShouHan_TYPE-C-6PLTH6.8-DJ_Vertical,est,ok
-LS1,SPEAKER 8R,GSPK4935PN-8R2W-L270,C530575,Hand,1,0.7877,0.7877,Hand,Speaker_Wire_Pads_P5,LCSC quote,"ok; cut plug, solder leads"
 RV1,B50K + SW,RV097NS B50K,,Hand,1,1.15,1.15,Hand,Potentiometer_RV097NS_Switch_Vertical_PROVISIONAL,eBay 20 pc kit $23 shipped,footprint PROVISIONAL: measure
 R10,0R (DNP),0603WAF0000T5E,C21189,Not placed,0,0.001,0.001,Not placed,R_0603_1608Metric,est,ok
 RV2,100k CAL (DNP),3296W-1-104,,Not placed,0,0,0,Not placed,PinHeader_1x03_P2.54mm_Vertical,,calibration only
+LS1,"Speaker INGHAi GSPK4935PN-8R2W-L270, Ø49x35, 8R 2W, 270 mm lead + 2.0 mm 2-pin plug",GSPK4935PN-8R2W-L270,C530575,—,1,0.7877,0.7877,Plug-in,,LCSC quote,confirm plug mates with JST PH
 BT1,"LiPo 1S protected, 500 mAh, PH2.0 lead",eBay 100 pc lot,,—,1,2.83,2.83,Plug-in,,eBay quote $283/100,need dims + polarity
 ANT,75 cm 26 AWG wire on XH 2.54 2-pin plug (1 wire used),custom lead,,—,1,0.3,0.2,Kit,,est,
 WHIP,"Telescopic whip, M3 male, 7-section ~75 cm (optional)",generic,,—,0,2.0,1.2,Kit (optional),,est,optional

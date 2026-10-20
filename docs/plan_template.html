@@ -132,7 +132,7 @@ footer ul { padding-left: 18px; columns: 2 300px; }
 <div class="wrap">
 
 <header class="top">
-  <div class="eyebrow">adman234/radio-hardware · branch jar-radio-redesign · plan rev D · board rev A · 2026-10-20</div>
+  <div class="eyebrow">adman234/radio-hardware · branch jar-radio-redesign · plan rev E · board rev A · 2026-10-20</div>
   <h1>KOPN 89.5 Jar Radio</h1>
   <p class="lede">A single-station FM radio whose circuit board is the lid of a wide-mouth mason jar. It has no firmware, charges from USB-C, runs from USB alone or an optional LiPo, and has a wire or whip antenna. <strong>Board rev A is generated</strong>: schematic, layout, routing, and JLCPCB files. It is a first prototype. A few dimensions are still assumptions until the jar and parts are measured, and those are called out below.</p>
   <div class="status">
@@ -141,7 +141,7 @@ footer ul { padding-left: 18px; columns: 2 300px; }
     <span class="chip go">JLC gerbers / BOM / CPL exported</span>
     <span class="chip hold">Jar not measured yet: board OD assumed</span>
     <span class="chip hold">Pot footprint provisional</span>
-    <span class="chip ph">7 LCSC numbers still needed</span>
+    <span class="chip ph">6 LCSC numbers still needed</span>
   </div>
   <dl class="spec">
     <div><dt>Station</dt><dd>KOPN 89.5 MHz, set by 2 resistors</dd></div>
@@ -193,7 +193,7 @@ footer ul { padding-left: 18px; columns: 2 300px; }
     <div>
       <h3>Inside the jar</h3>
       <ul>
-        <li><b>Speaker</b> (Ø49 × 35 mm cavity) sits face-down under the grille, left of centre. <b>Point its mounting ear toward the antenna-exit side (12 o'clock)</b>: there's free board there, and anywhere else the ear would hit parts or the glass.</li>
+        <li><b>Speaker</b> (Ø49 × 35 mm cavity) sits face-down under the grille, left of centre, and plugs into the PH socket marked SPEAKER. <b>Point its mounting ear toward the antenna-exit side (12 o'clock)</b>: there's free board there, and anywhere else the ear would hit parts or the glass.</li>
         <li><b>Battery</b> lies flat on the back of the speaker with a Kapton/foam pad. <b>Two 200 mm zip ties</b> go down through the slots above and below the speaker, around the speaker and battery stack, and back up. That one strap set holds both.</li>
         <li>The <b>battery lead</b> plugs straight up into the vertical PH socket. The <b>antenna lead</b> plugs into the XH socket; spiral it inside, or feed it out the 3 mm hole.</li>
         <li>Parts stay inside Ø72 (jar mouth ≈ Ø76). Outside Ø73 is solid ground on both sides, solder-masked, with stitching vias and no tracks.</li>
@@ -246,7 +246,7 @@ flowchart LR
       <tr><td>Antenna input</td><td>ESD diode ≤1 pF at the socket, 1 nF series, 56 nH shunt to ground; ferrite bead dropped</td><td>AN738 §5.2</td></tr>
       <tr><td>Reset</td><td>2.7 V detector holds RST low as the supply falls (the datasheet warns of damage otherwise)</td><td>DS §4.8</td></tr>
       <tr><td>Supply</td><td>4.7 µF + 100 nF at VDD; 47 µF bulk on the switched rail</td><td>AN738 §3.1</td></tr>
-      <tr><td>Amp</td><td>ESOP-8 exposed pad to GND; IN+ tied to BYPASS; SD jumper both ways (datasheet contradicts itself), starting SD = GND</td><td>NS8002 p1–2, §12</td></tr>
+      <tr><td>Amp</td><td>ESOP-8 exposed pad to GND; IN+ tied to BYPASS. <b>Pin 1 (SD) is active-high</b>: "掉电控制管脚，高电平关断，低电平开启" = "power-down pin: high = shut down, low = on". So SD is tied to GND (R9 fitted). The §9.4 graph looks reversed, so an unfitted jumper R10 to VDD stays on the board just in case.</td><td>NS8002 p1–2, §12</td></tr>
       <tr><td>Unused pins</td><td>LNA_EN, NC open; VOL+/VOL− to GND (max default volume); AMI 1 µF to GND</td><td>AN738 §3</td></tr>
     </tbody>
   </table></div>
@@ -282,7 +282,7 @@ flowchart LR
       <ul>
         <li>Ø49 × 35 mm enclosed cavity speaker with a Ø45 driver, 8 Ω, 2 W, <b>95 dB</b> (loud for its size), PET cone, 270 mm leads on a 2.0 mm 2-pin plug, plus a mounting ear. <b>$0.79</b> at 10+, $0.75 at 500+.</li>
         <li>Being sealed, it sounds the same whatever the jar does. That's a good choice.</li>
-        <li><b>Cut the plug off and solder the leads</b> to the SPK+/SPK− pads. Its 2.0 mm plug would also fit the battery socket, and swapping them could damage the amp.</li>
+        <li><b>Plugs into J4</b>, a vertical JST-PH socket that JLC places. It's the same part as the battery socket, so no extra fee. The speaker's 270 mm lead could reach either socket, so both are labelled (SPEAKER / BATT +/−) and placed far apart. A swapped plug won't damage anything instantly, but the radio won't work. Confirm its "2.0 mm 2-pin" plug really is PH-compatible when the speakers arrive.</li>
         <li>The cost of using it: at Ø49 it takes most of the inside face, so parts are packed tightly into the crescent beside it. A generic Ø40 speaker (~$0.27) frees about 40% more room, if rev B needs it.</li>
       </ul>
     </div>
@@ -306,7 +306,7 @@ flowchart LR
 
 <section>
   <h2><span class="ref">07</span>Price by quantity</h2>
-  <div class="col"><p>Landed cost per finished radio, including the jar. JLC fixed costs ($8 setup, $1.50 stencil, $3 × 13 Extended parts) dominate small orders and fade by 100. Shipping and the 25% import-duty line are placeholders: check JLC's checkout for current US duties. "Order total" is per radio × quantity.</p></div>
+  <div class="col"><p>Landed cost per finished radio, including the jar. JLC fixed costs dominate small orders: two-sided Standard assembly at ~$25 setup + 2 stencils (estimate), plus $3 × 14 Extended parts. They fade by 100. Shipping and the 25% import-duty line are placeholders: check JLC's checkout for current US duties. "Order total" is per radio × quantity.</p></div>
   {{COST}}
   <div class="col"><p class="muted">At 100+, the biggest single costs are the battery ($2.83 on eBay, ≈$1 factory-direct), the Si4825 ($1.11), the pot kit ($1.15) and the jar ($0.90).</p></div>
 </section>
@@ -317,27 +317,25 @@ flowchart LR
     <div>
       <h3>1 · Buy</h3>
       <ul>
-        <li><b>JLCPCB</b>: PCB + inside-face assembly: upload <code>jar-radio-gerbers.zip</code>, then <code>BOM.csv</code> + <code>CPL.csv</code>. Options: 2 layers, 1.6 mm, <b>black</b> mask, white silk, HASL lead-free, "Economic" PCBA, <b>assemble bottom side</b>.</li>
-        <li><b>LCSC</b> (same cart): USB-C C5156600 ×1/radio, GSPK4935 speaker C530575 ×1/radio.</li>
+        <li><b>JLCPCB</b>: PCB + assembly: upload <code>jar-radio-gerbers.zip</code>, then <code>BOM.csv</code> + <code>CPL.csv</code>. Options: 2 layers, 1.6 mm, <b>black</b> mask, white silk, HASL lead-free, <b>Standard PCBA, assemble both sides</b>. The only top-side part is the USB-C, so you never solder it.</li>
+        <li><b>LCSC</b> (same cart): GSPK4935 speaker C530575 ×1 per radio.</li>
         <li><b>eBay/AliExpress</b>: RV097NS B50K pot + knob kit (your $23/20), protected 500 mAh LiPo (your $283/100), XH leads, 200 mm zip ties, Kapton tape; optional M3 whips.</li>
         <li><b>Local</b>: wide-mouth 8 oz jars with bands (~$0.90).</li>
       </ul>
       <h3>2 · JLC assembles (inside face)</h3>
-      <p>Tuner, crystal, station and band resistors, reset detector, antenna ESD/1 nF/56 nH, NS8002 amp, TP4056 charger, load-share FET and diode, LDO, both reverse-mount LEDs, PH and XH sockets, and all passives.</p>
+      <p>Everything except the volume pot: tuner, crystal, station and band resistors, reset detector, antenna parts, NS8002 amp, TP4056 charger, load-share FET and diode, LDO, both LEDs, the battery, speaker and antenna sockets, all passives, and the USB-C on the top face.</p>
     </div>
     <div>
       <h3>3 · You solder</h3>
       <ol>
         <li><b>Volume pot</b>: 5 pins + 2 tabs, through-hole, body on top.</li>
-        <li><b>USB-C</b>: 6 small SMD pads + 2 shell tabs on top; flux and a fine tip.</li>
-        <li><b>Speaker leads</b>: cut the plug, 2 through-hole pads (SPK+ red, SPK− black).</li>
         <li><b>Calibration (one prototype)</b>: remove R2 + R3, fit a 100 kΩ trimmer in RV2 (1 = TUNE1, 2 = wiper, 3 = bottom), tune to KOPN, measure both halves, choose the final pair.</li>
       </ol>
       <h3>4 · Assemble</h3>
       <ol>
         <li>Speaker face-down under the grille, ear toward the antenna-exit side.</li>
         <li>Pad + battery on the speaker back, two zip ties through the four slots.</li>
-        <li>Plug in the battery (polarity checked) and the antenna lead.</li>
+        <li>Plug in the speaker (SPEAKER), the battery (BATT, polarity checked) and the antenna lead.</li>
         <li>Knob on, lid on the jar, band on.</li>
       </ol>
     </div>
@@ -351,12 +349,13 @@ flowchart LR
     <li><b>RV097NS pot, measured</b>: pin pitch, distance from shaft centre to the 3-pin row and to the 2 switch pins, positions of the 2 support legs.<div class="rec">The current footprint assumes 2.5 mm pitch, rows 6.5 mm either side of the shaft, legs at ±5 mm. Oversized holes absorb small errors, but please measure before ordering.</div></li>
     <li><b>Speaker ear</b>: distance from speaker centre to the ear hole, and the hole size.<div class="rec">Optional: I can add a screw hole so the ear bolts down as well as being zip-tied.</div></li>
     <li><b>Battery you bought</b>: exact L × W × T and which wire colour is on which plug pin.</li>
+    <li><b>Pot by JLC too?</b> Search LCSC for <span class="mono">RV097NS</span> or "9mm potentiometer with switch". If one is stocked, JLC can fit it with its through-hole service and you'd solder nothing. Otherwise it stays the one hand-soldered part.</li>
   </ol>
   <h3>LCSC numbers still needed</h3>
   <div class="tbl"><table>
     <thead><tr><th>Ref</th><th>Search LCSC for</th><th>Note</th></tr></thead>
     <tbody>
-      <tr><td>J2</td><td class="mono">B2B-PH-SM4-TB(LF)(SN)</td><td>JST PH 2-pin <b>vertical</b> SMD (replaces the right-angle C295747, which didn't fit)</td></tr>
+      <tr><td>J2, J4</td><td class="mono">B2B-PH-SM4-TB(LF)(SN)</td><td>JST PH 2-pin <b>vertical</b> SMD, used for both battery and speaker (replaces the right-angle C295747, which didn't fit)</td></tr>
       <tr><td>U5</td><td class="mono">XC61CN2702MR</td><td>2.7 V N-ch open-drain detector, SOT-23. Also confirm from its datasheet: pin 1 = VOUT, 2 = VIN, 3 = VSS</td></tr>
       <tr><td>D4</td><td class="mono">PESD5V0F1BL</td><td>or any bidirectional ESD diode ≤1 pF in SOD-882 (DFN1006-2)</td></tr>
       <tr><td>L1</td><td class="mono">LQW18AN56NJ00D</td><td>56 nH 0603 wire-wound (or any 56 nH 0603 with Q ≥ 15 at 100 MHz)</td></tr>

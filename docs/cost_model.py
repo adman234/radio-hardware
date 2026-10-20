@@ -21,11 +21,13 @@ JLC_PARTS = {
     'XC61CN reset detector (est.)': (0.10, 0.06, 0.04),
     'Crystal 32.768 kHz': (0.10, 0.10, 0.08),
     'XH antenna socket (C23067528, est.)': (0.10, 0.08, 0.06),
+    'USB-C vertical (C5156600), top side': (0.05, 0.047, 0.04),
+    'PH speaker socket, vertical (est.)': (0.15, 0.11, 0.08),
     'PH battery socket, vertical (est.)': (0.15, 0.11, 0.08),
     'LDO, P-FET, Schottky, ESD, 56 nH (est.)': (0.25, 0.17, 0.12),
     '~35 resistors and capacitors': (0.10, 0.06, 0.04),
 }
-EXTENDED_UNIQUE = 13          # unique Extended parts per order ($3 each), from make_bom.py
+EXTENDED_UNIQUE = 14          # unique Extended parts per order ($3 each), from make_bom.py
 JOINTS = 200                  # SMD solder joints per board (approx.)
 
 # PCB: 2 layers, 1.6 mm, Ø85.5 mm, black mask, HASL. Order total by qty (est.)
@@ -35,7 +37,6 @@ HAND = {   # $ per radio
     'Pot + knob (eBay 20 pc, $23 shipped)': 1.15,
     'Speaker GSPK4935 (LCSC C530575)': {5: 0.79, 10: 0.79, 50: 0.79, 100: 0.79, 500: 0.75, 1000: 0.75},
     'LiPo 500 mAh protected (eBay 100 pc, $283)': 2.83,
-    'USB-C receptacle (C5156600)': 0.05,
     'Antenna wire + XH plug (est.)': 0.25,
     'Zip ties, Kapton (est.)': 0.05,
     'Jar + band (local)': 0.90,
@@ -50,7 +51,8 @@ def tier(prices, q):
 
 def model(q):
     parts = sum(tier(v, q) for v in JLC_PARTS.values())
-    assembly = (8 + 1.5 + 3 * EXTENDED_UNIQUE) / q + JOINTS * 0.0017
+    # two-sided (USB-C on top) needs Standard PCBA: ~$25 setup + 2 stencils (est.)
+    assembly = (25 + 2 * 7 + 3 * EXTENDED_UNIQUE) / q + JOINTS * 0.0017
     pcb = PCB_ORDER[q] / q
     jlc = parts + assembly + pcb
     ship = SHIP[q] / q

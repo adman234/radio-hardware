@@ -42,7 +42,7 @@ PLACE = {
     # --- audio
     'U2': (22.0, -12.0, 90, 'B'), 'C10': (27.0, -4.0, 0, 'B'), 'C11': (18.0, -9.0, 0, 'B'), 'R7': (18.0, -11.0, 0, 'B'),
     'R8': (18.0, -13.0, 0, 'B'), 'C12': (18.0, -15.0, 0, 'B'), 'C13': (26.0, -15.0, 0, 'B'), 'C14': (26.0, -13.5, 0, 'B'),
-    'R9': (19.0, -17.0, 0, 'B'), 'R10': (21.0, -17.5, 0, 'B'), 'LS1': (14.5, -10.0, 90, 'B'),
+    'R9': (19.0, -17.0, 0, 'B'), 'R10': (21.0, -17.5, 0, 'B'), 'J4': (28.0, -3.0, 90, 'B'),
     # --- power, lower area
     'R11': (31.0, -8.0, 90, 'B'), 'R12': (31.0, -14.0, 90, 'B'), 'C15': (24.0, -7.0, 0, 'B'),
     'U3': (21.0, -24.0, 90, 'B'), 'R13': (17.0, -26.0, 90, 'B'),
@@ -240,6 +240,9 @@ def build(sch_parts, out_path):
     
     text(board, 'KOPN 89.5 JAR RADIO  rev A', -11.0, -12.0, 1.0, pcbnew.B_SilkS)
     text(board, 'COLUMBIA GADGET WORKS', -11.0, 10.0, 1.0, pcbnew.B_SilkS)
+    for ref, label in (('J2', 'BATT +/-'), ('J4', 'SPEAKER'), ('J3', 'ANTENNA')):
+        fp = placed[ref]; c = fp.GetPosition()
+        text(board, label, pcbnew.ToMM(c.x) - CX, CY - pcbnew.ToMM(c.y) - 5.6, 0.9, pcbnew.B_SilkS)
     text(board, 'CERN-OHL-S-2.0  after The Public Radio', -11.0, -14.0, 0.8, pcbnew.B_SilkS)
 
     board.SetFileName(out_path)

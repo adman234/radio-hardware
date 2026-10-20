@@ -35,7 +35,7 @@ PRICE = {
     '25-21/GHC-YSU/2A': ('', 'Extended', 0.0673, 0.0673, 'LCSC quote', 'ok'),
     '0603WAF6800T5E': ('', 'Basic', 0.001, 0.001, 'est', 'ok'),
     '0603WAF2201T5E': ('', 'Basic', 0.001, 0.001, 'est', 'ok'),
-    'B2B-PH-SM4-TB(LF)(SN)': ('', 'Extended', 0.15, 0.11, 'est', 'need C-number (vertical SMD PH)'),
+    'B2B-PH-SM4-TB(LF)(SN)': ('', 'Extended', 0.15, 0.11, 'est', 'need C-number (vertical SMD PH, used twice)'),
     'AO3401A': ('', 'Basic', 0.04, 0.03, 'est', 'ok'),
     'B5819W SL': ('', 'Basic', 0.02, 0.015, 'est', 'ok'),
     'XC6206P332MR': ('', 'Basic', 0.075, 0.059, 'est', 'ok'),
@@ -45,10 +45,10 @@ PRICE = {
     'CL10C220JB8NNNC': ('', 'Basic', 0.002, 0.001, 'est', 'ok'),
     '3296W-1-104': ('', 'Not placed', 0, 0, '', 'calibration only'),
     'RV097NS B50K': ('', 'Hand', 1.15, 1.15, 'eBay 20 pc kit $23 shipped', 'footprint PROVISIONAL: measure'),
-    'GSPK4935PN-8R2W-L270': ('C530575', 'Hand', 0.7877, 0.7877, 'LCSC quote', 'ok; cut plug, solder leads'),
-    'TYPE-C 6PLTH6.8-DJ': ('', 'Hand (top)', 0.05, 0.047, 'est', 'ok'),
+    'TYPE-C 6PLTH6.8-DJ': ('', 'Extended? (top side)', 0.05, 0.047, 'est', 'ok; needs 2-sided assembly'),
 }
 EXTRA = [  # hand / kit / assembly items not on the board
+    ('LS1', 'Speaker INGHAi GSPK4935PN-8R2W-L270, Ø49x35, 8R 2W, 270 mm lead + 2.0 mm 2-pin plug', 'GSPK4935PN-8R2W-L270', 'C530575', 'Plug-in', 1, 0.7877, 0.7877, 'LCSC quote', 'confirm plug mates with JST PH'),
     ('BT1', 'LiPo 1S protected, 500 mAh, PH2.0 lead', 'eBay 100 pc lot', '', 'Plug-in', 1, 2.83, 2.83, 'eBay quote $283/100', 'need dims + polarity'),
     ('ANT', '75 cm 26 AWG wire on XH 2.54 2-pin plug (1 wire used)', 'custom lead', '', 'Kit', 1, 0.30, 0.20, 'est', ''),
     ('WHIP', 'Telescopic whip, M3 male, 7-section ~75 cm (optional)', 'generic', '', 'Kit (optional)', 0, 2.00, 1.20, 'est', 'optional'),

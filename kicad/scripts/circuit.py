@@ -110,12 +110,13 @@ part('C13', 'C', '10uF', C0603, 'C19702', 'CL10A106KP8NNNC', {'1': 'VSW', '2': '
 part('C14', 'C', '100nF', C0603, 'C14663', 'CC0603KRX7R9BB104', {'1': 'VSW', '2': 'GND'}, block=B)
 part('R9', 'R', '0R', R0603, 'C21189', '0603WAF0000T5E', {'1': 'AMP_SD', '2': 'GND'}, block=B)
 part('R10', 'R', '0R (DNP)', R0603, 'C21189', '0603WAF0000T5E', {'1': 'AMP_SD', '2': 'VSW'}, block=B, dnp=True)
-part('LS1', 'Conn_2', 'SPEAKER 8R', JR + 'Speaker_Wire_Pads_P5', '', 'GSPK4935PN-8R2W-L270', {'1': 'SPK+', '2': 'SPK-'}, block=B, hand=True)
+part('J4', 'Conn_2_MP', 'SPK (PH)', 'Connector_JST:JST_PH_B2B-PH-SM4-TB_1x02-1MP_P2.00mm_Vertical', '',
+     'B2B-PH-SM4-TB(LF)(SN)', {'1': 'SPK+', '2': 'SPK-', 'MP': 'GND'}, block=B)
 
 # Power -------------------------------------------------------------------
 B = 'power'
 part('J1', 'USB_C_Power', 'USB-C 5V', JR + 'USB_C_Receptacle_ShouHan_TYPE-C-6PLTH6.8-DJ_Vertical', 'C5156600', 'TYPE-C 6PLTH6.8-DJ',
-     {'2': 'VBUS', '5': 'VBUS', '3': 'CC1', '4': 'CC2', '1': 'GND', '6': 'GND', 'S': 'GND'}, block=B, hand=True, top=True)
+     {'2': 'VBUS', '5': 'VBUS', '3': 'CC1', '4': 'CC2', '1': 'GND', '6': 'GND', 'S': 'GND'}, block=B, top=True)
 part('R11', 'R', '5.1k', R0603, 'C23186', '0603WAF5101T5E', {'1': 'CC1', '2': 'GND'}, block=B)
 part('R12', 'R', '5.1k', R0603, 'C23186', '0603WAF5101T5E', {'1': 'CC2', '2': 'GND'}, block=B)
 part('C15', 'C', '10uF', C0603, 'C19702', 'CL10A106KP8NNNC', {'1': 'VBUS', '2': 'GND'}, block=B)
