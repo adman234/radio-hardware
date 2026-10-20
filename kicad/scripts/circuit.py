@@ -104,13 +104,15 @@ part('L1', 'L', '56nH', L0603, 'C98080', 'LQW18AN56NJ00D', {'1': 'FMI', '2': 'GN
 
 # Audio -------------------------------------------------------------------
 B = 'audio'
-part('C10', 'C', '1uF', C0603, 'C15849', 'CL10A105KB8NNNC', {'1': 'AOUT', '2': 'VOL_TOP'}, block=B)
-# switched pot: CTR R097 'NS' = 9 mm vertical pot + SPST switch (pinout/footprint provisional until datasheet)
-part('RV1', 'Pot_Switch', '50k B + SW', JR + 'Potentiometer_RV097NS_Switch_Vertical_PROVISIONAL', 'C18213431',
-     'R09760NS-FB15A7.0-B503-0P7', {'3': 'VOL_TOP', '2': 'VOL_WIPER', '1': 'GND', 'S1': 'VSYS', 'S2': 'VSW', 'MP': 'GND'}, block=B)
+part('C10', 'C', '1uF', C0603, 'C15849', 'CL10A105KB8NNNC', {'1': 'AOUT', '2': 'AOUT_C'}, block=B)
+# volume + power: CTR R09512NS, 9 mm rear-mount (shaft up) pot with rotary SPST switch, 10k audio
+part('RV1', 'Pot_Switch', '10k A + SW', JR + 'Potentiometer_CTR_R09512NS_RearMount_Switch', 'C18213422',
+     'R09512NS-FB15S7.0-A103-00G', {'3': 'VOL_TOP', '2': 'VOL_WIPER', '1': 'GND', 'S1': 'VSYS', 'S2': 'VSW', 'MP': 'GND'}, block=B)
+# R22 keeps the Si4825 AOUT load >= 10k with the 10k pot (4.7k + 10k||47k = 12.9k)
+part('R22', 'R', '4.7k', R0603, 'C23162', '0603WAF4701T5E', {'1': 'AOUT_C', '2': 'VOL_TOP'}, block=B)
 part('C11', 'C', '100nF', C0603, 'C14663', 'CC0603KRX7R9BB104', {'1': 'VOL_WIPER', '2': 'AMP_C'}, block=B)   # 100n x 47k = 34 Hz
-part('R7', 'R', '47k', R0603, 'C25819', '0603WAF4702T5E', {'1': 'AMP_C', '2': 'AMP_INN'}, block=B)   # 20k pot || 47k = 14k >= Si4825 10k min load
-part('R8', 'R', '470k', R0603, 'C23178', '0603WAF4703T5E', {'1': 'AMP_INN', '2': 'SPK+'}, block=B)   # Av = 2*470/47 = 20, Basic
+part('R7', 'R', '47k', R0603, 'C25819', '0603WAF4702T5E', {'1': 'AMP_C', '2': 'AMP_INN'}, block=B)   # Ri; with R22 the Si4825 sees >= 12.9k
+part('R8', 'R', '680k', R0603, 'C25822', '0603WAF6803T5E', {'1': 'AMP_INN', '2': 'SPK+'}, block=B)   # Av = 2*680/47 = 29, makes up R22's ~4 dB
 part('U2', 'NS8002', 'NS8002', 'Package_SO:SOIC-8-1EP_3.9x4.9mm_P1.27mm_EP2.41x3.3mm', 'C189960', 'NS8002',
      {'1': 'AMP_SD', '2': 'AMP_BYP', '3': 'AMP_BYP', '4': 'AMP_INN', '5': 'SPK+', '6': 'VSW', '7': 'GND', '8': 'SPK-', '9': 'GND'}, block=B)
 part('C12', 'C', '1uF', C0603, 'C15849', 'CL10A105KB8NNNC', {'1': 'AMP_BYP', '2': 'GND'}, block=B)

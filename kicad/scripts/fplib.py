@@ -317,3 +317,25 @@ def batt_tab_slot_v2(name='Battery_Holder_Tab_Slot_Plus_Wire'):
     L.append(_text('BAT-', -6.0, 5.5, 'F.SilkS', 0.8))
     L += rect(-4.6, -1.6, 5.0, 7.2, 'F.CrtYd', 0.05)
     write(name, L)
+
+
+def r09512ns_rear(name='Potentiometer_CTR_R09512NS_RearMount_Switch'):
+    """CTR R09512NS (LCSC C18213422): 9 mm pot + rotary SPST switch, rear
+    mount, shaft perpendicular to the board. From the datasheet's mounting
+    hole detail (shaft axis at origin): two 1.8 x 1.2 mm tab slots 11.3 mm
+    over their outer edges on the axis line; switch pins 5 mm apart 6.45 mm
+    from the axis; pot pins 1-2-3 at 2.5 mm pitch 2.5 mm further out.
+    Holes 1.0 +0.2 mm."""
+    L = _hdr(name, 'CTR R09512NS 9mm pot with rotary switch, rear mount (shaft up), LCSC C18213422')
+    for n, x in (('1', -2.5), ('2', 0.0), ('3', 2.5)):
+        L.append(f'  (pad "{n}" thru_hole {"rect" if n == "1" else "circle"} (at {x} 8.95) (size 1.8 1.8) (drill 1.1) (layers "*.Cu" "*.Mask"))')
+    for n, x in (('S1', -2.5), ('S2', 2.5)):
+        L.append(f'  (pad "{n}" thru_hole circle (at {x} 6.45) (size 1.8 1.8) (drill 1.1) (layers "*.Cu" "*.Mask"))')
+    for x in (-4.75, 4.75):
+        L.append(f'  (pad "MP" thru_hole oval (at {x} 0) (size 2.6 2.0) (drill oval 1.8 1.2) (layers "*.Cu" "*.Mask"))')
+    L += rect(-5.3, -4.8, 5.3, 6.0, 'F.Fab', 0.1)
+    L.append(_circle(0, 0, 3.0, 'F.Fab', 0.1))
+    L.append(_circle(0, 0, 8.0, 'F.SilkS', 0.15))   # 16 mm knob
+    L += rect(-6.3, -5.3, 6.3, 10.2, 'F.CrtYd', 0.05)
+    L.append(_text('VOL / OFF', 0, -9.2, 'F.SilkS', 0.9))
+    write(name, L)

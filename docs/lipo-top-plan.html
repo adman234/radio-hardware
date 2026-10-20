@@ -91,7 +91,7 @@
       <tr><td>Speaker</td><td>HDK-4008BB-2, 2 wires</td><td>J4: 2 pads, 5 mm pitch, beside the grille</td><td>Hand + hot glue</td></tr>
       <tr><td>Antenna</td><td>~75 cm 26 AWG stranded wire</td><td>J3: Ø1.0 plated hole + 2 zip-tie holes</td><td>Hand + zip tie</td></tr>
       <tr><td>Whip (optional)</td><td>M3 telescopic whip</td><td>Plated M3 hole, same ANT net</td><td>Screw</td></tr>
-      <tr><td>Volume + power</td><td>—</td><td>RV1 vertical pot with switch (part still open, Q-H1)</td><td>JLC (through-hole)</td></tr>
+      <tr><td>Volume + power</td><td>—</td><td>RV1 CTR R09512NS rear-mount pot with switch (C18213422)</td><td>JLC (through-hole)</td></tr>
           </tbody>
   </table></div>
 
@@ -498,17 +498,30 @@ python3 jlcdb.py search "56nH" --sub Inductor --pkg 0603 --basic</pre>
     <thead><tr><th>LCSC</th><th>Part</th><th>Datasheet says</th><th>Verdict</th></tr></thead>
     <tbody>
       <tr><td class="mono">C18213431 / C18213428</td><td>CTR R09760NS / R09710NS</td><td>Rotary switch, 12 V 1 A, off at end of travel. Body 12.9–13.2 mm deep, pins exit the bottom.</td><td>Right-angle: shaft parallel to the board. ✗</td></tr>
-      <tr><td class="mono">C18213422</td><td>CTR R09512NS</td><td>Switch + M7 bushing, 13.8 mm body, pins below.</td><td>Right-angle. ✗</td></tr>
+      <tr><td class="mono">C18213422</td><td>CTR R09512NS</td><td>Switch + M7 bushing, 13.8 mm body; leads and tabs exit the <b>back</b>.</td><td><b>Rear mount, shaft up. ✓</b> (I misread it at first; your photo caught it. See F.12.)</td></tr>
       <tr><td class="mono">C7029946</td><td>Bourns PTV111-4220A-B104</td><td>12 mm pot; "-2" in the code is a centre detent.</td><td>No switch. ✗</td></tr>
       <tr><td class="mono">C470643</td><td>Alps RK10J11E0034</td><td>Ø14 thumbwheel, 1.8 mm thick.</td><td>No switch, thumbwheel. ✗</td></tr>
     </tbody>
   </table></div>
   <div class="col">
-    <p>I also swept every stocked pot family in the JLC database with 5–9 joints. The vertical (shaft-up) 9 mm families JLC stocks, Alps <b>RK09K / RK09D / RK09L</b>, come without switches. Every switched 9 mm pot I've found is right-angle. <b>Conclusion: JLC doesn't stock a vertical pot with a switch.</b></p>
+    <p>I also swept every stocked pot family in the JLC database with 5–9 joints. The vertical (shaft-up) 9 mm families JLC stocks, Alps <b>RK09K / RK09D / RK09L</b>, come without switches. Every switched 9 mm pot I've found is right-angle. <b>(Superseded: R09512NS does work, see F.12.)</b></p>
     <p><b>Recommended fallback, all JLC-placed:</b> volume = Alps <b>RK09K1130ACL</b> 50 kΩ vertical (C470291, 377 in stock, $0.38); power = latching push button <b>XKB8080-Z</b> (C318860, 8 × 8 mm, push on / push off, 2,580 in stock, $0.14). The button is rated only 100 mA, so it doesn't carry the radio's current. It switches the gate of a P-FET load switch: AO3401A (Basic, already in the BOM) plus a 100 kΩ pull-up (Basic). Off-state drain is the FET's leakage plus the XB8089D's 3–6 µA. This adds 2 Extended fees ($6/order) but removes the $0.84 pot, so it costs about the same at 100.</p>
   </div>
   <ol class="qlist">
     <li><b>Q-I1 · Power control.</b> (a) Alps RK09K 50k vertical pot + latching push button + P-FET, all JLC-placed. (b) Source a vertical switched pot outside LCSC (Digi-Key/AliExpress) and hand-solder it. (c) Keep looking.<div class="rec">(a). It's stocked, cheap and fully assembled. A press-on/press-off button is clear to use, and the knob only sets volume.</div></li>
     <li><b>Q-I2 · If (a): Alps RK09K datasheet.</b> Please download it from the LCSC page for <span class="mono">C470291</span>, plus <span class="mono">C318860</span> (XKB8080-Z), so I can build both footprints from the drawings.</li>
   </ol>
+
+  <h3>Rev F.12: volume/power pot = CTR R09512NS (C18213422)</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Item</th><th>Detail</th></tr></thead>
+    <tbody>
+      <tr><td>Part</td><td>R09512NS-FB15S7.0-A103-00G: 9 mm, <b>10 kΩ audio taper</b>, rotary SPST switch (12 V DC 1 A, opens in the first 50° ± 10° from full CCW), 10,000 cycles, M7 × 0.75 bushing with O-ring, 6 mm D-flat shaft 15 mm long. The body is 13.8 mm deep, so the shaft tip sits about 29 mm above the lid. JLC fits it by through-hole assembly.</td></tr>
+      <tr><td>Footprint</td><td>From the mounting-hole detail, with the shaft at the origin: two 1.8 × 1.2 mm plated tab slots at ±4.75 mm on the shaft axis (GND); switch pins S1/S2 at (±2.5, 6.45); pot pins 1-2-3 at (−2.5 / 0 / +2.5, 8.95). All round holes are Ø1.1 mm.</td></tr>
+      <tr><td>10 kΩ load fix</td><td>R22 4.7 kΩ (C23162, Basic) in series after C10, so the Si4825 output sees at least 4.7k + 10k∥47k = 12.9 kΩ (its minimum is 10 kΩ). This costs about 3.9 dB, which is made back by raising R8 from 470k to <b>680k</b> (C25822, Preferred, no fee): amp gain goes from 20 to 29.</td></tr>
+      <tr><td>Stock</td><td><b>64 at JLC</b>: fine for the 5 prototypes, short for 100. Add it to your second-source list.</td></tr>
+      <tr><td>Cost now</td><td>8 Extended parts ($24/order). Parts + fees: <b>$10.71/board at 5, $5.26 at 100</b>. The pot is $1.50–1.94 of that.</td></tr>
+    </tbody>
+  </table></div>
+  <div class="col"><p class="muted">Check on the first board: if the volume rises when turning CCW, pins 1 and 3 are mirrored versus the drawing. The fix is to swap the VOL_TOP and GND pads in the footprint. The switch direction is unaffected.</p></div>
 </section>
