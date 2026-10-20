@@ -1,0 +1,110 @@
+<section id="rev-top">
+  <h2><span class="ref">R</span>Revision: LiPo board, all parts on the top face</h2>
+  <div class="callout"><strong>Status: plan for your review (no board generated yet)</strong>This replaces the "everything on the inside face" layout in sections 01–02 wherever they differ. The circuit, LiPo, charger, speaker, antenna network and jar stay the same. The 3×AAA variant is paused on branch <code>aaa-battery</code>.</div>
+
+  <div class="grid2">
+    <div>
+      <h3>What moves</h3>
+      <ul>
+        <li><b>Top (outside) face:</b> every electronic part, placed by JLC in a single-sided Economic assembly. That covers the tuner, amp, charger, LDO, passives, the upright USB-C, both charge LEDs, and three JST sockets (battery, speaker, antenna).</li>
+        <li><b>Inside face:</b> only the speaker (under the grille), the LiPo stacked on its back, the zip-tie slots, the CGW logo and text, and the solid ground ring under the band.</li>
+        <li><b>Plug-through holes:</b> each lead comes up through its own hole beside its socket and plugs in on top. The battery and speaker leads come from inside the jar. The antenna wire can drop back inside through its hole, or run outside across the lid.</li>
+        <li><b>Volume/power pot:</b> on top, fitted by JLC if a stocked switched pot exists (Q-T2), otherwise hand-soldered as before.</li>
+        <li><b>Whip:</b> the plated M3 mount stays on top, on the same connection as the antenna socket.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Why it's better</h3>
+      <ul>
+        <li><b>One-sided assembly again:</b> Economic PCBA (~$8 setup + 1 stencil) instead of two-sided Standard (~$25 + 2 stencils). That saves roughly $20–30 per order.</li>
+        <li><b>Ordinary top-side LEDs</b> replace the reverse-mount parts. A red Basic part (C2286) and a green Basic/Extended part are about $0.01 each instead of $0.04–0.07, and it drops one or two Extended fees.</li>
+        <li><b>Right-angle sockets we already have numbers for:</b> JST-PH S2B-PH-SM4-TB (C295747) and the XH G-Switch (C23067528). The vertical PH socket is no longer needed.</li>
+        <li><b>More room for parts.</b> On top they only have to avoid the Ø36 grille, not the whole Ø49 speaker body, so the parts area grows by about 20%. Only through-holes (pot pins, plug holes, USB shell tabs, whip screw) must stay clear of the speaker and battery underneath.</li>
+        <li><b>Easy to probe and rework:</b> every part is reachable without opening the jar.</li>
+      </ul>
+    </div>
+  </div>
+
+  <figure class="board">
+    <svg viewBox="-50 -50 100 100" role="img" aria-label="Top view of the all-top-side layout concept: grille left, parts crescent right, three sockets with plug holes, pot, USB-C and logo">
+      <circle cx="0" cy="0" r="42.75" fill="var(--pcb)" stroke="var(--pcb-edge)" stroke-width="0.4"/>
+      <circle cx="0" cy="0" r="39.4" fill="none" stroke="var(--copper)" stroke-width="6.7" opacity="0.28"/>
+      <circle cx="0" cy="0" r="34" fill="none" stroke="var(--copper)" stroke-width="0.25" stroke-dasharray="0.6 0.8"/>
+      <!-- speaker (inside) + grille -->
+      <circle cx="-11" cy="0" r="24.5" fill="none" stroke="var(--silk)" stroke-width="0.3" stroke-dasharray="1.2 0.9"/>
+      <rect x="-23.5" y="-15" width="25" height="30" fill="none" stroke="var(--silk)" stroke-width="0.25" stroke-dasharray="0.5 0.7"/>
+      <circle cx="-11" cy="0" r="18" fill="var(--bg)" opacity="0.18"/>
+      <circle cx="-11" cy="0" r="18" fill="none" stroke="var(--silk)" stroke-width="0.35"/>
+      <rect x="-21" y="-18" width="4" height="36" fill="var(--pcb)"/>
+      <rect x="-5" y="-18" width="4" height="36" fill="var(--pcb)"/>
+      <text x="-11" y="1" text-anchor="middle" class="svgtext" font-size="2.4" fill="var(--silk)">GRILLE</text>
+      <text x="-11" y="12.5" text-anchor="middle" class="svgtext" font-size="1.7" fill="var(--silk)" opacity="0.8">speaker Ø49 + LiPo</text>
+      <text x="-11" y="14.7" text-anchor="middle" class="svgtext" font-size="1.7" fill="var(--silk)" opacity="0.8">(inside, dashed)</text>
+      <!-- zip slots -->
+      <g fill="var(--bg)"><rect x="-21.1" y="-27.6" width="4.2" height="1.6" rx="0.8"/><rect x="-5.1" y="-27.6" width="4.2" height="1.6" rx="0.8"/><rect x="-21.1" y="26" width="4.2" height="1.6" rx="0.8"/><rect x="-5.1" y="26" width="4.2" height="1.6" rx="0.8"/></g>
+      <!-- parts crescent -->
+      <path d="M 9 -24 A 34 34 0 0 1 9 24 L 9 24 A 22 22 0 0 0 9 -24 Z" fill="var(--mask)" opacity="0.18"/>
+      <text x="22" y="-1" text-anchor="middle" class="svgtext" font-size="2" fill="var(--silk)">SMT parts</text>
+      <text x="22" y="1.6" text-anchor="middle" class="svgtext" font-size="1.7" fill="var(--silk)" opacity="0.8">tuner · amp · charger</text>
+      <!-- logo -->
+      <rect x="9" y="-21" width="13" height="12" fill="none" stroke="var(--silk)" stroke-width="0.3"/>
+      <text x="15.5" y="-14.3" text-anchor="middle" class="svgtext" font-size="2.2" fill="var(--silk)">KOPN</text>
+      <!-- pot -->
+      <circle cx="17" cy="19" r="8" fill="none" stroke="var(--copper)" stroke-width="0.4" stroke-dasharray="0.8 0.6"/>
+      <circle cx="17" cy="19" r="3" fill="var(--copper)"/>
+      <text x="17" y="29.6" text-anchor="middle" class="svgtext" font-size="1.9" fill="var(--silk)">VOL/PWR</text>
+      <!-- usb -->
+      <rect x="27.5" y="-4.5" width="3.4" height="9" rx="1.6" fill="none" stroke="var(--copper)" stroke-width="0.5"/>
+      <text x="29.2" y="-6" text-anchor="middle" class="svgtext" font-size="1.8" fill="var(--silk)">USB-C</text>
+      <circle cx="26" cy="8" r="0.8" fill="#d94a3a"/><circle cx="28.5" cy="8" r="0.8" fill="#3fb36a"/>
+      <!-- sockets + holes -->
+      <g>
+        <rect x="1" y="-31.5" width="5.5" height="4" rx="1" fill="var(--bg)" stroke="var(--silk)" stroke-width="0.25"/>
+        <rect x="7.5" y="-32.5" width="7" height="6" fill="none" stroke="var(--copper)" stroke-width="0.45"/>
+        <text x="8" y="-24.2" class="svgtext" font-size="1.7" fill="var(--silk)">BATT PH</text>
+        <rect x="1" y="27.5" width="6.5" height="5" rx="1" fill="var(--bg)" stroke="var(--silk)" stroke-width="0.25"/>
+        <rect x="8.5" y="27" width="7.5" height="6" fill="none" stroke="var(--copper)" stroke-width="0.45"/>
+        <text x="2" y="26" class="svgtext" font-size="1.7" fill="var(--silk)">SPK XH</text>
+        <rect x="29" y="12" width="5" height="6.5" rx="1" fill="var(--bg)" stroke="var(--silk)" stroke-width="0.25"/>
+        <rect x="23.5" y="11.5" width="5" height="7.5" fill="none" stroke="var(--copper)" stroke-width="0.45"/>
+        <text x="24" y="21" class="svgtext" font-size="1.7" fill="var(--silk)">ANT XH</text>
+      </g>
+      <!-- whip -->
+      <circle cx="27" cy="-17" r="3.25" fill="var(--copper)" opacity="0.85"/><circle cx="27" cy="-17" r="1.6" fill="var(--bg)"/>
+      <text x="27" y="-21.6" text-anchor="middle" class="svgtext" font-size="1.7" fill="var(--silk)">WHIP M3</text>
+    </svg>
+    <div class="legend">
+      <span><i class="sw" style="background:var(--copper);opacity:.35"></i>Band clamp ring (GND)</span>
+      <span><i class="sw" style="border:1px dashed var(--copper)"></i>Ø68 visible window</span>
+      <span>Dashed white = inside the jar (speaker, LiPo)</span>
+      <span><i class="sw" style="background:var(--bg);border:1px solid var(--line)"></i>Plug-through hole</span>
+      <span><i class="sw" style="border:1px solid var(--copper)"></i>Socket / knob / USB (top)</span>
+    </div>
+    <figcaption>Concept only, to scale. Final positions come from the placer once the jar and pot are measured. Speaker-side y is up as seen from above.</figcaption>
+  </figure>
+
+  <h3>Connector plan</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Lead</th><th>From</th><th>Top-side socket (JLC places)</th><th>Hole for the plug</th><th>Why this family</th></tr></thead>
+    <tbody>
+      <tr><td>Battery</td><td>LiPo on speaker back, 50–80 mm lead</td><td>JST-PH 2-pin right-angle, <span class="mono">S2B-PH-SM4-TB</span> (C295747)</td><td class="num">≈ 7.0 × 5.5 mm, close to the speaker edge</td><td>LiPos ship with PH. PH is the <b>only</b> PH socket, so the battery can't go anywhere else.</td></tr>
+      <tr><td>Speaker</td><td>GSPK4935, 270 mm lead</td><td>JST-XH 2-pin right-angle, G-Switch (C23067528)</td><td class="num">≈ 8.5 × 6.5 mm</td><td>Keeps the battery plug out of the speaker socket. The speaker's 2.0 mm plug must be swapped for an XH plug (Q-T3).</td></tr>
+      <tr><td>Antenna</td><td>75 cm wire, 1 pin used</td><td>JST-XH 2-pin right-angle, same part (no extra fee)</td><td class="num">≈ 8.5 × 6.5 mm, near the edge</td><td>Swapping speaker and antenna plugs is harmless, just wrong. The wire goes back down the hole to coil inside, or lies across the lid and out.</td></tr>
+    </tbody>
+  </table></div>
+  <div class="col"><p class="muted">Danger check: with the battery on PH and nothing else on PH, the battery can't be plugged into the antenna input. That input has a 56 nH inductor to ground, so a battery plugged in there would effectively be shorted.</p></div>
+
+  <h3>Open questions for this revision</h3>
+  <ol class="qlist">
+    <li><b>Q-T1 · Visible parts on the lid.</b> All the chips will show on the outside. Keep the bare "circuit-board lid" look, or plan a cover (smoked acrylic or wood disc under the band, with holes for knob, USB and sockets)?<div class="rec">Bare board for the prototypes. Decide on a cover after seeing them. A cover changes nothing on the PCB except the logos, which would move onto it.</div></li>
+    <li><b>Q-T2 · A pot JLC can place.</b> Please search LCSC for <span class="mono">RV097NS</span>, <span class="mono">potentiometer with switch 50K</span> and <span class="mono">R0902N switch</span>. I need a vertical PCB-mount part, ~50 kΩ, with an SPST switch and a ≈15 mm shaft, in stock at JLC. A or B taper both work.<div class="rec">If none is stocked: hand-solder (7 joints per board) or consign your RV097NS pots to JLC's through-hole service.</div></li>
+    <li><b>Q-T3 · Speaker plug.</b> OK to put an XH plug on the GSPK4935 lead? Your choices: crimp it yourself (about $0.03 a plug plus a crimper), buy XH pigtails and splice, or ask INGHAi/LCSC for an XH termination at MOQ.<div class="rec">Ask the factory first at 100+. For the prototypes, cut the 2.0 mm plug off and crimp an XH plug.</div></li>
+    <li><b>Q-T4 · Socket direction.</b> Right-angle sockets with their openings facing the holes, so leads come up and plug in sideways and stay flat? Or vertical sockets?<div class="rec">Right-angle: both part numbers are already known, and they keep cables flat under a possible cover.</div></li>
+    <li><b>Q-T5 · Hole size and finish.</b> The plug holes (~7 × 5.5 and ~8.5 × 6.5 mm) are open slots in the lid. OK as plain routed slots, or should their edges be plated or rounded?<div class="rec">Plain routed slots with 1 mm corner radii (JLC's minimum). They're free and won't cut the wires.</div></li>
+    <li><b>Q-T6 · LEDs.</b> Switch from reverse-mount to ordinary top-side 0603 LEDs (red C2286 Basic, plus a green Basic part)?<div class="rec">Yes: cheaper, and up to two fewer Extended fees.</div></li>
+    <li><b>Q-T7 · Logos.</b> With parts on top, KOPN fits at about 12–13 mm tall beside the grille. The inside face is now free, so CGW, the project name and the battery warning go there large.<div class="rec">If you want KOPN bigger, the grille could shrink from Ø36 to Ø32 (speaker still breathes fine) to free room.</div></li>
+    <li><b>Q-T8 · Battery placement.</b> Keep the LiPo stacked on the speaker's back, with two zip ties around both?<div class="rec">Yes. The inside face has no space for it to lie flat beside the Ø49 speaker.</div></li>
+    <li><b>Q-T9 · Speaker ear.</b> Bolt the GSPK4935's ear to the board too? I need the ear hole's position and size.</li>
+    <li><b>Still open from before:</b> jar measurements (Q1), RV097NS pin layout (Q2) if it's hand-placed, and LCSC numbers for XC61CN2702MR, a ≤1 pF ESD diode (SOD-882), the 56 nH LQW18AN56NJ00D, CL10A475KO8NNNC and 0603WAF1000T5E. The vertical PH socket is no longer needed.</li>
+  </ol>
+</section>
