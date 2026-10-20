@@ -85,7 +85,9 @@ part('C7', 'C', '22uF', C0805, 'C45783', 'CL21A226MAQNNNE', {'1': 'TUNE1', '2': 
 part('C21', 'C', '22uF', C0805, 'C45783', 'CL21A226MAQNNNE', {'1': 'TUNE1', '2': 'GND'}, block=B)   # 2x22u = AN738's 47u
 part('RV2', 'Trim_3', '100k CAL (DNP)', 'Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical', '', '3296W-1-104',
      {'1': 'TUNE1', '2': 'TUNE2', '3': 'TUNE_LO'}, block=B, dnp=True, hand=True)
-part('R5', 'R', '430k', R0603, 'C25969', '0603WAF4303T5E', {'1': 'TUNE1', '2': 'BAND'}, block=B)
+# band ladder 330k + 100k + 68k = 498k (AN738: 500k +/-1%), all Basic parts
+part('R5', 'R', '330k', R0603, 'C23137', '0603WAF3303T5E', {'1': 'TUNE1', '2': 'BAND_M'}, block=B)
+part('R17', 'R', '100k', R0603, 'C25803', '0603WAF1003T5E', {'1': 'BAND_M', '2': 'BAND'}, block=B)
 part('R6', 'R', '68k', R0603, 'C23231', '0603WAF6802T5E', {'1': 'BAND', '2': 'GND'}, block=B)
 part('C8', 'C', '1uF', C0603, 'C15849', 'CL10A105KB8NNNC', {'1': 'AMI', '2': 'GND'}, block=B)
 # antenna front end (AN738 5.2)
@@ -93,7 +95,7 @@ part('J3', 'Conn_2_MP', 'ANT (XH)', JR + 'Connector_XH-SMD_GSwitch_GT-A2501WRS-1
      'GT-A2501WRS-102SBT01', {'1': 'ANT', '2': 'GND', 'MP': 'GND'}, block='ant')
 part('ANT1', 'Conn_1', 'WHIP M3', JR + 'Antenna_Telescopic_M3', '', '', {'1': 'ANT'}, block='ant', hand=True, nobom=True)
 part('D4', 'D', 'ESD <=1pF', 'Diode_SMD:D_SOD-882', 'C5139344', 'PESD5V0F1BL', {'1': 'ANT', '2': 'GND'}, block='ant')
-part('C9', 'C', '1nF C0G', C0603, 'C163508', 'CL10C102JB8NNNC', {'1': 'ANT', '2': 'FMI'}, block='ant')
+part('C9', 'C', '1nF', C0603, 'C1588', 'CL10B102KB8NNNC', {'1': 'ANT', '2': 'FMI'}, block='ant')   # Basic X7R; C0G C163508 is Extended
 part('L1', 'L', '56nH', L0603, 'C98080', 'LQW18AN56NJ00D', {'1': 'FMI', '2': 'GND'}, block='ant')
 
 # Audio -------------------------------------------------------------------
@@ -102,8 +104,8 @@ part('C10', 'C', '1uF', C0603, 'C15849', 'CL10A105KB8NNNC', {'1': 'AOUT', '2': '
 part('RV1', 'Pot_Switch', '20k + SW', JR + 'Potentiometer_RV097NS_Switch_Vertical_PROVISIONAL', 'C470569', 'RK0971111Z0P',
      {'3': 'VOL_TOP', '2': 'VOL_WIPER', '1': 'GND', 'S1': 'VSYS', 'S2': 'VSW', 'MP': 'GND'}, block=B)   # footprint: need Alps drawing
 part('C11', 'C', '100nF', C0603, 'C14663', 'CC0603KRX7R9BB104', {'1': 'VOL_WIPER', '2': 'AMP_C'}, block=B)   # 100n x 47k = 34 Hz
-part('R7', 'R', '47k', R0603, '', '0603WAF4702T5E', {'1': 'AMP_C', '2': 'AMP_INN'}, block=B)   # 20k pot || 47k = 14k >= Si4825 10k min load
-part('R8', 'R', '560k', R0603, '', '0603WAF5603T5E', {'1': 'AMP_INN', '2': 'SPK+'}, block=B)   # Av = 2*560/47 = 24
+part('R7', 'R', '47k', R0603, 'C25819', '0603WAF4702T5E', {'1': 'AMP_C', '2': 'AMP_INN'}, block=B)   # 20k pot || 47k = 14k >= Si4825 10k min load
+part('R8', 'R', '470k', R0603, 'C23178', '0603WAF4703T5E', {'1': 'AMP_INN', '2': 'SPK+'}, block=B)   # Av = 2*470/47 = 20, Basic
 part('U2', 'NS8002', 'NS8002', 'Package_SO:SOIC-8-1EP_3.9x4.9mm_P1.27mm_EP2.41x3.3mm', 'C189960', 'NS8002',
      {'1': 'AMP_SD', '2': 'AMP_BYP', '3': 'AMP_BYP', '4': 'AMP_INN', '5': 'SPK+', '6': 'VSW', '7': 'GND', '8': 'SPK-', '9': 'GND'}, block=B)
 part('C12', 'C', '1uF', C0603, 'C15849', 'CL10A105KB8NNNC', {'1': 'AMP_BYP', '2': 'GND'}, block=B)
