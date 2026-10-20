@@ -112,9 +112,7 @@ part('C13', 'C', '10uF', C0603, 'C19702', 'CL10A106KP8NNNC', {'1': 'VSW', '2': '
 part('C14', 'C', '100nF', C0603, 'C14663', 'CC0603KRX7R9BB104', {'1': 'VSW', '2': 'GND'}, block=B)
 part('R9', 'R', '0R', R0603, 'C21189', '0603WAF0000T5E', {'1': 'AMP_SD', '2': 'GND'}, block=B)
 part('R10', 'R', '0R (DNP)', R0603, 'C21189', '0603WAF0000T5E', {'1': 'AMP_SD', '2': 'VSW'}, block=B, dnp=True)
-# J4 is a placeholder until the speaker is chosen
-part('J4', 'Conn_2_MP', 'SPK (XH)', JR + 'Connector_XH-SMD_GSwitch_GT-A2501WRS-102_1x02_P2.50mm_Horizontal', 'C23067528',
-     'GT-A2501WRS-102SBT01', {'1': 'SPK+', '2': 'SPK-', 'MP': 'GND'}, block=B)
+part('J4', 'Conn_2', 'SPK wires', JR + 'Speaker_Wire_Pads_P5', '', 'HDK-4008BB-2 (hand-wired)', {'1': 'SPK+', '2': 'SPK-'}, block=B, hand=True, nobom=True)
 
 # Power -------------------------------------------------------------------
 B = 'power'
@@ -133,8 +131,7 @@ part('D3', 'LED', 'GREEN full', 'LED_SMD:LED_0603_1608Metric', 'C72043', '19-217
      {'1': 'STDBY', '2': 'LEDG_A'}, block=B)
 part('R15', 'R', '2.2k', R0603, 'C4190', '0603WAF2201T5E', {'1': 'VBUS', '2': 'LEDG_A'}, block=B)
 part('C16', 'C', '10uF', C0603, 'C19702', 'CL10A106KP8NNNC', {'1': 'VBAT', '2': 'GND'}, block=B)
-part('J2', 'Conn_2_MP', 'BATT (PH)', 'Connector_JST:JST_PH_S2B-PH-SM4-TB_1x02-1MP_P2.00mm_Horizontal', 'C295747',
-     'S2B-PH-SM4-TB(LF)(SN)', {'1': 'VBAT', '2': 'GND', 'MP': 'GND'}, block=B)
+part('J2', 'Conn_2', '18650 holder', JR + 'Battery_Holder_Tab_Slot_Plus_Wire', '', 'BH-18650-B1BA002 (C2988620, hand)', {'1': 'VBAT', '2': 'GND'}, block=B, hand=True, nobom=True)   # tab end = +, wire = - (confirm holder polarity)
 part('Q1', 'AO3401A', 'AO3401A', SOT23, 'C15127', 'AO3401A', {'1': 'VBUS', '2': 'VSYS', '3': 'VBAT'}, block=B)
 part('R16', 'R', '100k', R0603, 'C25803', '0603WAF1003T5E', {'1': 'VBUS', '2': 'GND'}, block=B)
 part('D1', 'D', 'B5819W', 'Diode_SMD:D_SOD-123', 'C8598', 'B5819W SL', {'1': 'VSYS', '2': 'VBUS'}, block=B)

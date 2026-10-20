@@ -240,3 +240,18 @@ def ant_solder(name='Antenna_Wire_Solder_D1.0'):
     L.append(_text('ANT', 0, -2.0, 'F.SilkS', 0.8))
     L.append(_circle(1.5, 0, 3.0, 'F.CrtYd', 0.05))
     write(name, L)
+
+
+def batt_tab_slot(name='Battery_Holder_Tab_Slot_Plus_Wire'):
+    """18650 holder BH-18650-B1BA002: its end tab goes through a plated oval
+    slot and is hand-soldered (holder hot-glued to the inside face); the far
+    terminal comes back on a jumper wire to the round pad.
+    PROVISIONAL slot size until the holder drawing is checked."""
+    L = _hdr(name, 'Plated oval slot for an 18650 holder solder tab + 1.2 mm pad for the return jumper wire')
+    L.append('  (pad "1" thru_hole oval (at 0 0) (size 7.6 2.4) (drill oval 6.4 1.2) (layers "*.Cu" "*.Mask"))')
+    L.append('  (pad "2" thru_hole circle (at 0 6.0) (size 2.4 2.4) (drill 1.2) (layers "*.Cu" "*.Mask"))')
+    L.append(npth(3.5, 6.0, 1.6))
+    L.append(_text('TAB', -5.2, 0, 'F.SilkS', 0.8))
+    L.append(_text('WIRE', -5.2, 6.0, 'F.SilkS', 0.8))
+    L += rect(-4.6, -1.8, 5.8, 7.8, 'F.CrtYd', 0.05)
+    write(name, L)

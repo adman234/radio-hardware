@@ -487,6 +487,49 @@ footer ul { padding-left: 18px; columns: 2 300px; }
     <p><b>Speaker:</b> <b>Dragonstate HDK-4008BB-2 (C22371323)</b> is selected: Ø40, 8 Ω, 1.5 W, 93 dB, 550 Hz–4.5 kHz. LCSC files it as "SMD", which usually means flat solder pads rather than leads. I need its datasheet to know (a) height, (b) pad layout, and (c) whether it survives reflow. If it does, JLC can place it straight onto the <b>top face</b> (wide-mouth layout), with vent holes under it so the jar acts as its back box. If not, it goes inside under a grille, with two short wires soldered by hand.</p>
   </div>
 
+
+  <h3>Rev F.6: speaker datasheet, 18650 holder, protection chip comparison</h3>
+  <div class="grid2">
+    <div>
+      <h3>Speaker: Dragonstate HDK-4008BB-2 (datasheet reviewed)</h3>
+      <ul>
+        <li>Ø40 × <b>5.3 mm</b>, steel case, nylon cone with a cloth front, Nd magnet, 9.6 g. 8 Ω ±15%, 1.5 W rated (1.8 W for 1 min), 93 dB at 0.1 W / 0.1 m.</li>
+        <li><b>Response curve:</b> about 94–98 dB flat from ~350 Hz to 2 kHz, a peak around 3 kHz, a dip near 4.5 kHz, falling below ~300 Hz. Better than "550 Hz–4.5 kHz" suggests: <b>good for voice, OK for music</b>, no bass.</li>
+        <li><b>Not reflow-solderable.</b> The "SMD" label just means two solder pads on a small tab at the back, and it's rated for 60 °C operating / 70 °C storage. So: <b>inside the jar, face against the board under the grille, held with hot glue on the steel rim</b> (never on the cloth or cone). Two short wires from its pads go to the SPK+/SPK− holes (hand-soldered).</li>
+        <li>Amp gain 20 gives ≈0.6 W on battery and up to ≈1.2 W on USB, under its 1.5 W rating. Its 1.8 W limit is never reached.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>18650 holder: BH-18650-B1BA002 (C2988620)</h3>
+      <ul>
+        <li>Holder stands on end, hanging into the jar. Its end tab goes through a <b>plated oval slot</b> and is soldered on top; the far terminal returns on a <b>jumper wire</b> to a round pad beside it. Both are in the footprint (slot provisional: I need the holder drawing for the tab size).</li>
+        <li><b>Hot glue:</b> fine for assembly, but hot-melt softens around 60–80 °C, and a jar in a sunny window can get there. Use a high-temp glue stick, or neutral-cure silicone or epoxy for production. I'd also add <b>two zip-tie slots</b> so a tie wraps the holder's base as a backup.</li>
+        <li><b>Polarity:</b> which end of the holder has the spring (normally −) and which has the tab? The footprint currently assumes tab = +, wire = −. The reverse-polarity FET makes a backwards cell safe either way, but the nets must match the holder.</li>
+        <li>Space (16 oz wide mouth): holder footprint ≈21 × 20 mm beside the Ø40 speaker inside the Ø72 circle, with plenty of depth.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Battery protection chips compared</h3>
+  <div class="tbl"><table>
+    <thead><tr><th></th><th>DW01A + FS8205A (2 chips)</th><th>DW07D (1 chip)</th><th>XB8089D (1 chip)</th><th>TI BQ2970 + dual FET</th><th>Protected 18650 cell only</th></tr></thead>
+    <tbody>
+      <tr><td>What it is</td><td>Classic controller + separate dual MOSFET. In nearly every phone battery and power bank since the 2000s</td><td>Fuman controller with MOSFETs built in, SOT-23-6</td><td>Xysemi controller with MOSFETs built in, SOP-8 with thermal pad</td><td>Precision TI controller + external dual FET</td><td>Protection board inside the cell's wrapper</td></tr>
+      <tr><td>LCSC / JLC</td><td>DW01A C351410, FS8205A C908265 (both widely stocked)</td><td>C89497</td><td>C79928, ≈9.3k in JLC stock</td><td>BQ2970 + FET, limited Basic options</td><td>n/a (cell purchase)</td></tr>
+      <tr><td>Cost / radio</td><td class="num">≈$0.06</td><td class="num">≈$0.05</td><td class="num">≈$0.07–0.10</td><td class="num">≈$0.35–0.60</td><td class="num">+$0.50–1.00 per cell</td></tr>
+      <tr><td>Extended fees</td><td>2 (unless Basic)</td><td>1</td><td>1</td><td>2</td><td>0</td></tr>
+      <tr><td>Effort / parts</td><td>2 ICs + 2 R + 1 C</td><td>1 IC + 1 R + 1 C</td><td>1 IC + 1 R + 1 C</td><td>2 ICs + 3–4 passives</td><td>None on board</td></tr>
+      <tr><td>Overcharge cut</td><td>~4.25–4.30 V</td><td>~4.3 V</td><td>~4.25 V</td><td>4.275 V ±20 mV (precise)</td><td>~4.25–4.3 V</td></tr>
+      <tr><td>Over-discharge cut</td><td>~2.4 V (low, harder on the cell)</td><td>~2.4 V</td><td>~2.4–2.9 V (check datasheet)</td><td>2.5–2.8 V options</td><td>~2.4–2.5 V</td></tr>
+      <tr><td>Overcurrent / short</td><td>Yes (set by the FET resistance)</td><td>Yes, ~3 A</td><td>Yes, ~3–5 A; thermal pad helps</td><td>Yes, precise</td><td>Yes</td></tr>
+      <tr><td>18650 fit</td><td>Good</td><td>Good (our load is under 0.5 A)</td><td>Very good (built for power banks)</td><td>Excellent</td><td>Protected cells are 68–70 mm and may not fit standard holders</td></tr>
+      <tr><td>Track record</td><td>Excellent: billions shipped, many clones</td><td>Good, mainly Chinese datasheets</td><td>Good: used in many power banks</td><td>Excellent</td><td>Depends on the cell vendor</td></tr>
+      <tr><td>Modernity</td><td>Old but proven</td><td>Modern, integrated</td><td>Modern, integrated</td><td>Modern, precise</td><td>—</td></tr>
+      <tr><td>Verdict</td><td>Safe fallback</td><td>Smallest and cheapest single-chip option</td><td><b>Recommended</b>: one chip, JLC-stocked, thermal pad, made for 18650s</td><td>Overkill here</td><td>Not with this holder</td></tr>
+    </tbody>
+  </table></div>
+  <div class="col"><p class="muted">Thresholds marked "~" come from distributor listings; I'll confirm them from the chosen chip's datasheet. Over-discharge matters here: the tuner keeps working down to 2.0 V, so the radio keeps draining the cell until the protector cuts it off. A cutoff around 2.8–2.9 V is kinder to an 18650 than 2.4 V.</p></div>
+
   <h3>Open questions for this revision</h3>
   <ol class="qlist">
     <li><b>Q-T1 · Visible parts on the lid.</b> All the chips will show on the outside. Keep the bare "circuit-board lid" look, or plan a cover (smoked acrylic or wood disc under the band, with holes for knob, USB and sockets)?<div class="rec">Bare board for the prototypes. Decide on a cover after seeing them. A cover changes nothing on the PCB except the logos, which would move onto it.</div></li>
