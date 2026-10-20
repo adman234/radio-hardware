@@ -80,7 +80,7 @@ part('C3', 'C', '4.7uF', C0603, 'C19666', 'CL10A475KO8NNNC', {'1': '+3V3', '2': 
 part('C4', 'C', '100nF', C0603, 'C14663', 'CC0603KRX7R9BB104', {'1': '+3V3', '2': 'GND'}, block=B)
 part('R1', 'R', '100k', R0603, 'C25803', '0603WAF1003T5E', {'1': '+3V3', '2': 'RST'}, block=B)
 part('C5', 'C', '100nF', C0603, 'C14663', 'CC0603KRX7R9BB104', {'1': 'RST', '2': 'GND'}, block=B)
-part('U5', 'XC61CN', 'XC61CN2702MR', SOT23, 'C112139', 'XC61CN2702MR-G', {'3': '+3V3', '2': 'GND', '1': 'RST'}, block=B)
+part('U5', 'XC61CN', 'XC61CN2702MR', SOT23, 'C112139', 'XC61CN2702MR-G', {'3': '+3V3', '2': 'GND', '1': 'RST'}, block=B, dnp=True)   # upgrade: brown-out reset
 # station divider: TUNE1 -> R2 -> TUNE2 -> R3 -> TUNE_LO -> R4 -> GND
 part('R2', 'R', '86.6k 0.1%', R0603, 'C861580', 'RT0603BRD0786K6L', {'1': 'TUNE1', '2': 'TUNE2'}, block=B, station=True)
 part('R3', 'R', '11.7k 0.1%', R0603, 'C4553285', 'TNPW060311K7BEEA', {'1': 'TUNE2', '2': 'TUNE_LO'}, block=B, station=True)
@@ -98,7 +98,7 @@ part('C8', 'C', '1uF', C0603, 'C15849', 'CL10A105KB8NNNC', {'1': 'AMI', '2': 'GN
 # antenna front end (AN738 5.2)
 part('J3', 'Conn_1', 'ANT wire', JR + 'Antenna_Wire_Solder_D1.0', '', '', {'1': 'ANT'}, block='ant', nobom=True)   # wire soldered in by hand
 part('ANT1', 'Conn_1', 'WHIP M3', JR + 'Antenna_Telescopic_M3', '', '', {'1': 'ANT'}, block='ant', hand=True, nobom=True)
-part('D4', 'D', 'ESD 0.5pF', 'Diode_SMD:D_SOD-882', 'C126839', 'SP3021-01ETG', {'1': 'ANT', '2': 'GND'}, block='ant')
+part('D4', 'D', 'ESD 0.5pF', 'Diode_SMD:D_SOD-882', 'C126839', 'SP3021-01ETG', {'1': 'ANT', '2': 'GND'}, block='ant', dnp=True)   # upgrade: whip ESD
 part('C9', 'C', '1nF', C0603, 'C1588', 'CL10B102KB8NNNC', {'1': 'ANT', '2': 'FMI'}, block='ant')   # Basic X7R; C0G C163508 is Extended
 part('L1', 'L', '56nH', L0603, 'C98080', 'LQW18AN56NJ00D', {'1': 'FMI', '2': 'GND'}, block='ant')
 
@@ -122,13 +122,18 @@ part('J4', 'Conn_2', 'SPK wires', JR + 'Speaker_Wire_Pads_P5', '', 'HDK-4008BB-2
 
 # Power -------------------------------------------------------------------
 B = 'power'
-part('J1', 'USB_C_Power', 'USB-C 5V', JR + 'USB_C_Receptacle_ShouHan_TYPE-C-6PLTH6.8-DJ_Vertical', 'C5156600', 'TYPE-C 6PLTH6.8-DJ',
+part('J1', 'USB_C_Power', 'USB-C 5V', JR + 'USB_C_Receptacle_ShouHan_TYPE-C-6P-LTH6.8-108_Vertical', 'C30167335', 'TYPE-C 6P LTH6.8 108',
      {'2': 'VBUS', '5': 'VBUS', '3': 'CC1', '4': 'CC2', '1': 'GND', '6': 'GND', 'S': 'GND'}, block=B, top=True)
 part('R11', 'R', '5.1k', R0603, 'C23186', '0603WAF5101T5E', {'1': 'CC1', '2': 'GND'}, block=B)
 part('R12', 'R', '5.1k', R0603, 'C23186', '0603WAF5101T5E', {'1': 'CC2', '2': 'GND'}, block=B)
 part('C15', 'C', '10uF', C0603, 'C19702', 'CL10A106KP8NNNC', {'1': 'VBUS', '2': 'GND'}, block=B)
 part('U3', 'TP4056', 'TP4056', 'Package_SO:SOIC-8-1EP_3.9x4.9mm_P1.27mm_EP2.29x3mm', 'C16581', 'TP4056-42-ESOP8',
-     {'1': 'GND', '2': 'PROG', '3': 'GND', '4': 'VBUS', '5': 'VBAT', '6': 'STDBY', '7': 'CHRG', '8': 'VBUS', '9': 'GND'}, block=B)
+     {'1': 'TEMP', '2': 'PROG', '3': 'GND', '4': 'VBUS', '5': 'VBAT', '6': 'STDBY', '7': 'CHRG', '8': 'VBUS', '9': 'GND'}, block=B)
+# TEMP: R21 0R to GND disables the battery-temperature check. Upgrade: remove R21,
+# fit R20 5.1k + RT1 10k B3950 NTC (charging allowed ~10-46 C on the board)
+part('R21', 'R', '0R', R0603, 'C21189', '0603WAF0000T5E', {'1': 'TEMP', '2': 'GND'}, block=B)
+part('R20', 'R', '5.1k (DNP)', R0603, 'C23186', '0603WAF5101T5E', {'1': 'VBUS', '2': 'TEMP'}, block=B, dnp=True)
+part('RT1', 'R', 'NTC 10k B3950 (DNP)', R0603, 'C279936', 'SDNT1608X103F3950FTF', {'1': 'TEMP', '2': 'GND'}, block=B, dnp=True)
 part('R13', 'R', '2.4k', R0603, 'C22940', '0603WAF2401T5E', {'1': 'PROG', '2': 'GND'}, block=B)
 part('D2', 'LED', 'RED charging', 'LED_SMD:LED_0603_1608Metric', 'C2286', 'KT-0603R',
      {'1': 'CHRG', '2': 'LEDR_A'}, block=B)
@@ -140,7 +145,8 @@ part('C16', 'C', '10uF', C0603, 'C19702', 'CL10A106KP8NNNC', {'1': 'VBAT', '2': 
 part('J2', 'Conn_2', '18650 holder', JR + 'Battery_Holder_Tab_Slot_Plus_Wire', '', 'BH-18650-B1BA002 (C2988620, hand)',
      {'1': 'BAT_P', '2': 'BAT_N'}, block=B, hand=True, nobom=True)   # slot = + foot, pad 2 = - jumper wire
 # protection: PTC in BAT+, XB8089D (OV 4.25 / UV 2.5 V, 10 A OC, 40 A short, reverse cell) in BAT-
-part('F1', 'R', 'PTC 1.1A', 'Fuse:Fuse_1206_3216Metric', 'C269119', 'SMD1206B110TFT', {'1': 'BAT_P', '2': 'VBAT'}, block=B)
+# F1 is fitted with a 0R 1206 jumper; upgrade = PTC SMD1206B110TFT (C269119) on the same pads
+part('F1', 'R', '0R (PTC spot)', 'Fuse:Fuse_1206_3216Metric', 'C17888', '1206W4F0000T5E', {'1': 'BAT_P', '2': 'VBAT'}, block=B)
 part('U6', 'XB8089D', 'XB8089D', 'Package_SO:SOIC-8-1EP_3.9x4.9mm_P1.27mm_EP2.41x3.3mm', 'C79928', 'XB8089D',
      {'6': 'XB_VDD', '5': 'BAT_N', '7': 'BAT_N', '8': 'BAT_N', '9': 'BAT_N', '1': 'GND', '2': 'GND', '3': 'GND', '4': 'GND'}, block=B)
 part('R18', 'R', '1k', R0603, 'C21190', '0603WAF1001T5E', {'1': 'BAT_P', '2': 'XB_VDD'}, block=B)

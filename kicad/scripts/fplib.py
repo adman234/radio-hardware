@@ -150,6 +150,25 @@ def usb_c_vertical_6p():
     write(name, L)
 
 
+def usb_c_vertical_6p_108():
+    """SHOU HAN TYPE-C 6P LTH6.8 108 (LCSC C30167335), vertical, from its
+    recommended PCB layout: 6 pads 0.80 x 1.30 at 1.10 mm pitch
+    (GND VBUS CC1 CC2 VBUS GND), two 0.55 x 1.25 plated shell slots 8.60 mm
+    apart, 0.68 mm behind the pad row."""
+    name = 'USB_C_Receptacle_ShouHan_TYPE-C-6P-LTH6.8-108_Vertical'
+    L = _hdr(name, 'USB-C 6-pin power-only receptacle, vertical, SHOU HAN TYPE-C 6P LTH6.8 108 (LCSC C30167335)', 'smd')
+    for i in range(6):
+        L.append(smd(str(i + 1), -2.75 + 1.10 * i, 0, 0.80, 1.30))
+    for sx in (-4.30, 4.30):
+        L.append(f'  (pad "S" thru_hole oval (at {sx:.3f} -0.68) (size 1.05 1.75) (drill oval 0.55 1.25) (layers "*.Cu" "*.Mask"))')
+    # receptacle outline (8.35 x 2.56 opening, shell 8.85 x 3.06)
+    L += rect(-4.43, -2.6, 4.43, 0.75, 'F.Fab', 0.1)
+    L += [_line(-3.6, -2.75, 3.6, -2.75, 'F.SilkS'), _line(-3.6, 0.95, -3.3, 0.95, 'F.SilkS'), _line(3.3, 0.95, 3.6, 0.95, 'F.SilkS')]
+    L += rect(-5.2, -3.1, 5.2, 1.2, 'F.CrtYd', 0.05)
+    L.append(_text('USB-C 5V', 0, -4.0, 'F.SilkS', 0.8))
+    write(name, L)
+
+
 def xh_smd_gswitch():
     """G-Switch GT-A2501WRS-102SBT01 (LCSC C23067528): 2.5 mm XH-compatible,
     2-pin, SMD right angle. From the drawing's recommended PCB layout:
@@ -227,7 +246,7 @@ def speaker_ring(name='Speaker_D49_Keepout'):
 
 
 def build_all():
-    usb_c_vertical_6p(); xh_smd_gswitch(); rv097ns(); zip_slot(); wire_exit(); ant_m3(); speaker_ring()
+    usb_c_vertical_6p(); usb_c_vertical_6p_108(); xh_smd_gswitch(); rv097ns(); zip_slot(); wire_exit(); ant_m3(); speaker_ring()
     two_pads('Speaker_Wire_Pads_P5', 5.0, 1.1, 2.2, ('SPK+', 'SPK-'), 'Speaker lead solder pads (hand solder)')
 
 

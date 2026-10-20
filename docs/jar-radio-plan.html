@@ -132,7 +132,7 @@ footer ul { padding-left: 18px; columns: 2 300px; }
 <div class="wrap">
 
 <header class="top">
-  <div class="eyebrow">adman234/radio-hardware · branch jar-radio-redesign · plan rev F.9 · board rev A (superseded) · 2026-10-20</div>
+  <div class="eyebrow">adman234/radio-hardware · branch jar-radio-redesign · plan rev F.10 · board rev A (superseded) · 2026-10-20</div>
   <h1>KOPN 89.5 Jar Radio</h1>
   <p class="lede">A single-station FM radio whose circuit board is the lid of a wide-mouth mason jar. It has no firmware, charges from USB-C, runs from USB alone or an optional LiPo, and has a wire or whip antenna. <strong>Board rev A is generated</strong>: schematic, layout, routing, and JLCPCB files. It is a first prototype. A few dimensions are still assumptions until the jar and parts are measured, and those are called out below.</p>
   <div class="status">
@@ -246,7 +246,7 @@ footer ul { padding-left: 18px; columns: 2 300px; }
       <tr><td>Speaker</td><td>HDK-4008BB-2, 2 wires</td><td>J4: 2 pads, 5 mm pitch, beside the grille</td><td>Hand + hot glue</td></tr>
       <tr><td>Antenna</td><td>~75 cm 26 AWG stranded wire</td><td>J3: Ø1.0 plated hole + 2 zip-tie holes</td><td>Hand + zip tie</td></tr>
       <tr><td>Whip (optional)</td><td>M3 telescopic whip</td><td>Plated M3 hole, same ANT net</td><td>Screw</td></tr>
-      <tr><td>Volume + power</td><td>—</td><td>RV1 9 mm vertical pot with switch (CTR R097 "NS", C18213431, provisional)</td><td>JLC (through-hole)</td></tr>
+      <tr><td>Volume + power</td><td>—</td><td>RV1 vertical pot with switch (part still open, Q-H1)</td><td>JLC (through-hole)</td></tr>
           </tbody>
   </table></div>
 
@@ -577,52 +577,75 @@ footer ul { padding-left: 18px; columns: 2 300px; }
     </tbody>
   </table></div>
 
-  <h3>Pots with a built-in switch at JLC</h3>
-  <div class="col"><p>From the local JLC database (2.6 M parts, data from ~Oct 15). JLC has no "with switch" filter, so I searched by part family. The CTR R097 "NS" parts match the RV097NS you found: a 9 mm vertical pot, with 5 joints at JLC.</p></div>
+  <h3>Rev F.10: datasheets checked, extras moved to "future upgrade"</h3>
   <div class="tbl"><table>
-    <thead><tr><th>LCSC</th><th>Part</th><th>Value / taper</th><th>Stock</th><th>Each @100</th><th>Note</th></tr></thead>
+    <thead><tr><th>Item</th><th>Change</th></tr></thead>
     <tbody>
-      <tr><td class="mono">C18213431</td><td>CTR R09760NS-FB15A7.0-B503</td><td>50k linear</td><td class="num">143</td><td class="num">$0.84</td><td><b>Pick (provisional)</b>, 15 mm knurled shaft. Linear taper is fine here: the 47k amp input loads it into a near-log curve.</td></tr>
-      <tr><td class="mono">C18213428</td><td>CTR R09710NS-FB15A7.0-B503</td><td>50k linear</td><td class="num">131</td><td class="num">$0.80</td><td>Second source, same family.</td></tr>
-      <tr><td class="mono">C42414343</td><td>CTR R09711NS-FB25A13-A503</td><td>50k audio</td><td class="num">60</td><td class="num">$1.70</td><td>Audio taper, longer shaft; not enough stock for 100.</td></tr>
-      <tr><td class="mono">C470569</td><td>Alps RK0971111Z0P</td><td>20k</td><td class="num">327</td><td class="num">$1.55</td><td>Has a switch but is <b>right-angle</b>, so it won't work on a lid.</td></tr>
+      <tr><td>USB-C (J1)</td><td><b>TYPE-C 6P LTH6.8 108 (C30167335)</b>, ShouHan, 6.8 mm tall, 3 A, 5,000 cycles. New footprint from its recommended layout: 6 pads 0.80 × 1.30 mm at 1.10 mm pitch (GND, VBUS, CC1, CC2, VBUS, GND), and two plated shell slots 0.55 × 1.25 mm, 8.60 mm apart, 0.68 mm behind the pads.</td></tr>
+      <tr><td>Pot C18213431 / C18213428</td><td>The datasheets confirm a rotary SPST switch (12 V 1 A, clicks off at the end of travel). But both drawings show a <b>right-angle</b> pot: the pins leave the body's bottom with the shaft parallel to the board. On a lid the knob would point sideways, so neither part works. See below.</td></tr>
+      <tr><td>Reset chip U5, ESD diode D4</td><td>Footprints stay on the board, marked DNP (not placed, not in the JLC BOM).</td></tr>
+      <tr><td>PTC fuse F1</td><td>The 1206 pads stay in the battery + line, fitted with a <b>0 Ω 1206 jumper</b> (C17888, Basic). An empty spot would disconnect the battery.</td></tr>
+      <tr><td>Temperature sensor</td><td>TP4056 TEMP now has its own net: <b>R21 0 Ω to GND</b> is fitted (check disabled). R20 5.1 kΩ and RT1 10k NTC spots are DNP.</td></tr>
     </tbody>
   </table></div>
-  <div class="col"><p class="muted">Couldn't confirm from here: LCSC's datasheet server is blocked in my VM, so the switch type (rotary at end of travel), the pin layout and the knob shaft still need the PDFs (Q-G1). The footprint is still the provisional RV097NS one.</p></div>
+
+  <h3>Future upgrades (spots on the board, not fitted)</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Upgrade</th><th>How to fit it</th><th>Part</th><th>Cost per order (Extended fee)</th></tr></thead>
+    <tbody>
+      <tr><td>Brown-out reset</td><td>Fit U5 (SOT-23)</td><td>XC61CN2702MR-G, C112139</td><td class="num">$3 + $0.16 each</td></tr>
+      <tr><td>Whip ESD protection</td><td>Fit D4 (SOD-882)</td><td>SP3021-01ETG, C126839, 0.5 pF</td><td class="num">$3 + $0.14 each</td></tr>
+      <tr><td>Battery PTC fuse</td><td>Swap F1's 0 Ω for the PTC (same 1206 pads)</td><td>SMD1206B110TFT, C269119, 1.1 A hold</td><td class="num">$3 + $0.04 each</td></tr>
+      <tr><td>Charge temperature limit (~10–46 °C, senses the lid, not the cell)</td><td>Remove R21; fit R20 5.1 kΩ (VBUS→TEMP) and RT1 NTC (TEMP→GND)</td><td>R20 C23186 (Basic) · RT1 SDNT1608X103F3950FTF C279936</td><td class="num">$3 + $0.02 each</td></tr>
+    </tbody>
+  </table></div>
+  <div class="col"><p class="muted">The XB8089D still provides overcharge (4.25 V), overdischarge (2.5 V), 10 A overcurrent, 40 A short, 120 °C over-temperature and reversed-cell protection with none of these fitted.</p></div>
+
+  <h3>Pot with switch: still open</h3>
+  <div class="col">
+    <p>JLC lists about 20 stocked pots that could have switches. The two I picked were right-angle. Candidates that may be <b>vertical</b> (shaft up) with a switch, which I can't confirm without drawings (LCSC's datasheet server is blocked in my VM):</p>
+  </div>
+  <div class="tbl"><table>
+    <thead><tr><th>LCSC</th><th>Part</th><th>Value</th><th>Stock</th><th>Each @100</th><th>Why it might fit</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">C18213422</td><td>CTR R09512NS-FB15S7.0-A103</td><td>10k audio</td><td class="num">64</td><td class="num">$1.50</td><td>Same CTR family, "NS" = with switch, but 7 joints (3 pot + 2 switch + 2 lugs), which suggests a vertical, board-standing body. 10 kΩ needs one resistor change (below).</td></tr>
+      <tr><td class="mono">C7029946</td><td>Bourns PTV111-4220A-B104</td><td>100k linear</td><td class="num">95</td><td class="num">$2.05</td><td>Bourns "-4" = rear mount (shaft up), as on your PTV09A-4. I believe PTV111 is Bourns' 11 mm pot-with-switch series. 100 kΩ works without circuit changes.</td></tr>
+      <tr><td class="mono">C470643</td><td>Alps RK10J11E0034</td><td>10k</td><td class="num">4,023</td><td class="num">$0.78</td><td>Alps 10 mm, 7 joints. Lots of stock, but I'm not sure it has a switch.</td></tr>
+    </tbody>
+  </table></div>
+  <div class="col"><p class="muted">With a 10 kΩ pot, the Si4825 output would see 10k ∥ 47k ≈ 8 kΩ, below its 10 kΩ minimum load. The fix is a 4.7 kΩ resistor in series with C10 (one Basic part), which costs about 3 dB of maximum volume. The NS8002's gain of 20 has room for that.</p></div>
 
   <h3>Parts database in the VM: <code>kicad/scripts/jlcdb.py</code></h3>
   <div class="col">
-    <p>This is a local copy of the <b>jlcparts</b> database (the same data as yaqwsx.github.io/jlcparts), fetched from GitHub. It has every JLC part with stock, price breaks and Basic / Preferred / Extended status. Three commands:</p>
+    <p>This is a local copy of the <b>jlcparts</b> database (the same data as yaqwsx.github.io/jlcparts), fetched from GitHub. It has every JLC part with stock, price breaks and Basic / Preferred / Extended status.</p>
 <pre class="mono" style="background:var(--surface);border:1px solid var(--line);padding:10px;overflow-x:auto;font-size:0.8rem">python3 jlcdb.py fetch                         # download/refresh (~1.5 GB)
 python3 jlcdb.py check --qty 5 100 --csv docs/bom-check.csv
 python3 jlcdb.py search "56nH" --sub Inductor --pkg 0603 --basic</pre>
-    <p><code>check</code> reads <code>circuit.py</code> directly. For each part it reports type, stock, cost at each quantity and stock shortfalls. For every Extended part it searches the same category and package for <b>Basic/Preferred</b> parts (no $3 fee); R/C/L must match value, voltage and tolerance. A few parts JLC stocks are missing from the jlcparts copy (the Si4825 and both 0.1% resistors). For those it falls back to your JLC BOM-tool export (<code>docs/jlc-bom-match-*.xlsx</code>). The full table is in <code>docs/bom-check.csv</code>.</p>
+    <p><code>check</code> reads <code>circuit.py</code> and skips DNP parts. It reports type, stock, cost at each quantity and stock shortfalls, and searches for Basic/Preferred substitutes for every Extended part. Parts missing from the jlcparts copy (the Si4825 and both 0.1% resistors) fall back to your JLC BOM-tool export. The full table is in <code>docs/bom-check.csv</code>.</p>
   </div>
 
   <h3>BOM check results</h3>
   <div class="tbl"><table>
-    <thead><tr><th>Board run</th><th>Parts per board</th><th>Extended fees</th><th>Per board, parts + fees</th></tr></thead>
+    <thead><tr><th>Revision</th><th>Extended parts</th><th>Parts per board @5 / @100</th><th>Parts + fees per board @5 / @100</th></tr></thead>
     <tbody>
-      <tr><td>Before (rev F.8)</td><td class="num">$5.50</td><td class="num">11 × $3 = $33</td><td class="num">$12.10 @ 5 · $4.94 @ 100</td></tr>
-      <tr><td><b>Now (rev F.9)</b></td><td class="num">$5.51</td><td class="num">10 × $3 = $30</td><td class="num"><b>$11.51 @ 5 · $4.91 @ 100</b></td></tr>
-      <tr><td>With all 4 optional cuts</td><td class="num">≈ $5.06</td><td class="num">6 × $3 = $18</td><td class="num">≈ $8.66 @ 5 · $4.41 @ 100</td></tr>
+      <tr><td>Rev F.8</td><td class="num">11 ($33)</td><td class="num">$5.50 / $4.61</td><td class="num">$12.10 / $4.94</td></tr>
+      <tr><td>Rev F.9</td><td class="num">10 ($30)</td><td class="num">$5.51 / $4.61</td><td class="num">$11.51 / $4.91</td></tr>
+      <tr><td><b>Rev F.10 (now)</b></td><td class="num">8 ($24)</td><td class="num">$5.21 / $4.36</td><td class="num"><b>$10.01 / $4.60</b></td></tr>
     </tbody>
   </table></div>
-  <div class="col"><p class="muted">These figures exclude PCB fab, the assembly setup fee, the USB-C price (about $0.08) and the hand-fitted parts (speaker, holder, cell). At 5 boards JLC also makes you buy minimum reel quantities (often 20+ pieces) of some parts, which adds a few dollars per order.</p></div>
+  <div class="col"><p class="muted">These figures exclude PCB fab, the assembly setup fee and the hand-fitted parts (speaker, holder, cell). At 5 boards JLC also makes you buy minimum quantities (often 20+ pieces) of some parts. The pot price is still the right-angle placeholder's.</p></div>
   <div class="tbl"><table>
-    <thead><tr><th>LCSC</th><th>Part</th><th>Refs</th><th>Type</th><th>Stock</th><th>Recommendation</th></tr></thead>
+    <thead><tr><th>LCSC</th><th>Part</th><th>Refs</th><th>Type</th><th>Stock</th><th>Note</th></tr></thead>
     <tbody>
-      <tr><td class='mono'>C126839</td><td>SP3021-01ETG</td><td>D4</td><td>Extended</td><td class='num'>4640</td><td><b>Optional cut (−$3):</b> fit it on production, leave DNP on the 5 prototypes. Only Basic ESD parts are 15 pF+, which would detune the antenna.</td></tr><tr><td class='mono'>C269119</td><td>SMD1206B110TFT</td><td>F1</td><td>Extended</td><td class='num'>108539</td><td><b>Optional cut (−$3):</b> backup to the XB8089D (10 A trip). Keep for "max safety".</td></tr><tr><td class='mono'>C5156600</td><td>TYPE-C 6PLTH6.8-DJ</td><td>J1</td><td>not at JLC</td><td class='num'>?</td><td><b>Must change:</b> not in JLC's library. Candidate: TYPE-C 6P LTH6.8 108 (C30167335, 3,236 stock, $0.08), same 6.8 mm height; datasheet needed (Q-G2).</td></tr><tr><td class='mono'>C98080</td><td>LQW18AN56NJ00D</td><td>L1</td><td>Extended</td><td class='num'>10908</td><td><b>Possible swap (−$3):</b> SDCL1608C68NJTDF 68 nH (C13415, Preferred). Shifts the AN738 whip network slightly; I would test before switching.</td></tr><tr><td class='mono'>C861580</td><td>RT0603BRD0786K6L</td><td>R2</td><td>Extended</td><td class='num'>?</td><td>Keep. Station accuracy needs 0.1%; no Basic 0.1% parts exist.</td></tr><tr><td class='mono'>C4553285</td><td>TNPW060311K7BEEA</td><td>R3</td><td>Extended</td><td class='num'>?</td><td>Keep (same reason as R2).</td></tr><tr><td class='mono'>C18213431</td><td>R09760NS-FB15A7.0-B503-0P7</td><td>RV1</td><td>Extended</td><td class='num'>143</td><td>Keep. Through-hole, so always Extended. Datasheet needed (Q-G1).</td></tr><tr><td class='mono'>C2654605</td><td>SI4825-A10-CSR</td><td>U1</td><td>Extended</td><td class='num'>?</td><td>Keep. The only tuner. Ask JLC/LCSC about stock for 100.</td></tr><tr><td class='mono'>C189960</td><td>NS8002</td><td>U2</td><td>Extended</td><td class='num'>20089</td><td>Keep. No Basic/Preferred audio amp exists.</td></tr><tr><td class='mono'>C112139</td><td>XC61CN2702MR-G</td><td>U5</td><td>Extended</td><td class='num'>4206</td><td><b>Optional cut (−$3):</b> the 100k/100nF RC alone usually resets the Si4825 because the pot switch gives a fast power ramp. It exists for slow brown-outs.</td></tr><tr><td class='mono'>C79928</td><td>XB8089D</td><td>U6</td><td>Extended</td><td class='num'>8791</td><td>Keep. DW01A + 8205A is Extended too, and is 2 parts.</td></tr>
+      <tr><td class='mono'>C30167335</td><td>TYPE-C 6P LTH6.8 108</td><td>J1</td><td>Extended</td><td class='num'>3236</td><td>New USB-C. Footprint built from its drawing.</td></tr><tr><td class='mono'>C98080</td><td>LQW18AN56NJ00D</td><td>L1</td><td>Extended</td><td class='num'>10908</td><td>Possible swap: 68 nH Preferred C13415 (no fee). Test reception first.</td></tr><tr><td class='mono'>C861580</td><td>RT0603BRD0786K6L</td><td>R2</td><td>Extended</td><td class='num'>?</td><td>Keep. Station accuracy needs 0.1%; no Basic 0.1% parts exist.</td></tr><tr><td class='mono'>C4553285</td><td>TNPW060311K7BEEA</td><td>R3</td><td>Extended</td><td class='num'>?</td><td>Keep (same reason as R2).</td></tr><tr><td class='mono'>C18213431</td><td>R09760NS-FB15A7.0-B503-0P7</td><td>RV1</td><td>Extended</td><td class='num'>143</td><td><b>Must change:</b> right-angle. See "Pot with switch" above.</td></tr><tr><td class='mono'>C2654605</td><td>SI4825-A10-CSR</td><td>U1</td><td>Extended</td><td class='num'>?</td><td>Keep. The only tuner. Check stock before ordering 100.</td></tr><tr><td class='mono'>C189960</td><td>NS8002</td><td>U2</td><td>Extended</td><td class='num'>20089</td><td>Keep. No Basic/Preferred audio amp exists.</td></tr><tr><td class='mono'>C79928</td><td>XB8089D</td><td>U6</td><td>Extended</td><td class='num'>8791</td><td>Keep. DW01A + 8205A is Extended too, and is 2 parts.</td></tr>
     </tbody>
   </table></div>
-  <div class="col"><p class="muted">Stock risks for 100 radios: speaker HDK-4008BB-2 has only 63 at LCSC (buy from AliExpress or another source), and the pot has 143. The Si4825 isn't in the jlcparts copy; LCSC showed 96 earlier.</p></div>
+  <div class="col"><p class="muted">Stock risks for 100 radios: speaker HDK-4008BB-2 (63 at LCSC), the pot (whichever we pick has under 150 except the Alps), and the Si4825 (not in the jlcparts copy; LCSC showed 96 earlier).</p></div>
 
-  <h3>Open questions (rev F.9)</h3>
+  <h3>Open questions (rev F.10)</h3>
   <ol class="qlist">
-    <li><b>Q-G1 · Pot datasheets.</b> Please download the datasheets from the LCSC pages for <span class="mono">C18213431</span> and <span class="mono">C18213428</span>. I need to confirm the switch is ON/OFF at the end of rotation (not push), the pin and lug positions, and the shaft (15 mm knurled?) so a knob fits.<div class="rec">C18213431. If its datasheet shows something odd, C18213428.</div></li>
-    <li><b>Q-G2 · USB-C.</b> C5156600 isn't in JLC's assembly library. Please download the datasheet for <span class="mono">C30167335</span> (TYPE-C 6P LTH6.8 108), or check whether JLC can source C5156600 through its global-sourcing service.<div class="rec">Switch to C30167335. It's stocked, the same height, and $0.08.</div></li>
-    <li><b>Q-G3 · Optional fee cuts.</b> Which of these do you want? (a) No reset IC U5; (b) ESD diode DNP on prototypes; (c) no PTC; (d) 68 nH Preferred inductor in place of 56 nH. Each saves $3 per order, which is $0.60 per board at 5 and $0.03 at 100.<div class="rec">(b) only, for the prototypes. Keep U5 and the PTC for robustness and safety. Keep 56 nH until we can compare reception with the real antenna.</div></li>
-    <li><b>Q-G4 · 100-unit sourcing.</b> The speaker (63 in stock), the Si4825 and the 0.1% resistors are the stock risks. Want me to look for second sources now, or after the prototypes work?<div class="rec">After the prototypes. Prices and stock will have moved by then anyway.</div></li>
+    <li><b>Q-H1 · Pot datasheets.</b> Please download the datasheets for <span class="mono">C18213422</span> (CTR R09512NS) and <span class="mono">C7029946</span> (Bourns PTV111-4220A-B104), and <span class="mono">C470643</span> (Alps RK10J) if it's easy. LCSC's product photos would also show which way the shaft points.<div class="rec">Bourns PTV111 if it's vertical with a switch: same maker as your PTV09A, 100 kΩ needs no circuit change, and it has a datasheet we can trust. CTR R09512NS is the cheaper backup.</div></li>
+    <li><b>Q-H2 · If no vertical switched pot is stocked.</b> Choose one: (a) the Bourns PTV111 or similar bought from Digi-Key and consigned to JLC or hand-soldered; (b) a vertical pot without switch plus a separate power switch (you said no slide switch, but a small latching push button is an option); (c) a right-angle pot at the board edge, shaft sideways under the ring. (c) doesn't work with the jar band.<div class="rec">(a). Keeps one knob for volume and power, which is the radio's whole user interface.</div></li>
   </ol>
 </section>
 
