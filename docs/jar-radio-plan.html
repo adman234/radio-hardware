@@ -386,6 +386,28 @@ footer ul { padding-left: 18px; columns: 2 300px; }
   </table></div>
   <div class="col"><p class="muted">My pick if you want replaceable cells: <b>18350 in a PCB holder + DW01A/FS8205A protection</b>. Otherwise stay with the pouch and simply go up a size if runtime matters.</p></div>
 
+
+  <h3>Idea under review: one 18650 hanging into the jar</h3>
+  <div class="grid2">
+    <div>
+      <ul>
+        <li><b>Electrically: yes.</b> Same 3.7 V chemistry as the pouch, so the TP4056 charges it unchanged. At 2500–3500 mAh it runs about <b>35–50 h</b>, against 5–7 h for the pouch.</li>
+        <li><b>Safety: good.</b> Steel can, and no common disposable cell is 18650-sized, so nobody can charge an alkaline by mistake.</li>
+        <li><b>Protection:</b> bare 18650s usually have no protection board, so add DW01A + FS8205A on the board (≈$0.08). Protected 18650s are 68–70 mm long and often don't fit standard holders.</li>
+        <li><b>Charge current:</b> 500 mA (PROG 2.4 kΩ), about 6 h overnight. At 1 A the linear TP4056 would burn ≈1.3 W and run hot on this small board.</li>
+      </ul>
+    </div>
+    <div>
+      <ul>
+        <li><b>Mounting by one solder tab: no.</b> A 45 g cell on a 77 mm holder is a lever arm. The joint will crack the first time the jar is knocked or the lid is set down hard.</li>
+        <li><b>Do this instead:</b> use an 18650 holder <b>with wire leads</b>, plugged into the same PH battery socket like the pouch. Hold it with two zip ties through slots near its top end, or a small printed clip (you may print a cover anyway).</li>
+        <li><b>Space:</b> a ~4 in (≈100 mm) tall jar with a 77 mm holder standing beside the speaker fits. It needs a ≈21 × 21 mm patch at the board edge, inside the Ø72 mouth circle.</li>
+        <li><b>Cost:</b> cell ≈$1.50–3 (bulk, unprotected) plus holder ≈$0.20, about the same as the $2.83 pouch, for 6× the runtime and a replaceable cell.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="callout"><strong>Note on the jar</strong>A 4-inch-tall jar is not the 8 oz half-pint I assumed (≈2.5 in). Please send the jar's name or size and the lid/band measurements. The board diameter and keep-outs still depend on them.</div>
+
   <h3>Open questions for this revision</h3>
   <ol class="qlist">
     <li><b>Q-T1 · Visible parts on the lid.</b> All the chips will show on the outside. Keep the bare "circuit-board lid" look, or plan a cover (smoked acrylic or wood disc under the band, with holes for knob, USB and sockets)?<div class="rec">Bare board for the prototypes. Decide on a cover after seeing them. A cover changes nothing on the PCB except the logos, which would move onto it.</div></li>
