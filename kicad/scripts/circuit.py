@@ -49,6 +49,9 @@ SYMS = [
     SymDef('Conn_2', 'J', [('1', '1', 'R', 0), ('2', '2', 'R', 1)]),
     SymDef('Conn_1', 'J', [('1', '1', 'R', 0)]),
     SymDef('Pot3', 'RV', [('3', 'CW', 'L', 0), ('2', 'WIPER', 'L', 1), ('1', 'CCW', 'L', 2), ('MP', 'MOUNT', 'R', 0)], width=10.16),
+    SymDef('XB8089D', 'U', [('6', 'VDD', 'L', 0), ('5', 'GND', 'L', 1), ('7', 'GND', 'L', 2), ('8', 'GND', 'L', 3),
+                            ('1', 'VM', 'R', 0), ('2', 'VM', 'R', 1), ('3', 'VM', 'R', 2), ('4', 'VM', 'R', 3),
+                            ('9', 'EP', 'B', 1)], width=12.7),
     SymDef('SW_SPDT', 'SW', [('1', 'A', 'L', 0), ('2', 'COM', 'R', 0), ('3', 'B', 'L', 1)]),
     SymDef('Trim_3', 'RV', [('1', 'TOP', 'R', 0), ('2', 'WIPER', 'R', 1), ('3', 'BOT', 'R', 2)]),
     SymDef('Crystal', 'Y', [('1', '1', 'T', 0), ('2', '2', 'B', 0)], two_pin=True),
@@ -95,17 +98,16 @@ part('C8', 'C', '1uF', C0603, 'C15849', 'CL10A105KB8NNNC', {'1': 'AMI', '2': 'GN
 # antenna front end (AN738 5.2)
 part('J3', 'Conn_1', 'ANT wire', JR + 'Antenna_Wire_Solder_D1.0', '', '', {'1': 'ANT'}, block='ant', nobom=True)   # wire soldered in by hand
 part('ANT1', 'Conn_1', 'WHIP M3', JR + 'Antenna_Telescopic_M3', '', '', {'1': 'ANT'}, block='ant', hand=True, nobom=True)
-part('D4', 'D', 'ESD <=1pF', 'Diode_SMD:D_SOD-882', 'C5139344', 'PESD5V0F1BL', {'1': 'ANT', '2': 'GND'}, block='ant')
+part('D4', 'D', 'ESD 0.5pF', 'Diode_SMD:D_SOD-882', 'C126839', 'SP3021-01ETG', {'1': 'ANT', '2': 'GND'}, block='ant')
 part('C9', 'C', '1nF', C0603, 'C1588', 'CL10B102KB8NNNC', {'1': 'ANT', '2': 'FMI'}, block='ant')   # Basic X7R; C0G C163508 is Extended
 part('L1', 'L', '56nH', L0603, 'C98080', 'LQW18AN56NJ00D', {'1': 'FMI', '2': 'GND'}, block='ant')
 
 # Audio -------------------------------------------------------------------
 B = 'audio'
 part('C10', 'C', '1uF', C0603, 'C15849', 'CL10A105KB8NNNC', {'1': 'AOUT', '2': 'VOL_TOP'}, block=B)
-part('RV1', 'Pot3', '50k audio', JR + 'Potentiometer_Bourns_PTV09A-4_RearMount', '', 'PTV09A-4020F-A503',
-     {'3': 'VOL_TOP', '2': 'VOL_WIPER', '1': 'GND', 'MP': 'GND'}, block=B, hand=True)   # Digi-Key 118-PTV09A-4020F-A503-ND
-part('SW1', 'SW_SPDT', 'POWER', 'Button_Switch_SMD:SW_SPDT_PCM12', '', 'MSK-12C02 / PCM12SMTR',
-     {'1': 'VSW', '2': 'VSYS'}, block=B, nc=('3',))   # slide switch: VSYS -> VSW
+# switched pot: CTR R097 'NS' = 9 mm vertical pot + SPST switch (pinout/footprint provisional until datasheet)
+part('RV1', 'Pot_Switch', '50k B + SW', JR + 'Potentiometer_RV097NS_Switch_Vertical_PROVISIONAL', 'C18213431',
+     'R09760NS-FB15A7.0-B503-0P7', {'3': 'VOL_TOP', '2': 'VOL_WIPER', '1': 'GND', 'S1': 'VSYS', 'S2': 'VSW', 'MP': 'GND'}, block=B)
 part('C11', 'C', '100nF', C0603, 'C14663', 'CC0603KRX7R9BB104', {'1': 'VOL_WIPER', '2': 'AMP_C'}, block=B)   # 100n x 47k = 34 Hz
 part('R7', 'R', '47k', R0603, 'C25819', '0603WAF4702T5E', {'1': 'AMP_C', '2': 'AMP_INN'}, block=B)   # 20k pot || 47k = 14k >= Si4825 10k min load
 part('R8', 'R', '470k', R0603, 'C23178', '0603WAF4703T5E', {'1': 'AMP_INN', '2': 'SPK+'}, block=B)   # Av = 2*470/47 = 20, Basic
@@ -127,15 +129,22 @@ part('R12', 'R', '5.1k', R0603, 'C23186', '0603WAF5101T5E', {'1': 'CC2', '2': 'G
 part('C15', 'C', '10uF', C0603, 'C19702', 'CL10A106KP8NNNC', {'1': 'VBUS', '2': 'GND'}, block=B)
 part('U3', 'TP4056', 'TP4056', 'Package_SO:SOIC-8-1EP_3.9x4.9mm_P1.27mm_EP2.29x3mm', 'C16581', 'TP4056-42-ESOP8',
      {'1': 'GND', '2': 'PROG', '3': 'GND', '4': 'VBUS', '5': 'VBAT', '6': 'STDBY', '7': 'CHRG', '8': 'VBUS', '9': 'GND'}, block=B)
-part('R13', 'R', '3.0k', R0603, 'C4211', '0603WAF3001T5E', {'1': 'PROG', '2': 'GND'}, block=B)
+part('R13', 'R', '2.4k', R0603, 'C22940', '0603WAF2401T5E', {'1': 'PROG', '2': 'GND'}, block=B)
 part('D2', 'LED', 'RED charging', 'LED_SMD:LED_0603_1608Metric', 'C2286', 'KT-0603R',
      {'1': 'CHRG', '2': 'LEDR_A'}, block=B)
 part('R14', 'R', '680R', R0603, 'C23228', '0603WAF6800T5E', {'1': 'VBUS', '2': 'LEDR_A'}, block=B)
-part('D3', 'LED', 'GREEN full', 'LED_SMD:LED_0603_1608Metric', 'C72043', '19-217/GHC-YR1S2/3T',
+part('D3', 'LED', 'GREEN full', 'LED_SMD:LED_0805_2012Metric', 'C2297', 'KT-0805G',
      {'1': 'STDBY', '2': 'LEDG_A'}, block=B)
-part('R15', 'R', '2.2k', R0603, 'C4190', '0603WAF2201T5E', {'1': 'VBUS', '2': 'LEDG_A'}, block=B)
+part('R15', 'R', '1k', R0603, 'C21190', '0603WAF1001T5E', {'1': 'VBUS', '2': 'LEDG_A'}, block=B)
 part('C16', 'C', '10uF', C0603, 'C19702', 'CL10A106KP8NNNC', {'1': 'VBAT', '2': 'GND'}, block=B)
-part('J2', 'Conn_2', '18650 holder', JR + 'Battery_Holder_Tab_Slot_Plus_Wire', '', 'BH-18650-B1BA002 (C2988620, hand)', {'1': 'VBAT', '2': 'GND'}, block=B, hand=True, nobom=True)   # tab end = +, wire = - (confirm holder polarity)
+part('J2', 'Conn_2', '18650 holder', JR + 'Battery_Holder_Tab_Slot_Plus_Wire', '', 'BH-18650-B1BA002 (C2988620, hand)',
+     {'1': 'BAT_P', '2': 'BAT_N'}, block=B, hand=True, nobom=True)   # slot = + foot, pad 2 = - jumper wire
+# protection: PTC in BAT+, XB8089D (OV 4.25 / UV 2.5 V, 10 A OC, 40 A short, reverse cell) in BAT-
+part('F1', 'R', 'PTC 1.1A', 'Fuse:Fuse_1206_3216Metric', 'C269119', 'SMD1206B110TFT', {'1': 'BAT_P', '2': 'VBAT'}, block=B)
+part('U6', 'XB8089D', 'XB8089D', 'Package_SO:SOIC-8-1EP_3.9x4.9mm_P1.27mm_EP2.41x3.3mm', 'C79928', 'XB8089D',
+     {'6': 'XB_VDD', '5': 'BAT_N', '7': 'BAT_N', '8': 'BAT_N', '9': 'BAT_N', '1': 'GND', '2': 'GND', '3': 'GND', '4': 'GND'}, block=B)
+part('R18', 'R', '1k', R0603, 'C21190', '0603WAF1001T5E', {'1': 'BAT_P', '2': 'XB_VDD'}, block=B)
+part('C22', 'C', '100nF', C0603, 'C14663', 'CC0603KRX7R9BB104', {'1': 'XB_VDD', '2': 'BAT_N'}, block=B)
 part('Q1', 'AO3401A', 'AO3401A', SOT23, 'C15127', 'AO3401A', {'1': 'VBUS', '2': 'VSYS', '3': 'VBAT'}, block=B)
 part('R16', 'R', '100k', R0603, 'C25803', '0603WAF1003T5E', {'1': 'VBUS', '2': 'GND'}, block=B)
 part('D1', 'D', 'B5819W', 'Diode_SMD:D_SOD-123', 'C8598', 'B5819W SL', {'1': 'VSYS', '2': 'VBUS'}, block=B)
