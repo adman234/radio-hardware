@@ -21,6 +21,16 @@ def main(passes=40, finish=False):
     # export in a child process: pcbnew can't load the same board twice in one
     # process. GND pours are removed first so Freerouting routes every GND pad
     # with real copper instead of assuming the plane reaches it.
+    if not finish:
+        # pre-place locked GND vias on a grid in the free space, so every
+        # patch of pour that the routing leaves behind already has a via
+        subprocess.run(['python3', '-c', f"""
+import sys; sys.path.insert(0, {HERE!r})
+import pcbnew, stitch
+b = pcbnew.LoadBoard({BOARD!r})
+print('pre-route stitching vias:', stitch.add_stitching(b, pitch=2.5, locked=True))
+pcbnew.SaveBoard({BOARD!r}, b)
+"""], check=True)
     subprocess.run(['python3', '-c', f"""
 import pcbnew
 b = pcbnew.LoadBoard({BOARD!r})
@@ -58,14 +68,8 @@ assert pcbnew.ExportSpecctraDSN(b, {dsn!r})
         print('stitching vias:', stitch.add_stitching(board))
     pcbnew.ZONE_FILLER(board).Fill(board.Zones())
     rpt = os.path.join(WORK, 'drc.rpt')
-    import fix_islands
-    for _ in range(3):   # tie isolated GND pads to the pour with a via
-        pcbnew.WriteDRCReport(board, rpt, pcbnew.EDA_UNITS_MILLIMETRES, True)
-        n = fix_islands.fix(board, open(rpt).read())
-        print('GND island vias added:', n)
-        if not n:
-            break
-        pcbnew.ZONE_FILLER(board).Fill(board.Zones())
+    import zone_stitch
+    print('pour-joining vias:', zone_stitch.stitch(board))
     pcbnew.SaveBoard(BOARD, board)
     pcbnew.WriteDRCReport(board, rpt, pcbnew.EDA_UNITS_MILLIMETRES, True)
     print(summary(rpt))

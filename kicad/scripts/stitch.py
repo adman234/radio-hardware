@@ -14,7 +14,7 @@ def seg_dist(px, py, ax, ay, bx, by):
     return math.hypot(px - (ax + t * dx), py - (ay + t * dy))
 
 
-def add_stitching(board, pitch=3.0, rmax=None):
+def add_stitching(board, pitch=3.0, rmax=None, locked=False):
     rmax = rmax or GEOM['clamp'] - 1.0
     gnd = board.FindNet('GND')
     obst = []   # (kind, data)
@@ -60,6 +60,7 @@ def add_stitching(board, pitch=3.0, rmax=None):
             if ok:
                 v = pcbnew.PCB_VIA(board)
                 v.SetPosition(P(x, y)); v.SetWidth(pcbnew.FromMM(VIA_D)); v.SetDrill(pcbnew.FromMM(VIA_DRILL)); v.SetNet(gnd)
+                v.SetLocked(locked)
                 board.Add(v); n += 1
                 obst.append(('c', px, py, VIA_D / 2))
     return n
