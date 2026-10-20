@@ -8,9 +8,9 @@ PROJ = os.path.join(HERE, '..')
 
 BLOCKS = {  # block: (title, x0, y0, x1, y1, columns)
     'tuner': ('FM TUNER - Si4825, station set by R2/R3 (KOPN 89.5 MHz), band FM3 by R5/R6', 15.24, 20.32, 215.9, 137.16, 9),
-    'ant': ('ANTENNA - wire on J3 (XH) or telescopic whip on ANT1; AN738 whip network', 15.24, 147.32, 109.22, 205.74, 4),
-    'audio': ('AUDIO - volume pot (switch = power), NS8002 class AB BTL, Av = 2*R8/R7 = 20', 223.52, 20.32, 403.86, 137.16, 7),
-    'power': ('POWER - USB-C in, TP4056 charger (400 mA), AN1149 load sharing, pot switch, 3.3 V LDO', 119.38, 147.32, 403.86, 279.4, 11),
+    'ant': ('ANTENNA - wire soldered into J3 (2 zip-tie holes) or telescopic whip on ANT1; AN738 whip network', 15.24, 147.32, 109.22, 205.74, 4),
+    'audio': ('AUDIO - volume pot RV1, NS8002 class AB BTL, Av = 2*R8/R7 = 20', 223.52, 20.32, 403.86, 137.16, 7),
+    'power': ('POWER - USB-C in, TP4056 charger, AN1149 load sharing, slide switch SW1, 3.3 V LDO', 119.38, 147.32, 403.86, 279.4, 11),
     'test': ('TEST PADS', 15.24, 215.9, 109.22, 279.4, 6),
 }
 
@@ -38,12 +38,15 @@ def main():
         colw = 20.32
         for p in small:
             d = circuit.SYM_BY_NAME[p['sym']]
+            # 3-pin parts have side stubs + labels: give them room on both sides
+            pad = 0 if d.two_pin else max(abs(q[2]) for q in d.pins) + 7.62
+            cx += pad
             if cx + 10 > x1:
                 cx = x0 + 12.7 if big and cy + 30 > y0 + 12.7 + max(circuit.SYM_BY_NAME[q['sym']].h for q in big) else row_start
                 cy += 25.4
             px = round(cx / 2.54) * 2.54; py = round((cy + 5) / 2.54) * 2.54
             place(s, p, px, py)
-            cx += colw
+            cx += colw + pad
     s.text('Values in the LCSC/MPN fields drive the JLC BOM. DNP = footprint only. Hand = soldered by hand, not by JLC.',
            15.24, 289.56, 1.27)
     s.write(os.path.join(PROJ, 'jar-radio.kicad_sch'), rev='A', date='2026-10-20',
