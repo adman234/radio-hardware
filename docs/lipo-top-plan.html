@@ -94,6 +94,73 @@
   </table></div>
   <div class="col"><p class="muted">Danger check: with the battery on PH and nothing else on PH, the battery can't be plugged into the antenna input. That input has a 56 nH inductor to ground, so a battery plugged in there would effectively be shorted.</p></div>
 
+
+  <h3>Decisions so far (rev F review)</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>#</th><th>Decision</th></tr></thead>
+    <tbody>
+      <tr><td>Q-T1</td><td>Bare circuit-board lid is fine; a 3D-printed or acrylic cover may come later (logo placement stays on the PCB for now).</td></tr>
+      <tr><td>Q-T3</td><td>Keep the speaker's own plug; no re-termination. The socket type follows whichever speaker is chosen.</td></tr>
+      <tr><td>Q-T4 / T5</td><td>Right-angle sockets facing plain routed plug holes.</td></tr>
+      <tr><td>Q-T6</td><td>Ordinary top-mounted LEDs.</td></tr>
+      <tr><td>Q-T7</td><td>Logos wherever they fit best, top preferred.</td></tr>
+      <tr><td>Q-T8</td><td>LiPo inside, wherever it fits. Chosen cell: 5 × 25 × 30 mm, JST-PH 2.0.</td></tr>
+      <tr><td>Speaker</td><td><b>On hold:</b> considering FUET FS40MS0810-H5.0 (C482313) instead of the GSPK4935.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>New parts received</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Ref</th><th>Part</th><th>LCSC</th><th>Note</th></tr></thead>
+    <tbody>
+      <tr><td>R4</td><td>100 Ω 0603</td><td class="mono">C22775</td><td>Basic</td></tr>
+      <tr><td>D4</td><td>PESD5V0F1BL ESD</td><td class="mono">C5139344</td><td></td></tr>
+      <tr><td>C9</td><td>1 nF C0G 0603</td><td class="mono">C163508</td><td></td></tr>
+      <tr><td>L1</td><td>56 nH LQW18AN56NJ00D</td><td class="mono">C98080</td><td></td></tr>
+      <tr><td>C3</td><td>4.7 µF 0603</td><td class="mono">C19666</td><td>Basic</td></tr>
+      <tr><td>U5</td><td>XC61CN2702MR-G (or -MRN)</td><td class="mono">C112139 / C33304307</td><td>Use whichever has JLC stock; same chip. Confirm the SOT-23 pin order.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>The two parts you asked about</h3>
+  <div class="grid2">
+    <div>
+      <h3>Speaker: FUET FS40MS0810-H5.0 (C482313)</h3>
+      <ul>
+        <li>A 40 mm, 5 mm-thin "micro" speaker, 8 Ω, 1 W, rated 92 dB, resonance 600 Hz, about $0.55 at 200+.</li>
+        <li><b>Sound:</b> fine for talk radio and voices. Music will sound thin, because almost nothing below roughly 500–600 Hz. The GSPK4935 (45 mm driver in its own box, 95 dB) should have a little more body and be louder. Neither will thump. The sealed jar behind the thin speaker helps a bit.</li>
+        <li><b>Power:</b> 1 W rated, so it's OK on battery (≈0.6 W). On USB the amp can reach ≈1.2 W, so I'd lower the amp gain slightly (R8 220k → 180k) so full volume doesn't overdrive it.</li>
+        <li><b>Big plus, space:</b> at 5 mm thick it frees the inside of the jar. The LiPo could even lie flat beside it.</li>
+        <li><b>Need:</b> its datasheet (or a photo) to see how it connects: solder tabs, bare wires, or a plug. That decides the socket.</li>
+        <li><b>Suggestion:</b> buy 2–3 of each and listen in a jar before choosing. They're under a dollar.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Pot: Alps RK097111080J (C97444) won't work as-is</h3>
+      <ul>
+        <li>It's a 9 mm Alps RK097 <b>through-hole</b> pot (not SMD), <b>10 kΩ</b>, and from the sibling part numbers it appears to be the <b>horizontal</b> version (shaft parallel to the board) <b>without a switch</b>. I couldn't open its datasheet from here, so please confirm.</li>
+        <li><b>No switch:</b> it can't turn the radio on and off.</li>
+        <li><b>Horizontal:</b> the shaft would point sideways across the lid, not up.</li>
+        <li><b>10 kΩ:</b> too low a load for the tuner output (minimum 10 kΩ, and the amp input loads it further). It would work with an extra 10 kΩ series resistor and a little more amp gain.</li>
+        <li><b>What to look for at JLC:</b> a <b>vertical</b> pot with a <b>switch</b>, 20–100 kΩ. Search "potentiometer with switch vertical", "RK0971221" or "RK09D117" (Alps series with switch), "RV09 switch", "R0902N switch".</li>
+        <li><b>Fallback, fully JLC-placed:</b> a vertical pot without switch (many stocked) plus a separate JLC-placed slide or push switch for power. That's 2 parts and a second control on the lid. Or keep the RV097NS and hand-solder it.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Cheaper JLC options to check (Basic parts carry no $3 fee)</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Now (Extended)</th><th>Try instead</th><th>Search / check</th></tr></thead>
+    <tbody>
+      <tr><td>47 µF 0805 ×2 (C16780)</td><td>22 µF 0805, Basic: two on TUNE1, one on the switched rail</td><td class="mono">CL21A226MAQNNNE (expect C45783, Basic)</td></tr>
+      <tr><td>Green LED</td><td>Basic green 0603</td><td class="mono">KT-0603G or 19-217/GHC-YR1S2/3T (C72043)</td></tr>
+      <tr><td>Red LED</td><td>Basic</td><td class="mono">KT-0603R C2286</td></tr>
+      <tr><td>B5819W, AO3401A, XC6206, crystal, all 0603 R/C</td><td>already Basic</td><td>(no change)</td></tr>
+      <tr><td>Si4825, NS8002, TP4056, 0.1% resistors ×2, ESD, 56 nH, XC61CN, USB-C, PH, XH</td><td>no Basic equivalent I know of</td><td>Check each for the <b>"Preferred Extended"</b> tag: those have no fee on Economic assembly</td></tr>
+    </tbody>
+  </table></div>
+  <div class="col"><p class="muted">Even with about 11 Extended parts the fee is ≈$33 per order. That's ≈$0.33 per radio at 100 units, so after the 22 µF and LED swaps further hunting has small returns.</p></div>
+
   <h3>Open questions for this revision</h3>
   <ol class="qlist">
     <li><b>Q-T1 · Visible parts on the lid.</b> All the chips will show on the outside. Keep the bare "circuit-board lid" look, or plan a cover (smoked acrylic or wood disc under the band, with holes for knob, USB and sockets)?<div class="rec">Bare board for the prototypes. Decide on a cover after seeing them. A cover changes nothing on the PCB except the logos, which would move onto it.</div></li>
