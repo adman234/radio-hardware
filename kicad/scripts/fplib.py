@@ -255,3 +255,46 @@ def batt_tab_slot(name='Battery_Holder_Tab_Slot_Plus_Wire'):
     L.append(_text('WIRE', -5.2, 6.0, 'F.SilkS', 0.8))
     L += rect(-4.6, -1.8, 5.8, 7.8, 'F.CrtYd', 0.05)
     write(name, L)
+
+
+def ptv09_rear(name='Potentiometer_Bourns_PTV09A-4_RearMount'):
+    """Bourns PTV09A-4 (horizontal/rear mount, bushingless): shaft
+    perpendicular to the board. From the datasheet's recommended layout:
+    3 pins ø1.0 at 2.5 mm pitch, 7.0 mm below two 2.2 x 1.8 mounting slots
+    10.6 mm apart; shaft centred between the slots."""
+    L = _hdr(name, 'Bourns PTV09A-4 9mm pot, rear mount (shaft up), no switch')
+    for n, x in (('1', -2.5), ('2', 0.0), ('3', 2.5)):
+        L.append(f'  (pad "{n}" thru_hole {"rect" if n == "1" else "circle"} (at {x} 7.0) (size 1.7 1.7) (drill 1.0) (layers "*.Cu" "*.Mask"))')
+    for x in (-5.3, 5.3):
+        L.append(f'  (pad "MP" thru_hole oval (at {x} 0) (size 2.8 3.2) (drill oval 1.8 2.2) (layers "*.Cu" "*.Mask"))')
+    L += rect(-5.0, -5.5, 5.0, 5.9, 'F.Fab', 0.1)
+    L.append(_circle(0, 0, 3.0, 'F.Fab', 0.1))
+    L.append(_circle(0, 0, 8.0, 'F.SilkS', 0.15))
+    L += rect(-6.6, -6.0, 6.6, 8.3, 'F.CrtYd', 0.05)
+    L.append(_text('VOL', 0, -9.2, 'F.SilkS', 0.9))
+    write(name, L)
+
+
+def ant_solder_tie(name='Antenna_Wire_Solder_D1.0'):
+    """Antenna wire solder hole + a pair of zip-tie holes for strain relief."""
+    L = _hdr(name, 'Antenna wire solder hole (1.0 mm PTH) + 2 zip-tie holes for strain relief')
+    L.append('  (pad "1" thru_hole circle (at 0 0) (size 2.0 2.0) (drill 1.0) (layers "*.Cu" "*.Mask"))')
+    for x in (3.5, 7.5):
+        L.append(f'  (pad "" np_thru_hole oval (at {x} 0) (size 1.4 3.0) (drill oval 1.4 3.0) (layers "*.Cu" "*.Mask"))')
+    L.append(_text('ANT', 0, -2.0, 'F.SilkS', 0.8))
+    L += rect(-1.3, -2.0, 8.6, 2.0, 'F.CrtYd', 0.05)
+    write(name, L)
+
+
+def batt_tab_slot_v2(name='Battery_Holder_Tab_Slot_Plus_Wire'):
+    """MYOUNG BH-18650-B1BA002 standing on end: its 6.35 x 0.35 mm SMT foot
+    goes through this plated slot and is soldered on top; the other end
+    returns on a jumper wire to pad 2."""
+    L = _hdr(name, 'Plated slot for the 18650 holder foot (6.35 x 0.35 mm) + pad for the return wire')
+    L.append('  (pad "1" thru_hole oval (at 0 0) (size 8.4 2.2) (drill oval 7.0 1.0) (layers "*.Cu" "*.Mask"))')
+    L.append('  (pad "2" thru_hole circle (at 0 5.5) (size 2.4 2.4) (drill 1.2) (layers "*.Cu" "*.Mask"))')
+    L.append(npth(3.5, 5.5, 1.6))
+    L.append(_text('BAT+', -6.0, 0, 'F.SilkS', 0.8))
+    L.append(_text('BAT-', -6.0, 5.5, 'F.SilkS', 0.8))
+    L += rect(-4.6, -1.6, 5.0, 7.2, 'F.CrtYd', 0.05)
+    write(name, L)

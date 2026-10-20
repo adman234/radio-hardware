@@ -48,6 +48,8 @@ SYMS = [
     SymDef('Conn_2_MP', 'J', [('1', '1', 'R', 0), ('2', '2', 'R', 1), ('MP', 'MP', 'R', 2)]),
     SymDef('Conn_2', 'J', [('1', '1', 'R', 0), ('2', '2', 'R', 1)]),
     SymDef('Conn_1', 'J', [('1', '1', 'R', 0)]),
+    SymDef('Pot3', 'RV', [('3', 'CW', 'L', 0), ('2', 'WIPER', 'L', 1), ('1', 'CCW', 'L', 2), ('MP', 'MOUNT', 'R', 0)], width=10.16),
+    SymDef('SW_SPDT', 'SW', [('1', 'A', 'L', 0), ('2', 'COM', 'R', 0), ('3', 'B', 'L', 1)]),
     SymDef('Trim_3', 'RV', [('1', 'TOP', 'R', 0), ('2', 'WIPER', 'R', 1), ('3', 'BOT', 'R', 2)]),
     SymDef('Crystal', 'Y', [('1', '1', 'T', 0), ('2', '2', 'B', 0)], two_pin=True),
 ]
@@ -100,8 +102,10 @@ part('L1', 'L', '56nH', L0603, 'C98080', 'LQW18AN56NJ00D', {'1': 'FMI', '2': 'GN
 # Audio -------------------------------------------------------------------
 B = 'audio'
 part('C10', 'C', '1uF', C0603, 'C15849', 'CL10A105KB8NNNC', {'1': 'AOUT', '2': 'VOL_TOP'}, block=B)
-part('RV1', 'Pot_Switch', '20k + SW', JR + 'Potentiometer_RV097NS_Switch_Vertical_PROVISIONAL', 'C470569', 'RK0971111Z0P',
-     {'3': 'VOL_TOP', '2': 'VOL_WIPER', '1': 'GND', 'S1': 'VSYS', 'S2': 'VSW', 'MP': 'GND'}, block=B)   # footprint: need Alps drawing
+part('RV1', 'Pot3', '50k audio', JR + 'Potentiometer_Bourns_PTV09A-4_RearMount', '', 'PTV09A-4020F-A503',
+     {'3': 'VOL_TOP', '2': 'VOL_WIPER', '1': 'GND', 'MP': 'GND'}, block=B, hand=True)   # Digi-Key 118-PTV09A-4020F-A503-ND
+part('SW1', 'SW_SPDT', 'POWER', 'Button_Switch_SMD:SW_SPDT_PCM12', '', 'MSK-12C02 / PCM12SMTR',
+     {'1': 'VSW', '2': 'VSYS'}, block=B, nc=('3',))   # slide switch: VSYS -> VSW
 part('C11', 'C', '100nF', C0603, 'C14663', 'CC0603KRX7R9BB104', {'1': 'VOL_WIPER', '2': 'AMP_C'}, block=B)   # 100n x 47k = 34 Hz
 part('R7', 'R', '47k', R0603, 'C25819', '0603WAF4702T5E', {'1': 'AMP_C', '2': 'AMP_INN'}, block=B)   # 20k pot || 47k = 14k >= Si4825 10k min load
 part('R8', 'R', '470k', R0603, 'C23178', '0603WAF4703T5E', {'1': 'AMP_INN', '2': 'SPK+'}, block=B)   # Av = 2*470/47 = 20, Basic

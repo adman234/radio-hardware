@@ -530,6 +530,19 @@ footer ul { padding-left: 18px; columns: 2 300px; }
   </table></div>
   <div class="col"><p class="muted">Thresholds marked "~" come from distributor listings; I'll confirm them from the chosen chip's datasheet. Over-discharge matters here: the tuner keeps working down to 2.0 V, so the radio keeps draining the cell until the protector cuts it off. A cutoff around 2.8–2.9 V is kinder to an 18650 than 2.4 V.</p></div>
 
+
+  <h3>Rev F.7: holder, protection chip, antenna, pot</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Item</th><th>Decision / change</th></tr></thead>
+    <tbody>
+      <tr><td>18650 holder BH-18650-B1BA002 (C2988620)</td><td>MYOUNG "SMT 180°" holder: body 77 × 20.65 × 14.9 mm, 86 mm over the feet, phosphor-bronze feet 6.35 mm wide × 0.35 mm thick, − end and + end marked. It stands on end with its <b>+ foot through a plated slot (7.0 × 1.0 mm)</b>, soldered on top and hot-glued. The − end returns on a jumper wire to the BAT− pad. No zip-tie backup.</td></tr>
+      <tr><td>Protection chip</td><td><b>XB8089D (C79928)</b> selected. I need its datasheet (from the LCSC page) for the pinout and exact thresholds before adding it to the schematic.</td></tr>
+      <tr><td>Antenna</td><td>Solder hole + <b>two zip-tie holes</b> (1.4 × 3.0 mm slots, 4 mm apart) right beside it for strain relief. M3 whip hole kept.</td></tr>
+      <tr><td>Pot</td><td>Bourns <b>PTV09A-4</b>: "horizontal/rear mount" in Bourns' wording, which means the shaft points <b>straight up out of the board</b> (good). Footprint built from the datasheet: 3 pins ø1.0 at 2.5 mm pitch, 7.0 mm below two 2.2 × 1.8 mounting slots 10.6 mm apart. <b>It has no switch</b>, so a separate <b>slide switch</b> (SW1, SMD, JLC-placed) now does power. Suggested exact part: <b>PTV09A-4020F-A503</b>: "0" = no centre click (your 4<b>2</b>20F has a centre detent, odd on a volume knob) and "A" = audio taper (feels natural). Digi-Key 118-PTV09A-4020F-A503-ND. With 50 k the tuner sees 50k ∥ 47k ≈ 24 kΩ: fine.</td></tr>
+      <tr><td>Power switch</td><td>SW1: SMD side-slide SPDT, C&K PCM12 footprint (clones: MSK-12C02). Please find a JLC-stocked one, ideally Basic.</td></tr>
+    </tbody>
+  </table></div>
+
   <h3>Open questions for this revision</h3>
   <ol class="qlist">
     <li><b>Q-T1 · Visible parts on the lid.</b> All the chips will show on the outside. Keep the bare "circuit-board lid" look, or plan a cover (smoked acrylic or wood disc under the band, with holes for knob, USB and sockets)?<div class="rec">Bare board for the prototypes. Decide on a cover after seeing them. A cover changes nothing on the PCB except the logos, which would move onto it.</div></li>
