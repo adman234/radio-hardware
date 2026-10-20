@@ -1,0 +1,17 @@
+Ref,Current part,LCSC,JLC class,Must match (spec to search),Search terms / candidates,Notes
+U1,Si4825-A10 tuner,C2654605,Extended,Si4825-A10 only (pin-compatible: none),"SI4825-A10-CS, SI4825-A10-CSR",No substitute; watch stock (96 at LCSC)
+U2,NS8002 class-AB BTL amp SOP-8,C189960,Extended,"Mono class AB, BTL, 3-5.5 V, ~1 W/8 ohm, LM4871 pinout, SOP-8/MSOP-8","LM4871, HXJ8002, LTK8002D, CS8002, MD8002, FM8002, TC8002 (any '8002' clone)",Keep class AB (no class D near the antenna)
+U3,TP4056 Li-ion charger ESOP-8,C16581,Extended,"1-cell 4.2 V linear charger, prog. current, TEMP pin, CHRG/STDBY outputs","TP4056, TC4056A, FM4056, HX4056, LTC4056 clones (pin-compatible '4056')",Keep a TEMP pin for the NTC
+U5,XC61CN2702MR-G reset detector,C112139,Extended,"2.7 V voltage detector, N-ch open drain, active-low, SOT-23","XC61CN2702MR, BL8506-27, CN61CN27, HX61CN27, RT9818-27, voltage detector 2.7V open drain SOT-23",Check SOT-23 pinout matches (1 VOUT 2 VSS 3 VIN)
+R2,86.6k 0.1% 0603,C861580,Extended,"86.6k, 0.1%, 0603, thin film","0603 86.6k 0.1%",Precision needed; fee unavoidable
+R3,11.7k 0.1% 0603,C4553285,Extended,"11.7k, 0.1%, 0603, thin film","0603 11.7k 0.1%",Precision needed; fee unavoidable
+D4,PESD5V0F1BL ESD (backordered),C5139344,Extended,"Bidirectional ESD, <=1 pF, 5 V working, DFN1006-2/SOD-882 or SOD-523","ESD9X5.0ST5G, ESD5Z5V0 low-cap, LESD5D5.0CT1G, ESD low capacitance 0.5pF SOD-523",Must be <=1 pF or it detunes the FM input
+L1,56nH 0603 wirewound,C98080,Extended,"56 nH, 0603, Q>=15 at 100 MHz, >=300 mA","LQW18AN56NJ00D, LQG18HN56NJ00D, 0603 56nH wirewound, CMI160808 56N",Multilayer (LQG) is OK if Q>=15
+J2,JST-PH 2P SMD right-angle,C295747,Extended,"2.0 mm pitch, 2P, SMD, right angle, mates JST PHR-2","S2B-PH-SM4-TB, PH 2.0 2P SMD 卧贴, A2001WR-S-2P",Any PH-compatible clone in JLC stock
+J4,JST-XH 2P SMD right-angle (speaker),C23067528,Not in JLC lib,"2.5 mm pitch, 2P, SMD, right angle, mates JST XHP-2","S2B-XH-SM4-TB, XH-2A SMD 卧贴, A2501WR-S-2P",Only if the chosen speaker uses a plug
+J1,USB-C 6P vertical,C5156600,?,"USB-C receptacle, 6-pin power only, vertical (upright), SMD/THT","TYPE-C 6P vertical, USB-C 6PIN 立贴, TYPE-C-6P-LT",Confirm JLC can assemble it
+D3,Green LED 0603,C12624,Extended,"0603 green LED, 2.0-3.3 V Vf","KT-0603G, 0603 green LED (Basic filter)",If no Basic green: drop D3 (red off = full)
+RV1,Volume pot with switch,C470569,?,"VERTICAL (shaft perpendicular to PCB), ~20-50k A or B taper, SPST rotary switch, 15 mm shaft","RK09D with switch, RV09 vertical switch, R0902N switch vertical, potentiometer with switch vertical 9mm",C470569 is HORIZONTAL (shaft parallel to board): does not fit a lid
+NEW,Battery protection 1-chip,(choose),?,"1-cell Li-ion protector with integrated MOSFETs, >=2 A, OVP ~4.25-4.3 V, UVP ~2.4-2.9 V, short-circuit","XB8089D (C79928, SOP-8-EP, JLC stock ~9.3k), DW07D (C89497, SOT-23-6), XB5353A, XB6096",Pick whichever is Basic / Preferred
+NEW,NTC 10k B3950 0603,(choose),?,"10 kOhm at 25 C, B=3950 (3380 also OK), 0603","NCP18XH103F03RB, CMFB103F3950FANT, NTC 10k 0603",For TP4056 TEMP: only charges between ~10 C and ~46 C
+NEW,Polyfuse PTC 1206,(choose),?,"Resettable fuse, hold 0.5-0.75 A, trip ~1-1.5 A, >=6 V, 1206","SMD1206P050TF, SMD1206P075TF, BSMD1206-050, 1206 PTC 0.5A",Last-resort fuse in the battery + line

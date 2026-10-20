@@ -229,3 +229,14 @@ def speaker_ring(name='Speaker_D49_Keepout'):
 def build_all():
     usb_c_vertical_6p(); xh_smd_gswitch(); rv097ns(); zip_slot(); wire_exit(); ant_m3(); speaker_ring()
     two_pads('Speaker_Wire_Pads_P5', 5.0, 1.1, 2.2, ('SPK+', 'SPK-'), 'Speaker lead solder pads (hand solder)')
+
+
+def ant_solder(name='Antenna_Wire_Solder_D1.0'):
+    """Solder hole for a single antenna wire, with a strain-relief hole the
+    wire loops through first."""
+    L = _hdr(name, 'Antenna wire solder hole (1.0 mm PTH) + 1.6 mm strain-relief hole')
+    L.append(f'  (pad "1" thru_hole circle (at 0 0) (size 2.0 2.0) (drill 1.0) (layers "*.Cu" "*.Mask"))')
+    L.append(npth(3.0, 0, 1.6))
+    L.append(_text('ANT', 0, -2.0, 'F.SilkS', 0.8))
+    L.append(_circle(1.5, 0, 3.0, 'F.CrtYd', 0.05))
+    write(name, L)

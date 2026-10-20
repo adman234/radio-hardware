@@ -260,6 +260,54 @@
   </div>
   <div class="callout"><strong>Note on the jar</strong>A 4-inch-tall jar is not the 8 oz half-pint I assumed (≈2.5 in). Please send the jar's name or size and the lid/band measurements. The board diameter and keep-outs still depend on them.</div>
 
+
+  <h3>Rev F.3: antenna, pot, and battery protection</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Item</th><th>Change</th></tr></thead>
+    <tbody>
+      <tr><td>Antenna</td><td>The JST socket is gone. J3 is now a 1.0 mm <b>solder hole</b> (plus a strain-relief hole) for a hand-soldered wire, with the plated M3 whip hole kept as the extra antenna option.</td></tr>
+      <tr><td>R7 47k</td><td><b>C25819</b> (Basic) confirmed.</td></tr>
+      <tr><td><b>Pot C470569: doesn't fit</b></td><td>The Alps datasheet (drawing 3, RK0971111) shows a <b>horizontal</b> part: the shaft runs parallel to the board, 6.5 mm above it, so the knob would point sideways across the lid and a normal knob would hit the board. We still need a <b>vertical</b> switched pot (search list below). Fallback: RV097NS vertical, hand-soldered or consigned to JLC.</td></tr>
+      <tr><td>Green LED</td><td>C12624 is Extended. If no Basic green turns up, drop D3 + R15: the red light going out means "full".</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Battery protection: proposed "max safety" stack</h3>
+  <div class="col"><p>This applies to either cell (pouch or 18650). A protected pouch already has its own protection board; the on-board stack is a second layer. A bare 18650 needs it.</p></div>
+  <div class="tbl"><table>
+    <thead><tr><th>#</th><th>Layer</th><th>Part</th><th>Protects against</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td><b>Single-chip protector</b> in the battery − lead. The MOSFETs are built in, so one chip replaces DW01A + FS8205A.</td><td><b>XB8089D</b> (C79928, SOP-8-EP, ~9.3k in JLC stock) or <b>DW07D</b> (C89497, SOT-23-6, ≈$0.05)</td><td>Overcharge (~4.25–4.3 V), over-discharge (~2.4–2.9 V), overcurrent, short circuit</td></tr>
+      <tr><td>2</td><td><b>Reverse-polarity FET</b> in the battery + lead (P-FET, gate to GND)</td><td>AO3401A (C15127, Basic, already on the board)</td><td>An 18650 put in the holder backwards. Without it, the cell would be shorted through the charger chip's internal diodes.</td></tr>
+      <tr><td>3</td><td><b>Resettable fuse</b> in the battery + lead</td><td>1206 PTC, hold 0.5–0.75 A</td><td>Last resort if everything else fails</td></tr>
+      <tr><td>4</td><td><b>Temperature-gated charging</b>: NTC on the TP4056 TEMP pin, 5.1k pull-up (C23186)</td><td>NTC 10k B3950 0603</td><td>Charging only between ≈10 °C and ≈46 °C (jar in a hot window or car)</td></tr>
+      <tr><td>5</td><td><b>Gentle charge current</b>: PROG 3.0k → 2.4k for 500 mA (18650), or keep 400 mA (pouch)</td><td>0603WAF2401T5E</td><td>Keeps the charger chip and cell cool</td></tr>
+      <tr><td>6</td><td><b>Keyed connector</b> (JST-PH) and strapped holder or cell</td><td>C295747 + zip ties</td><td>Wrong-way plugs, vibration</td></tr>
+    </tbody>
+  </table></div>
+  <div class="col"><p class="muted">Cost: ≈$0.10–0.15 per radio plus 1–3 Extended fees, depending on which of the protector, NTC and fuse come up Basic. I'll add it to the schematic once you pick the protector chip (and confirm 18650 vs pouch).</p></div>
+
+  <h3>Parts to run through a cheaper-alternative search</h3>
+  <div class="col"><p>The same list is in <code>docs/alternatives-search-list.csv</code>. Paste each search term into the JLCPCB Tools plugin or jlcparts with the "Basic" filter on, and sort by price.</p></div>
+  <div class="tbl"><table><thead><tr><th>Ref</th><th>Current part</th><th>LCSC</th><th>JLC class</th><th>Must match (spec to search)</th><th>Search terms / candidates</th><th>Notes</th></tr></thead><tbody>
+<tr><td>U1</td><td>Si4825-A10 tuner</td><td>C2654605</td><td>Extended</td><td>Si4825-A10 only (pin-compatible: none)</td><td>SI4825-A10-CS, SI4825-A10-CSR</td><td>No substitute; watch stock (96 at LCSC)</td></tr>
+<tr><td>U2</td><td>NS8002 class-AB BTL amp SOP-8</td><td>C189960</td><td>Extended</td><td>Mono class AB, BTL, 3-5.5 V, ~1 W/8 ohm, LM4871 pinout, SOP-8/MSOP-8</td><td>LM4871, HXJ8002, LTK8002D, CS8002, MD8002, FM8002, TC8002 (any &#x27;8002&#x27; clone)</td><td>Keep class AB (no class D near the antenna)</td></tr>
+<tr><td>U3</td><td>TP4056 Li-ion charger ESOP-8</td><td>C16581</td><td>Extended</td><td>1-cell 4.2 V linear charger, prog. current, TEMP pin, CHRG/STDBY outputs</td><td>TP4056, TC4056A, FM4056, HX4056, LTC4056 clones (pin-compatible &#x27;4056&#x27;)</td><td>Keep a TEMP pin for the NTC</td></tr>
+<tr><td>U5</td><td>XC61CN2702MR-G reset detector</td><td>C112139</td><td>Extended</td><td>2.7 V voltage detector, N-ch open drain, active-low, SOT-23</td><td>XC61CN2702MR, BL8506-27, CN61CN27, HX61CN27, RT9818-27, voltage detector 2.7V open drain SOT-23</td><td>Check SOT-23 pinout matches (1 VOUT 2 VSS 3 VIN)</td></tr>
+<tr><td>R2</td><td>86.6k 0.1% 0603</td><td>C861580</td><td>Extended</td><td>86.6k, 0.1%, 0603, thin film</td><td>0603 86.6k 0.1%</td><td>Precision needed; fee unavoidable</td></tr>
+<tr><td>R3</td><td>11.7k 0.1% 0603</td><td>C4553285</td><td>Extended</td><td>11.7k, 0.1%, 0603, thin film</td><td>0603 11.7k 0.1%</td><td>Precision needed; fee unavoidable</td></tr>
+<tr><td>D4</td><td>PESD5V0F1BL ESD (backordered)</td><td>C5139344</td><td>Extended</td><td>Bidirectional ESD, &lt;=1 pF, 5 V working, DFN1006-2/SOD-882 or SOD-523</td><td>ESD9X5.0ST5G, ESD5Z5V0 low-cap, LESD5D5.0CT1G, ESD low capacitance 0.5pF SOD-523</td><td>Must be &lt;=1 pF or it detunes the FM input</td></tr>
+<tr><td>L1</td><td>56nH 0603 wirewound</td><td>C98080</td><td>Extended</td><td>56 nH, 0603, Q&gt;=15 at 100 MHz, &gt;=300 mA</td><td>LQW18AN56NJ00D, LQG18HN56NJ00D, 0603 56nH wirewound, CMI160808 56N</td><td>Multilayer (LQG) is OK if Q&gt;=15</td></tr>
+<tr><td>J2</td><td>JST-PH 2P SMD right-angle</td><td>C295747</td><td>Extended</td><td>2.0 mm pitch, 2P, SMD, right angle, mates JST PHR-2</td><td>S2B-PH-SM4-TB, PH 2.0 2P SMD 卧贴, A2001WR-S-2P</td><td>Any PH-compatible clone in JLC stock</td></tr>
+<tr><td>J4</td><td>JST-XH 2P SMD right-angle (speaker)</td><td>C23067528</td><td>Not in JLC lib</td><td>2.5 mm pitch, 2P, SMD, right angle, mates JST XHP-2</td><td>S2B-XH-SM4-TB, XH-2A SMD 卧贴, A2501WR-S-2P</td><td>Only if the chosen speaker uses a plug</td></tr>
+<tr><td>J1</td><td>USB-C 6P vertical</td><td>C5156600</td><td>?</td><td>USB-C receptacle, 6-pin power only, vertical (upright), SMD/THT</td><td>TYPE-C 6P vertical, USB-C 6PIN 立贴, TYPE-C-6P-LT</td><td>Confirm JLC can assemble it</td></tr>
+<tr><td>D3</td><td>Green LED 0603</td><td>C12624</td><td>Extended</td><td>0603 green LED, 2.0-3.3 V Vf</td><td>KT-0603G, 0603 green LED (Basic filter)</td><td>If no Basic green: drop D3 (red off = full)</td></tr>
+<tr><td>RV1</td><td>Volume pot with switch</td><td>C470569</td><td>?</td><td>VERTICAL (shaft perpendicular to PCB), ~20-50k A or B taper, SPST rotary switch, 15 mm shaft</td><td>RK09D with switch, RV09 vertical switch, R0902N switch vertical, potentiometer with switch vertical 9mm</td><td>C470569 is HORIZONTAL (shaft parallel to board): does not fit a lid</td></tr>
+<tr><td>NEW</td><td>Battery protection 1-chip</td><td>(choose)</td><td>?</td><td>1-cell Li-ion protector with integrated MOSFETs, &gt;=2 A, OVP ~4.25-4.3 V, UVP ~2.4-2.9 V, short-circuit</td><td>XB8089D (C79928, SOP-8-EP, JLC stock ~9.3k), DW07D (C89497, SOT-23-6), XB5353A, XB6096</td><td>Pick whichever is Basic / Preferred</td></tr>
+<tr><td>NEW</td><td>NTC 10k B3950 0603</td><td>(choose)</td><td>?</td><td>10 kOhm at 25 C, B=3950 (3380 also OK), 0603</td><td>NCP18XH103F03RB, CMFB103F3950FANT, NTC 10k 0603</td><td>For TP4056 TEMP: only charges between ~10 C and ~46 C</td></tr>
+<tr><td>NEW</td><td>Polyfuse PTC 1206</td><td>(choose)</td><td>?</td><td>Resettable fuse, hold 0.5-0.75 A, trip ~1-1.5 A, &gt;=6 V, 1206</td><td>SMD1206P050TF, SMD1206P075TF, BSMD1206-050, 1206 PTC 0.5A</td><td>Last-resort fuse in the battery + line</td></tr>
+</tbody></table></div>
+
   <h3>Open questions for this revision</h3>
   <ol class="qlist">
     <li><b>Q-T1 · Visible parts on the lid.</b> All the chips will show on the outside. Keep the bare "circuit-board lid" look, or plan a cover (smoked acrylic or wood disc under the band, with holes for knob, USB and sockets)?<div class="rec">Bare board for the prototypes. Decide on a cover after seeing them. A cover changes nothing on the PCB except the logos, which would move onto it.</div></li>

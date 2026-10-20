@@ -91,8 +91,7 @@ part('R17', 'R', '100k', R0603, 'C25803', '0603WAF1003T5E', {'1': 'BAND_M', '2':
 part('R6', 'R', '68k', R0603, 'C23231', '0603WAF6802T5E', {'1': 'BAND', '2': 'GND'}, block=B)
 part('C8', 'C', '1uF', C0603, 'C15849', 'CL10A105KB8NNNC', {'1': 'AMI', '2': 'GND'}, block=B)
 # antenna front end (AN738 5.2)
-part('J3', 'Conn_2_MP', 'ANT (XH)', JR + 'Connector_XH-SMD_GSwitch_GT-A2501WRS-102_1x02_P2.50mm_Horizontal', 'C23067528',
-     'GT-A2501WRS-102SBT01', {'1': 'ANT', '2': 'GND', 'MP': 'GND'}, block='ant')
+part('J3', 'Conn_1', 'ANT wire', JR + 'Antenna_Wire_Solder_D1.0', '', '', {'1': 'ANT'}, block='ant', nobom=True)   # wire soldered in by hand
 part('ANT1', 'Conn_1', 'WHIP M3', JR + 'Antenna_Telescopic_M3', '', '', {'1': 'ANT'}, block='ant', hand=True, nobom=True)
 part('D4', 'D', 'ESD <=1pF', 'Diode_SMD:D_SOD-882', 'C5139344', 'PESD5V0F1BL', {'1': 'ANT', '2': 'GND'}, block='ant')
 part('C9', 'C', '1nF', C0603, 'C1588', 'CL10B102KB8NNNC', {'1': 'ANT', '2': 'FMI'}, block='ant')   # Basic X7R; C0G C163508 is Extended
