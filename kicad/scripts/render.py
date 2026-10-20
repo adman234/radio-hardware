@@ -1,0 +1,80 @@
+"""Photo-style PNG renders of both faces (black mask, white silk, HASL pads).
+
+Each layer is plotted to SVG with kicad-cli, rasterised with rsvg-convert,
+and the masks are composited with PIL."""
+import os, subprocess, tempfile
+import numpy as np
+from PIL import Image
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+PROJ = os.path.abspath(os.path.join(HERE, '..'))
+BOARD = os.path.join(PROJ, 'jar-radio.kicad_pcb')
+IMG = os.path.join(PROJ, '..', 'docs', 'img')
+
+COL = dict(bg=(0, 0, 0, 0), mask=(22, 24, 23), cu_under=(44, 50, 46), pad=(205, 205, 200),
+           silk=(240, 240, 236), hole=(0, 0, 0, 0))
+
+
+def layer_png(layer, d, width, mirror):
+    svg = os.path.join(d, layer + '.svg'); png = os.path.join(d, layer + '.png')
+    cmd = ['kicad-cli', 'pcb', 'export', 'svg', BOARD, '-o', svg, '--layers', layer + ',Edge.Cuts' if layer != 'Edge.Cuts' else layer,
+           '--black-and-white', '--exclude-drawing-sheet', '--page-size-mode', '2', '--drill-shape-opt', '2']
+    if mirror:
+        cmd.append('--mirror')
+    subprocess.run(cmd, capture_output=True, check=True)
+    subprocess.run(['rsvg-convert', '-w', str(width), '-b', 'white', svg, '-o', png], check=True)
+    a = np.asarray(Image.open(png).convert('L')) < 128
+    return a
+
+
+def render(face, width=1400):
+    f = 'F' if face == 'top' else 'B'
+    mirror = face == 'bottom'
+    with tempfile.TemporaryDirectory() as d:
+        edge = layer_png('Edge.Cuts', d, width, mirror)
+        cu = layer_png(f + '.Cu', d, width, mirror)
+        mask = layer_png(f + '.Mask', d, width, mirror)
+        silk = layer_png(f + '.SilkS', d, width, mirror)
+    h, w = edge.shape
+    # board area: flood fill from the centre inside the outline
+    from PIL import ImageDraw
+    im = Image.fromarray(np.where(edge, 0, 255).astype('uint8'))
+    ImageDraw.floodfill(im, (w // 2, h // 2), 128)
+    board = np.asarray(im) == 128
+    # drills appear as white holes inside copper/mask plots; the edge plot has them too (NPTH)
+    out = np.zeros((h, w, 4), dtype=np.uint8)
+    out[board] = (*COL['mask'], 255)
+    out[board & cu & ~mask] = (*COL['cu_under'], 255)
+    out[board & mask] = (*COL['pad'], 255)
+    out[board & silk & ~mask] = (*COL['silk'], 255)
+    out[edge] = (60, 60, 60, 255)
+    # punch the drilled holes through, using the real hole list
+    import pcbnew
+    b = pcbnew.LoadBoard(BOARD)
+    bb = b.GetBoardEdgesBoundingBox()
+    x0, y0 = pcbnew.ToMM(bb.GetLeft()), pcbnew.ToMM(bb.GetTop())
+    sx = w / pcbnew.ToMM(bb.GetWidth())
+    img = Image.fromarray(out, 'RGBA'); dr = ImageDraw.Draw(img)
+    def px(x, y):
+        X = (x - x0) * sx
+        return (w - X if mirror else X), (y - y0) * sx
+    for fp in b.GetFootprints():
+        for pad in fp.Pads():
+            if pad.GetDrillSize().x <= 0:
+                continue
+            c = pad.GetPosition(); dx, dy = pcbnew.ToMM(pad.GetDrillSize().x) / 2, pcbnew.ToMM(pad.GetDrillSize().y) / 2
+            ang = pad.GetOrientation().AsDegrees() % 180
+            if 45 < ang < 135:
+                dx, dy = dy, dx
+            cx, cy = px(pcbnew.ToMM(c.x), pcbnew.ToMM(c.y))
+            r = min(dx, dy) * sx
+            hx, hy = dx * sx, dy * sx
+            dr.rounded_rectangle([cx - hx, cy - hy, cx + hx, cy + hy], radius=r, fill=(0, 0, 0, 0))
+    out = np.asarray(img)
+    Image.fromarray(out, 'RGBA').save(os.path.join(IMG, f'board-{face}.png'))
+    return os.path.join(IMG, f'board-{face}.png')
+
+
+if __name__ == '__main__':
+    os.makedirs(IMG, exist_ok=True)
+    print(render('top')); print(render('bottom'))

@@ -1,0 +1,3 @@
+(sym_lib_table
+  (lib (name "jar-radio")(type "KiCad")(uri "${KIPRJMOD}/lib/jar-radio.kicad_sym")(options "")(descr "Jar radio project symbols"))
+)

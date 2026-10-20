@@ -1,41 +1,47 @@
-Ref,Description,MPN,LCSC,JLC class,Qty per radio,Unit $ @10,Unit $ @100,Price source,Status
-U1,FM receiver SOIC-16,SI4825-A10-CSR,C2654605,Extended,1,1.4369,1.1052,LCSC quote (user),ok
-Y1,32.768kHz crystal 3215 12.5pF,Q13FC13500004,C32346,Basic,1,0.10,0.10,search snapshot,verify stock
-R_TUNE_H,86.6k 0.1% 0603 station divider top,YAGEO RT0603BRD0786K6L,C861580,Extended,1,0.0396,0.0337,LCSC quote (user; min 20),ok
-R_TUNE_L,11.7k 0.1% 0603 station divider bottom,VISHAY TNPW060311K7BEEA,C4553285,Extended,1,0.0927,0.0744,LCSC quote (user),ok
-RV_CAL,5k SMD trimmer (calibration),,,DNP,0,,,,footprint only
-JP_CAL,0R 0603 bypass for RV_CAL,0603WAF0000T5E,C21189,Basic,1,0.002,0.001,estimate,ok
-R_BAND_H,432k 1% 0603 thin film band select,Viking AR03FTC4323,C234529,Extended?,1,0.0107,0.0085,LCSC quote (user; min 50),ok; optional Basic swap 0603WAF4303T5E (430k)
-R_BAND_L,66.5k 1% 0603 band select,FOJAN FRC0603F6652TS,C2933250,Extended?,1,0.0024,0.0024,LCSC quote (user; min 100),ok; optional Basic swap 0603WAF6802T5E (68k)
-FB1,Ferrite bead 2.5k@100MHz 200mA 0603,TDK MMZ1608A252BTA00,,Extended,1,0.0212,0.0169,LCSC quote (user),need C-number (search MMZ1608A252BTA00)
-C_TUNE,47uF X5R 0805 6.3V,Samsung CL21A476MQYNNNE,C16780,Extended?,1,0.1025,0.0803,LCSC quote (user),ok
-U2,Class AB BTL audio amp SOP-8,NS8002,C189960,Extended,1,0.045,0.03,search snapshot,confirm SHUTDOWN polarity
-RV1,9mm pot B50K with SPST switch 5-pin 15mm knurled shaft,RV097NS,,Hand (AliExpress),1,0.50,0.25,AliExpress listing,need drawing
-KNOB1,Knob for 6mm 18T knurled shaft ~20mm,,,Hand (AliExpress),1,0.25,0.12,estimate,
-LS1,Speaker 40mm 8R 2W internal magnet,generic,,Hand (AliExpress),1,0.30,0.25,AliExpress search,need dims
-J1,USB-C 6P power-only vertical SMD 6.8mm,TYPE-C 6PLTH6.8-DJ,C5156600,Hand (top),1,0.05,0.047,search snapshot,need drawing
-U3,Li-ion linear charger ESOP-8,TP4056-42-ESOP8,C16581,Extended,1,0.17,0.087,search snapshot,ok
-Q1,P-MOSFET 30V SOT-23 load share,AO3401A,C15127,Basic,1,0.04,0.03,search snapshot,ok
-D1,Schottky 40V 3A SMA,SS34,C8678,Basic,1,0.02,0.02,search snapshot,ok
-U4,3.3V LDO SOT-23,XC6206P332MR,C5446,Basic,1,0.075,0.059,search snapshot,ok
-J2,JST-PH 2-pin SMD right-angle (battery),S2B-PH-SM4-TB(LF)(SN),C295747,Extended,1,0.11,0.11,search snapshot,ok
-D2,LED red 1206 reverse-mount (charging),EVERLIGHT 24-21SURC/S530-A3/TR8,C2892757,Extended,1,0.0471,0.0377,LCSC quote (user),ok; 2.0mm hole
-D3,LED green 1206 reverse-mount (full),EVERLIGHT 25-21/GHC-YSU/2A,C4749157,Extended,1,0.0673,0.0673,LCSC quote (user; 50+ price),ok; 2.0mm hole
-BT1,LiPo 1S protected 502530 370-450mAh JST-PH,generic,,Hand (AliExpress),1,1.50,1.00,estimate,need dims + polarity
-J3,XH-compatible 2.5mm 2-pin SMD right-angle (antenna),G-Switch GT-A2501WRS-102SBT01,C23067528,Extended,1,0.10,0.08,estimate,need drawing to confirm
-ANT1,75cm 26AWG wire on XH 2-pin plug,,,Kit,1,0.20,0.10,estimate,
-ANT2,Telescopic whip M3 base (optional),,,Kit,0,2.00,1.50,estimate,optional
-C_100n,100nF X7R 0603,CC0603KRX7R9BB104,C14663,Basic,8,0.002,0.001,search snapshot,ok
-C_1u,1uF X5R 0603,CL10A105KB8NNNC,C15849,Basic,6,0.003,0.002,search snapshot,ok
-C_10u,10uF X5R 0603,CL10A106KP8NNNC,C19702,Basic,5,0.005,0.004,search snapshot,ok
-C_22p,22pF C0G 0603,CL10C220JB8NNNC,C1653,Basic,2,0.002,0.001,search snapshot,ok
-C_1n,1nF C0G 0603 FMI coupling,CL10C102JB8NNNC,,Basic?,1,0.002,0.001,estimate,need C-number
-R_5k1,5.1k 0603 USB-C CC,0603WAF5101T5E,C23186,Basic,2,0.001,0.001,search snapshot,ok
-R_3k,3.0k 0603 TP4056 PROG,0603WAF3001T5E,C4211,Basic,1,0.001,0.001,search snapshot,ok
-R_10k,10k 0603,0603WAF1002T5E,C25804,Basic,1,0.001,0.001,search snapshot,ok
-R_100k,100k 0603,0603WAF1003T5E,C25803,Basic,3,0.001,0.001,search snapshot,ok
-R_680,680R 0603 red LED,0603WAF6800T5E,,Basic,1,0.001,0.001,estimate,need C-number
-R_2k2,2.2k 0603 green LED,0603WAF2201T5E,,Basic,1,0.001,0.001,estimate,need C-number
-R_22k,22k 0603 amp Ri,0603WAF2202T5E,,Basic,1,0.001,0.001,estimate,need C-number
-R_220k,220k 0603 amp Rf,0603WAF2203T5E,,Basic,1,0.001,0.001,estimate,need C-number
-C_220n,220nF X5R 0603 amp input coupling,CL10A224KB8NNNC,,Basic,1,0.002,0.001,estimate,need C-number
+Refs,Value / description,MPN,LCSC,JLC class (guess),Qty per radio,Unit $ @10,Unit $ @100,Who,Footprint,Price source,Status
+"C1,C2",22pF,CL10C220JB8NNNC,C1653,Basic,2,0.002,0.001,JLC,C_0603_1608Metric,est,ok
+C11,220nF,CL10A224KB8NNNC,C307462,Basic?,1,0.002,0.001,JLC,C_0603_1608Metric,est,ok
+"C13,C15,C16,C17",10uF,CL10A106KP8NNNC,C19702,Basic,4,0.005,0.004,JLC,C_0603_1608Metric,est,ok
+C3,4.7uF,CL10A475KO8NNNC,,Basic?,1,0.004,0.003,JLC,C_0603_1608Metric,est,need C-number
+"C4,C5,C6,C14",100nF,CC0603KRX7R9BB104,C14663,Basic,4,0.002,0.001,JLC,C_0603_1608Metric,est,ok
+"C7,C18",47uF,CL21A476MQYNNNE,C16780,Extended?,2,0.1025,0.0803,JLC,C_0805_2012Metric,LCSC quote,ok
+"C8,C10,C12,C19,C20",1uF,CL10A105KB8NNNC,C15849,Basic,5,0.003,0.002,JLC,C_0603_1608Metric,est,ok
+C9,1nF C0G,CL10C102JB8NNNC,C163508,Basic?,1,0.002,0.001,JLC,C_0603_1608Metric,est,ok
+D1,B5819W,B5819W SL,C8598,Basic,1,0.02,0.015,JLC,D_SOD-123,est,ok
+D2,RED charging,24-21SURC/S530-A3/TR8,C2892757,Extended,1,0.0471,0.0377,JLC,LED_1206_3216Metric_ReverseMount_Hole1.8x2.4mm,LCSC quote,ok
+D3,GREEN full,25-21/GHC-YSU/2A,C4749157,Extended,1,0.0673,0.0673,JLC,LED_1206_3216Metric_ReverseMount_Hole1.8x2.4mm,LCSC quote,ok
+D4,ESD <=1pF,PESD5V0F1BL (TBD),,Extended,1,0.05,0.03,JLC,D_SOD-882,est,"need part: ESD <=1 pF, SOD-882"
+J2,BATT (PH),B2B-PH-SM4-TB(LF)(SN),,Extended,1,0.15,0.11,JLC,JST_PH_B2B-PH-SM4-TB_1x02-1MP_P2.00mm_Vertical,est,need C-number (vertical SMD PH)
+J3,ANT (XH),GT-A2501WRS-102SBT01,C23067528,Extended,1,0.1,0.08,JLC,Connector_XH-SMD_GSwitch_GT-A2501WRS-102_1x02_P2.50mm_Horizontal,est,ok
+L1,56nH,LQW18AN56NJ00D,,Extended,1,0.1,0.06,JLC,L_0603_1608Metric,est,need C-number
+Q1,AO3401A,AO3401A,C15127,Basic,1,0.04,0.03,JLC,SOT-23,est,ok
+"R1,R16",100k,0603WAF1003T5E,C25803,Basic,2,0.001,0.001,JLC,R_0603_1608Metric,est,ok
+"R11,R12",5.1k,0603WAF5101T5E,C23186,Basic,2,0.001,0.001,JLC,R_0603_1608Metric,est,ok
+R13,3.0k,0603WAF3001T5E,C4211,Basic,1,0.001,0.001,JLC,R_0603_1608Metric,est,ok
+R14,680R,0603WAF6800T5E,C23228,Basic,1,0.001,0.001,JLC,R_0603_1608Metric,est,ok
+R15,2.2k,0603WAF2201T5E,C4190,Basic,1,0.001,0.001,JLC,R_0603_1608Metric,est,ok
+R2,86.6k 0.1%,RT0603BRD0786K6L,C861580,Extended,1,0.0396,0.0337,JLC,R_0603_1608Metric,LCSC quote (min 20),value final after calibration
+R3,11.7k 0.1%,TNPW060311K7BEEA,C4553285,Extended,1,0.0927,0.0744,JLC,R_0603_1608Metric,LCSC quote,value final after calibration
+R4,100R,0603WAF1000T5E,,Basic,1,0.001,0.001,JLC,R_0603_1608Metric,est,need C-number
+R5,430k,0603WAF4303T5E,C25969,Basic?,1,0.001,0.001,JLC,R_0603_1608Metric,est,ok
+R6,68k,0603WAF6802T5E,C23231,Basic?,1,0.001,0.001,JLC,R_0603_1608Metric,est,ok
+R7,22k,0603WAF2202T5E,C31850,Basic,1,0.001,0.001,JLC,R_0603_1608Metric,est,ok
+R8,220k,0603WAF2203T5E,C22961,Basic,1,0.001,0.001,JLC,R_0603_1608Metric,est,ok
+R9,0R,0603WAF0000T5E,C21189,Basic,1,0.001,0.001,JLC,R_0603_1608Metric,est,ok
+U1,Si4825-A10,SI4825-A10-CSR,C2654605,Extended,1,1.4369,1.1052,JLC,SOIC-16_3.9x9.9mm_P1.27mm,LCSC quote,ok
+U2,NS8002,NS8002,C189960,Extended,1,0.045,0.03,JLC,SOIC-8-1EP_3.9x4.9mm_P1.27mm_EP2.41x3.3mm,est,ok; SD jumper both ways
+U3,TP4056,TP4056-42-ESOP8,C16581,Extended,1,0.17,0.087,JLC,SOIC-8-1EP_3.9x4.9mm_P1.27mm_EP2.29x3mm,est,ok
+U4,XC6206P332MR,XC6206P332MR,C5446,Basic,1,0.075,0.059,JLC,SOT-23,est,ok
+U5,XC61CN2702MR,XC61CN2702MR,,Extended,1,0.1,0.06,JLC,SOT-23,est,need C-number; confirm SOT-23 pinout
+Y1,32.768kHz,Q13FC13500004,C32346,Basic,1,0.1,0.1,JLC,Crystal_SMD_3215-2Pin_3.2x1.5mm,est,ok
+J1,USB-C 5V,TYPE-C 6PLTH6.8-DJ,C5156600,Hand (top),1,0.05,0.047,Hand,USB_C_Receptacle_ShouHan_TYPE-C-6PLTH6.8-DJ_Vertical,est,ok
+LS1,SPEAKER 8R,GSPK4935PN-8R2W-L270,C530575,Hand,1,0.7877,0.7877,Hand,Speaker_Wire_Pads_P5,LCSC quote,"ok; cut plug, solder leads"
+RV1,B50K + SW,RV097NS B50K,,Hand,1,1.15,1.15,Hand,Potentiometer_RV097NS_Switch_Vertical_PROVISIONAL,eBay 20 pc kit $23 shipped,footprint PROVISIONAL: measure
+R10,0R (DNP),0603WAF0000T5E,C21189,Not placed,0,0.001,0.001,Not placed,R_0603_1608Metric,est,ok
+RV2,100k CAL (DNP),3296W-1-104,,Not placed,0,0,0,Not placed,PinHeader_1x03_P2.54mm_Vertical,,calibration only
+BT1,"LiPo 1S protected, 500 mAh, PH2.0 lead",eBay 100 pc lot,,—,1,2.83,2.83,Plug-in,,eBay quote $283/100,need dims + polarity
+ANT,75 cm 26 AWG wire on XH 2.54 2-pin plug (1 wire used),custom lead,,—,1,0.3,0.2,Kit,,est,
+WHIP,"Telescopic whip, M3 male, 7-section ~75 cm (optional)",generic,,—,0,2.0,1.2,Kit (optional),,est,optional
+TIES,Zip ties 2.5 x 200 mm,generic,,—,2,0.02,0.01,Assembly,,est,
+PAD,Kapton / 1 mm foam between speaker back and battery,generic,,—,1,0.03,0.02,Assembly,,est,
+JAR,Wide-mouth 8 oz jar + band,Ball/Kerr,,—,1,0.9,0.9,Buy locally,,local quote,measure
