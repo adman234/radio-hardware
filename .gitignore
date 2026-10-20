@@ -4,3 +4,4 @@ kicad/build/
 fp-info-cache
 __pycache__/
 _autosave-*
+kicad/logs/
