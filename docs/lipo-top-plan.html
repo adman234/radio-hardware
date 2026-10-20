@@ -216,7 +216,7 @@
     <li><b>Finding cheaper Basic swaps:</b> the JLC parts search has a "Basic Parts" filter. The free <b>jlcparts</b> site (yaqwsx.github.io/jlcparts) lists the whole JLC library as a filterable table with Basic/Preferred columns, which is much faster for "any 47k 0603 Basic".</li>
   </ol>
 
-  <h3>Speaker: INGHAi HDK-4008BB-2 (C22371323)?</h3>
+  <h3>Speaker: Dragonstate HDK-4008BB-2 (C22371323)</h3>
   <ul>
     <li>A 40 mm, 8 Ω, 1.5 W, 93 dB driver with resonance 550 Hz. <b>The listed response is 550 Hz – 4.5 kHz</b>, which is telephone-band: voices are clear, music has neither bass nor sparkle. It's in the same quality class as the FUET FS40MS. The GSPK4935 is a little louder (95 dB), has its own back box, and is likely the fullest of the three.</li>
     <li><b>"SMD" matters:</b> it has solder pads, not leads with a plug. Either solder a short lead with an XH plug onto it (handwork), or, interestingly, have JLC solder it straight onto the <b>top</b> face. The grille holes then become back-vents into the jar (the jar is the speaker's box) and there are no wires at all. That needs its datasheet: height, pad layout, and whether it can survive reflow soldering.</li>
@@ -316,6 +316,28 @@
     <li><b>SMD switched pots</b> in knob sizes don't really exist; SMD pots are trimmers without switches.</li>
     <li><b>Options:</b> (1) RV097NS vertical with switch, hand-soldered or consigned to JLC's through-hole service; (2) a JLC-stocked vertical pot without switch plus a separate JLC-placed power switch (slide or latching push); (3) no pot at all: Si4825 VOL+/VOL− buttons plus a power switch, all SMD.</li>
   </ul>
+
+
+  <h3>Rev F.5: measured jars, speaker chosen</h3>
+  <div class="tbl"><table>
+    <thead><tr><th></th><th>Wide-mouth 16 oz (measured)</th><th>Regular-mouth 16 oz (measured)</th></tr></thead>
+    <tbody>
+      <tr><td>Lid OD → board OD</td><td class="num">84.3 → <b>84.0 mm</b></td><td class="num">68.0 → <b>67.7 mm</b></td></tr>
+      <tr><td>Band window → top keep-in</td><td class="num">74.0 → Ø72</td><td class="num">56.5 → Ø55</td></tr>
+      <tr><td>Jar ID → inside keep-in</td><td class="num">74.3 → Ø72</td><td class="num">59.6 → Ø58</td></tr>
+      <tr><td>Clamp ring (solid GND)</td><td class="num">Ø74.3–84.0 (≈5 mm wide)</td><td class="num">Ø59.6–67.7 (≈4 mm wide)</td></tr>
+      <tr><td>Thread engagement</td><td>≈1 turn: a 1.6 mm board should still catch (stock lid + seal ≈1 mm)</td><td>same</td></tr>
+      <tr><td>Top-face area for parts</td><td class="num">≈4,070 mm²</td><td class="num">≈2,380 mm² (−42%)</td></tr>
+      <tr><td>Ø40 speaker + 18650 holder inside</td><td>Fits side by side (40 + 21 &lt; 72)</td><td><b>Doesn't fit</b> side by side (40 + 21 &gt; 58)</td></tr>
+      <tr><td>Speaker on the top face (SMD, JLC-placed)</td><td>Fits, with the parts around it</td><td>No room</td></tr>
+      <tr><td>Logos on top</td><td>Yes</td><td>Probably not (inside face only)</td></tr>
+    </tbody>
+  </table></div>
+  <div class="col">
+    <p><b>Regular mouth is possible, with compromises:</b> all parts on top in about 1,500 mm² beside a Ø30 grille (probably 0402 passives and no logo on top), plus either (a) the thin pouch stacked on the speaker's back, or (b) the 18650 with a smaller ≤30 mm speaker. The saving is small (a slightly cheaper jar, ≈$0.05–0.10 less PCB at volume), and the risk is a cramped first board.</p>
+    <p><b>Recommendation:</b> build v1 on the <b>wide-mouth</b> jar, with the 18650 and the Ø40 speaker. Do a regular-mouth "mini" as v2 once v1 works, reusing the same schematic.</p>
+    <p><b>Speaker:</b> <b>Dragonstate HDK-4008BB-2 (C22371323)</b> is selected: Ø40, 8 Ω, 1.5 W, 93 dB, 550 Hz–4.5 kHz. LCSC files it as "SMD", which usually means flat solder pads rather than leads. I need its datasheet to know (a) height, (b) pad layout, and (c) whether it survives reflow. If it does, JLC can place it straight onto the <b>top face</b> (wide-mouth layout), with vent holes under it so the jar acts as its back box. If not, it goes inside under a grille, with two short wires soldered by hand.</p>
+  </div>
 
   <h3>Open questions for this revision</h3>
   <ol class="qlist">

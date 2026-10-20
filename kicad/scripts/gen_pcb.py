@@ -16,10 +16,10 @@ STD = '/usr/share/kicad/footprints'
 OWN = os.path.join(PROJ, 'lib', 'jar-radio.pretty')
 
 GEOM = dict(
-    od=85.5,          # board diameter = wide-mouth flat lid (MEASURE)
-    top_keep=34.0,    # radius of the visible window inside the band lip (MEASURE)
-    bot_keep=36.0,    # radius usable inside the jar mouth (MEASURE)
-    clamp=36.5,       # outside this radius: solid GND both sides, no tracks
+    od=84.0,          # wide-mouth lid measured 84.3 mm
+    top_keep=36.0,    # band window measured 74.0 mm
+    bot_keep=36.0,    # jar ID measured 74.3 mm
+    clamp=37.2,       # outside this radius: solid GND both sides, no tracks
 )
 CX, CY = 150.0, 100.0     # board centre in KiCad page coordinates
 SPK = (-11.0, 0.0)        # speaker centre
