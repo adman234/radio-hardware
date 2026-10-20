@@ -69,6 +69,7 @@ def main():
         '{{IMG_TOP}}': uri('board-top.png'), '{{IMG_BOT}}': uri('board-bottom.png'), '{{IMG_SCH}}': uri('schematic.png'),
         '{{IMG_CU}}': uri('board-copper.png'),
         '{{DRC}}': esc(d.get('text', 'not run')),
+        '{{AAA}}': open(os.path.join(HERE, 'aaa-battery-plan.html')).read() if os.path.exists(os.path.join(HERE, 'aaa-battery-plan.html')) else '',
     }
     for k, v in rep.items():
         t = t.replace(k, v)

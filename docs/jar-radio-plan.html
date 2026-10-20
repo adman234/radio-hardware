@@ -133,6 +133,7 @@ footer ul { padding-left: 18px; columns: 2 300px; }
     <span class="chip go">17 decisions made · 3 open</span>
     <span class="chip hold">Waiting on jar measurements (tonight)</span>
     <span class="chip ph">A few C-numbers and drawings still needed</span>
+    <span class="chip hold">New: variant B (3×AAA, all-top) proposal, see section B</span>
   </div>
   <dl class="spec">
     <div><dt>Station</dt><dd>KOPN 89.5 MHz, Columbia MO</dd></div>
@@ -143,6 +144,78 @@ footer ul { padding-left: 18px; columns: 2 300px; }
     <div><dt>Firmware</dt><dd>None</dd></div>
   </dl>
 </header>
+
+<section id="aaa">
+  <h2><span class="ref">B</span>Variant B: 3×AAA, everything on top (proposal, branch <code>aaa-battery</code>)</h2>
+  <div class="callout"><strong>Status: plan only</strong>No board has been generated for this variant yet. It lives on its own branch so the LiPo board (variant A) is unaffected. Answer the open questions below and I'll lay it out.</div>
+
+  <div class="grid2">
+    <div>
+      <h3>What changes from variant A</h3>
+      <ul>
+        <li><b>All electronics move to the top (outside) face.</b> JLC assembles one side only (Economic PCBA), and that includes the USB-C. The inside face holds only the speaker, the battery box, the plug holes and the clamp ring.</li>
+        <li><b>3×AAA instead of the LiPo.</b> No charger, no charge LEDs, no lithium shipping rules. Alkaline or NiMH both work; <b>USB-C powers the radio but never charges the cells</b>.</li>
+        <li><b>Speaker, battery box and antenna all plug in from inside.</b> Each lead passes up through a hole in the board and plugs into a socket on the top face, so nothing gets hand-soldered.</li>
+        <li><b>The volume/power pot is placed by JLC</b> using their through-hole service, if we find a switched 50 kΩ pot that LCSC stocks (see Q-B4).</li>
+        <li>Same speaker (GSPK4935), same whip, same jar and band, same tuner, amp, station resistors and antenna network.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Power path (no backfeed)</h3>
+<pre class="mono" style="background:var(--surface);border:1px solid var(--line);padding:10px;overflow-x:auto;font-size:0.8rem">USB-C VBUS ──►|── D1 B5819W ──────┐
+                                  ├─ VSYS ─ pot switch ─ VSW ─ amp + LDO
+3×AAA + ─── Q1 AO3401A ───────────┘
+            drain = AAA+, source = VSYS
+            gate = VBUS, 100 kΩ to GND</pre>
+      <ul>
+        <li><b>USB only:</b> D1 feeds VSYS; Q1 is off, so nothing flows into the cells.</li>
+        <li><b>Batteries only:</b> Q1 is fully on (~0.05 Ω); D1 blocks battery voltage from the USB connector.</li>
+        <li><b>Both:</b> USB runs the radio and the cells rest. Q1's internal diode would need ~5.4 V to conduct, and 3 fresh alkalines are 4.8 V.</li>
+        <li><b>Cells reversed:</b> Q1 stays off, so you get reverse-polarity protection for free.</li>
+        <li><b>Runtime</b> at ~70 mA: about 14 h on alkaline AAA, 11 h on NiMH. With the pot switched off, standby draw is microamps.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Parts that change</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Change</th><th>Parts</th><th>Effect per radio</th></tr></thead>
+    <tbody>
+      <tr><td>Remove</td><td>TP4056 charger, red + green LEDs, R13–R15, C16, inside PH battery socket, protected LiPo</td><td class="num">−$3.15 (−$2.83 battery) and −3 Extended fees (−$9/order)</td></tr>
+      <tr><td>Add</td><td>3×AAA battery box with leads + 2-pin plug</td><td class="num">+$0.30–0.60</td></tr>
+      <tr><td>Change</td><td>3 sockets now top-mounted beside pass-through holes (battery, speaker, antenna)</td><td class="num">≈ same</td></tr>
+      <tr><td>Change</td><td>Volume pot placed by JLC (through-hole assembly fee + LCSC part)</td><td class="num">+$0.10–0.30, no hand soldering</td></tr>
+      <tr><td>Change</td><td>Single-sided (top) Economic assembly instead of two-sided Standard</td><td class="num">−$15–25/order</td></tr>
+      <tr><td><b>Net</b></td><td></td><td class="num"><b>≈ $2.50–3.00 cheaper per radio</b>, plus lower order fees</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>The layout problem to solve first</h3>
+  <div class="col">
+    <p>The inside space is the hard part. The usable circle inside the jar mouth is about Ø72 mm, and the GSPK4935 speaker is Ø49 × 35 mm. A flat 3×AAA box is roughly 36 × 50 × 13 mm.</p>
+    <ul>
+      <li>The box <b>can't lie flat on the board beside the speaker</b> (49 + 36 > 72), and its 50 mm length won't fit standing on edge beside it either.</li>
+      <li><b>Option 1, recommended:</b> stack the box flat on the speaker's back, as planned for the LiPo, held by two zip ties through the board. Total depth ≈ 35 + 13 = 48 mm in a jar about 64 mm deep. To change cells you lift the lid out.</li>
+      <li><b>Option 2:</b> hang the box vertically, long side pointing down into the jar, beside the speaker on a small bracket. Depth is about 50 mm, so it fits, but it needs a printed or bent-metal bracket.</li>
+      <li><b>Option 3:</b> use a smaller Ø36 speaker. Then the box can lie flat on the board beside it and screw down directly, at the cost of sound.</li>
+    </ul>
+    <p>On the top face, the electronics, pot, USB-C and three sockets share the Ø68 visible window with the speaker grille. The KOPN logo probably fits only at about 12 mm tall (it's 15 mm now). The CGW logo would move to the inside face, or be dropped from the top.</p>
+  </div>
+
+  <h3>Open questions for variant B</h3>
+  <ol class="qlist">
+    <li><b>Q-B1 · Exposed electronics on the lid.</b> Every SMT part becomes visible on the outside face. Is that the look you want ("visible circuit" style)? Or should we plan a cover: a laser-cut acrylic or wood disc under the band, or a 3D-printed cap with holes for the knob and USB?<div class="rec">If it's for KOPN supporters, a thin smoked-acrylic disc over the top looks good and protects the parts. With a cover, the logos go on the cover instead of the PCB.</div></li>
+    <li><b>Q-B2 · Battery box choice and mounting.</b> Which of options 1–3 above? Any preferred box (open 3×AAA with leads, or an enclosed box with cover and screw)?<div class="rec">Option 1: an open 3×AAA box with leads, stacked on the speaker back with two zip ties. The cheapest boxes have no screw holes that line up with anything useful.</div></li>
+    <li><b>Q-B3 · Connector families, so plugs can't be swapped.</b> All three leads come up through holes next to each other.<div class="rec">Battery = JST-PH 2.0 (what most AAA boxes ship with), speaker = JST-XH 2.5 (re-terminate the GSPK4935's 2.0 mm plug, or use an XH adapter lead), antenna = a 1-pin connector or the M3 screw (see Q-B6). Different pitches mean nothing can be plugged into the wrong socket.</div></li>
+    <li><b>Q-B4 · A switched 50 kΩ pot that JLC can place.</b> Please search LCSC for <span class="mono">RV097NS</span>, <span class="mono">potentiometer with switch 50K</span>, and <span class="mono">R0902N switch</span>. I need a vertical PCB-mount part with an SPST switch, a shaft long enough for the knob (≈15 mm), and stock at JLC. A or B taper both work.<div class="rec">If nothing is stocked, JLC can still fit a part you consign to them, or it stays the one hand-soldered part.</div></li>
+    <li><b>Q-B5 · Socket orientation.</b> Right-angle sockets lying flat beside each hole (the lead comes up and plugs in sideways, which is tidy and low-profile)? Or vertical sockets (plugs point up, which is easier to grab)?<div class="rec">Right-angle, opening toward the hole, so the cable stays flat on the lid. The holes are about 8 × 6.5 mm for an XH plug and 7 × 5 mm for PH.</div></li>
+    <li><b>Q-B6 · "Whip antenna has a JST plug on top": what exactly?</b> A telescopic whip needs a mechanical mount to stand up; a JST plug alone won't hold it.<div class="rec">Keep the plated M3 mount on top for the whip: the screw makes the electrical contact and holds it upright. Keep one small socket on top for the 75 cm wire antenna, run inside or out. That gives two antenna choices, as in variant A.</div></li>
+    <li><b>Q-B7 · Speaker mounting.</b> Screw through the speaker's ear into the board, plus a zip tie? I need the ear hole's distance from the speaker centre and its diameter.<div class="rec">M2.5 screw through the ear + a nylon standoff, and the battery stack holds the speaker against the grille.</div></li>
+    <li><b>Q-B8 · Power indicator.</b> With no charge LEDs, add a small "on" LED (≈1 mA)?<div class="rec">Yes. One reverse-mount LED is cheap, and it stops people leaving the radio switched on with the volume down.</div></li>
+    <li><b>Q-B9 · Labelling.</b> Silkscreen "USB-C powers the radio; it does not charge batteries" near the port, and "3×AAA alkaline or NiMH" inside?<div class="rec">Yes. People will assume USB charges the cells.</div></li>
+    <li><b>Q-B10 · Keep variant A?</b> Finish both boards (LiPo and AAA), or drop the LiPo version once B is laid out?</li>
+  </ol>
+</section>
 
 <section>
   <h2><span class="ref">01</span>The jar is wide-mouth, so the board grows</h2>
