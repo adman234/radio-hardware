@@ -308,6 +308,15 @@
 <tr><td>NEW</td><td>Polyfuse PTC 1206</td><td>(choose)</td><td>?</td><td>Resettable fuse, hold 0.5-0.75 A, trip ~1-1.5 A, &gt;=6 V, 1206</td><td>SMD1206P050TF, SMD1206P075TF, BSMD1206-050, 1206 PTC 0.5A</td><td>Last-resort fuse in the battery + line</td></tr>
 </tbody></table></div>
 
+
+  <h3>Rev F.4: jar size and switched-pot search</h3>
+  <ul>
+    <li><b>Jar:</b> planning on a <b>16 oz</b> jar so a single 18650 in a holder (~77 mm) can hang inside. Please confirm <b>wide-mouth</b> (86 mm lid, which is what the board is drawn for) or regular-mouth (70 mm lid, which would make the board much smaller).</li>
+    <li><b>Alps RK097 datasheet:</b> every switched model is <b>horizontal only</b>. That covers the rotary switch (RK0971111Z0P / Z32, RK0971221), push-on/push-off (RK097111202P/Q, RK097122200G) and push switch (RK0971114D0B, RK0971214Z06, RK0971224Z01, RK0971114Z07). The family overview lists vertical terminals only for RK09L and RK119, and neither appears in the datasheet with a switch.</li>
+    <li><b>SMD switched pots</b> in knob sizes don't really exist; SMD pots are trimmers without switches.</li>
+    <li><b>Options:</b> (1) RV097NS vertical with switch, hand-soldered or consigned to JLC's through-hole service; (2) a JLC-stocked vertical pot without switch plus a separate JLC-placed power switch (slide or latching push); (3) no pot at all: Si4825 VOL+/VOL− buttons plus a power switch, all SMD.</li>
+  </ul>
+
   <h3>Open questions for this revision</h3>
   <ol class="qlist">
     <li><b>Q-T1 · Visible parts on the lid.</b> All the chips will show on the outside. Keep the bare "circuit-board lid" look, or plan a cover (smoked acrylic or wood disc under the band, with holes for knob, USB and sockets)?<div class="rec">Bare board for the prototypes. Decide on a cover after seeing them. A cover changes nothing on the PCB except the logos, which would move onto it.</div></li>
