@@ -124,21 +124,22 @@ footer ul { padding-left: 18px; columns: 2 300px; }
 <div class="wrap">
 
 <header class="top">
-  <div class="eyebrow">adman234/radio-hardware · branch jar-radio-redesign · plan rev A · 2026-10-20</div>
+  <div class="eyebrow">adman234/radio-hardware · branch jar-radio-redesign · plan rev B · 2026-10-20</div>
   <h1>KOPN 89.5 Jar Radio</h1>
   <p class="lede">A cheaper, single-station FM radio whose circuit board <em>is</em> the jar lid. It clamps onto a stock mason jar with a normal ring, has no firmware, charges from USB-C, and runs from USB alone or from an optional LiPo cell. This page is the full plan. <strong>The board is not generated yet.</strong> It waits for your answers to the open questions at the end.</p>
   <div class="status">
     <span class="chip go">Research done</span>
     <span class="chip go">KiCad toolchain ready</span>
-    <span class="chip hold">Board generation on hold for your review</span>
-    <span class="chip ph">Several part numbers are placeholders</span>
+    <span class="chip go">14 decisions made · 5 open</span>
+    <span class="chip hold">Waiting on jar measurements (tonight)</span>
+    <span class="chip ph">LCSC C-numbers still needed for 7 parts</span>
   </div>
   <dl class="spec">
     <div><dt>Station</dt><dd>KOPN 89.5 MHz, Columbia MO</dd></div>
     <div><dt>Tuner</dt><dd>Si4825-A10, fixed by 2 resistors</dd></div>
     <div><dt>Amplifier</dt><dd>NS8002 class AB, about 0.5 W</dd></div>
     <div><dt>Power</dt><dd>USB-C 5 V and/or 1S LiPo on JST-PH</dd></div>
-    <div><dt>Board</dt><dd>Ø85.5 mm round, 2 layers (assumed)</dd></div>
+    <div><dt>Board</dt><dd>Ø85.5 mm (pending measurement), 2 layers, 1.6 mm, black</dd></div>
     <div><dt>Firmware</dt><dd>None</dd></div>
   </dl>
 </header>
@@ -243,17 +244,17 @@ footer ul { padding-left: 18px; columns: 2 300px; }
         <li>Vertical USB-C, hand-soldered. The cable plugs straight down into the lid.</li>
         <li>Two charge LEDs (red = charging, green = full), mounted on the bottom and shining up through 1.8 × 2.4 mm holes (reverse-mount parts).</li>
         <li>Optional M3 telescoping-antenna mount and a Ø3 mm hole for the wire antenna to exit.</li>
-        <li>Silkscreen artwork: "KOPN 89.5", the city, and the grille pattern. Black mask with white silk suggested.</li>
+        <li>Silkscreen: KOPN logo and name, "89.5 FM", and the grille pattern; white on black mask.</li>
       </ul>
     </div>
     <div>
       <h3>Bottom face (inside the jar)</h3>
       <ul>
         <li>All SMT parts, assembled by JLCPCB (single-sided order).</li>
-        <li>Speaker, Ø40 mm max, front pressed to the board on a foam gasket, held by one zip tie plus adhesive.</li>
-        <li>LiPo cell, 25 × 30 mm footprint (any thickness), two zip ties, with a foam or Kapton pad under it.</li>
+        <li>Speaker, Ø40 mm max, front pressed to the board under the grille, held by one zip tie across its magnet.</li>
+        <li>LiPo cell, 25 × 30 mm footprint, held by two zip ties, with a Kapton or foam pad under it so no part edges press on the cell.</li>
         <li>JST-PH battery socket and JST-XH antenna socket. Different pitches, so the plugs can't be swapped.</li>
-        <li>No copper or parts in the outer ring where the glass rim presses; solder mask only. A thin gasket is recommended.</li>
+        <li>The outer ring the jar rim and band clamp is solid ground copper on both layers, stitched with vias, with no traces or parts. No gasket for now.</li><li>CGW logo and name in silkscreen on this face.</li>
       </ul>
     </div>
   </div>
@@ -366,8 +367,8 @@ flowchart LR
   <div class="tbl"><table>
     <thead><tr><th>Option</th><th>Size</th><th>Impedance / power</th><th>Sensitivity / fs</th><th>Source</th><th>Est. price</th><th>Fit</th></tr></thead>
     <tbody>
-      <tr><td><b>Visaton K 40, 8 Ω</b> (recommended for sound)</td><td>Ø40 mm, IP65</td><td>8 Ω, 1 W (2 W max)</td><td>83 dB, 520 Hz</td><td><span class="mono">LCSC C3310715</span></td><td class="num">$4–6 <span class="tag p">verify</span></td><td>Fits the layout</td></tr>
-      <tr><td><b>Generic 40 mm 8 Ω 2 W</b> internal magnet (recommended for cost)</td><td>Ø40 × ~20 mm</td><td>8 Ω, 2 W</td><td>unknown</td><td>AliExpress / Adafruit 3968 style</td><td class="num">$0.40–1.00</td><td>Fits; test-listen first</td></tr>
+      <tr><td>Visaton K 40, 8 Ω (upgrade option)</td><td>Ø40 mm, IP65</td><td>8 Ω, 1 W (2 W max)</td><td>83 dB, 520 Hz</td><td><span class="mono">LCSC C3310715</span></td><td class="num">$4–6 <span class="tag p">verify</span></td><td>Fits the layout</td></tr>
+      <tr><td><b>Generic 40 mm 8 Ω 2 W</b> internal magnet. <b>Chosen.</b></td><td>Ø40 × ~20 mm</td><td>8 Ω, 2 W</td><td>unknown</td><td>AliExpress (see buy list)</td><td class="num">≈ $0.27</td><td>Fits; listen to a few before buying 100</td></tr>
       <tr><td>Dayton CE32A-8 (original lineage)</td><td>32 mm square</td><td>8 Ω, 1.5–3 W</td><td>~78 dB, 274 Hz</td><td>Parts Express 285-101</td><td class="num">$4–5</td><td>Fits; has screw holes</td></tr>
       <tr><td>Visaton K 50 WP, 8 Ω</td><td>Ø50 × 18.5 mm</td><td>8 Ω, 2 W</td><td>84 dB, 300 Hz</td><td><span class="mono">LCSC C3311190</span> (non-WP)</td><td class="num">$10–11</td><td>Best bass; needs the battery stacked or smaller (Q5)</td></tr>
     </tbody>
@@ -377,62 +378,97 @@ flowchart LR
 
 <section>
   <h2><span class="ref">06</span>Bill of materials</h2>
-  <div class="col"><p>JLCPCB class: <span class="tag b">Basic</span> no setup fee · <span class="tag e">Extended</span> $3 per unique part per order · <span class="tag h">Hand</span> you solder it · <span class="tag p">Placeholder</span> part number or price not verified; please look it up. I couldn't reach LCSC or JLCPCB from my environment, so every part number came from search snapshots. Recheck stock and class before ordering.</p></div>
+  <div class="col"><p>JLCPCB class: <span class="tag b">Basic</span> no setup fee · <span class="tag e">Extended</span> $3 per unique part per order · <span class="tag h">Hand</span> you solder it · <span class="tag p">Need</span> something still missing. <b>Bold prices</b> are the quotes you sent; the rest are my estimates or search snapshots. JLC's assembly BOM needs an LCSC C-number for every part it places, so the "LCSC" column shows the gaps.</p></div>
   <div class="tbl"><table>
-    <thead><tr><th>Ref</th><th>Part</th><th>MPN</th><th>LCSC</th><th>Class</th><th>Qty</th><th>Est. $/unit</th></tr></thead>
+    <thead><tr><th>Ref</th><th>Part</th><th>MPN</th><th>LCSC</th><th>Class</th><th>Qty</th><th>$ @ 10</th><th>$ @ 100</th></tr></thead>
     <tbody>
-      <tr class="grp"><td colspan="7">Tuner</td></tr>
-      <tr><td>U1</td><td>FM receiver, SOIC-16</td><td class="mono">SI4825-A10-CSR</td><td class="mono">C2654605</td><td><span class="tag e">Ext</span></td><td class="num">1</td><td class="num">1.00–2.00 <span class="tag p">verify</span></td></tr>
-      <tr><td>Y1</td><td>32.768 kHz crystal, 3215</td><td class="mono">Q13FC13500004</td><td class="mono">C32346</td><td><span class="tag b">Basic</span></td><td class="num">1</td><td class="num">0.10</td></tr>
-      <tr><td>R_TUNE_H / L</td><td>86.6 kΩ / 11.7 kΩ 0.1% 0603 (station)</td><td>—</td><td><span class="tag p">lookup</span></td><td><span class="tag e">Ext</span></td><td class="num">1+1</td><td class="num">0.02 ea <span class="tag p">est</span></td></tr>
-      <tr><td>R_BAND_H / L</td><td>432 kΩ / 66.5 kΩ 1% 0603 (band FM3)</td><td>—</td><td><span class="tag p">lookup</span></td><td><span class="tag e">Ext?</span></td><td class="num">1+1</td><td class="num">0.01 ea <span class="tag p">est</span></td></tr>
-      <tr><td>FB1</td><td>Ferrite bead ≥2.5 kΩ at 100 MHz, 0603</td><td class="mono">BLM18BD252SN1 or equiv.</td><td><span class="tag p">lookup</span></td><td><span class="tag e">Ext?</span></td><td class="num">1</td><td class="num">0.02 <span class="tag p">est</span></td></tr>
-      <tr><td>C_TUNE</td><td>47 µF 6.3 V X5R, 1206</td><td>—</td><td><span class="tag p">lookup</span></td><td><span class="tag b">Basic?</span></td><td class="num">1</td><td class="num">0.03 <span class="tag p">est</span></td></tr>
-      <tr><td>RV_CAL</td><td>5 kΩ SMD trimmer (calibration, not fitted)</td><td>—</td><td>—</td><td>DNP</td><td class="num">0</td><td class="num">—</td></tr>
-      <tr class="grp"><td colspan="7">Audio</td></tr>
-      <tr><td>U2</td><td>Class AB BTL amp, SOP-8</td><td class="mono">NS8002</td><td class="mono">C189960</td><td><span class="tag e">Ext</span></td><td class="num">1</td><td class="num">0.03</td></tr>
-      <tr><td>RV1</td><td>9 mm vertical pot, A50K log, with SPST switch, 5 pins</td><td class="mono">RV097NS type</td><td>not on LCSC</td><td><span class="tag h">Hand</span></td><td class="num">1</td><td class="num">0.30–0.60 <span class="tag p">est</span></td></tr>
-      <tr><td>—</td><td>Knob, 6 mm D-shaft, 22–25 mm skirt</td><td>—</td><td>—</td><td><span class="tag h">Hand</span></td><td class="num">1</td><td class="num">0.15–0.40</td></tr>
-      <tr><td>LS1</td><td>Speaker, Ø40 mm 8 Ω (see section 05)</td><td>—</td><td>—</td><td><span class="tag h">Hand</span></td><td class="num">1</td><td class="num">0.40–6.00</td></tr>
-      <tr class="grp"><td colspan="7">Power</td></tr>
-      <tr><td>J1</td><td>USB-C 6-pin power-only, vertical SMD, 6.8 mm</td><td class="mono">TYPE-C 6PLTH6.8-DJ</td><td class="mono">C5156600</td><td><span class="tag h">Hand</span> (top)</td><td class="num">1</td><td class="num">0.05</td></tr>
-      <tr><td>U3</td><td>Li-ion linear charger, ESOP-8</td><td class="mono">TP4056-42-ESOP8</td><td class="mono">C16581</td><td><span class="tag e">Ext</span></td><td class="num">1</td><td class="num">0.09</td></tr>
-      <tr><td>Q1</td><td>P-MOSFET 30 V, SOT-23 (load share)</td><td class="mono">AO3401A</td><td class="mono">C15127</td><td><span class="tag b">Basic</span></td><td class="num">1</td><td class="num">0.03</td></tr>
-      <tr><td>D1</td><td>Schottky 40 V 3 A, SMA</td><td class="mono">SS34</td><td class="mono">C8678</td><td><span class="tag b">Basic</span></td><td class="num">1</td><td class="num">0.02</td></tr>
-      <tr><td>U4</td><td>3.3 V LDO, SOT-23</td><td class="mono">XC6206P332MR</td><td class="mono">C5446</td><td><span class="tag b">Basic</span></td><td class="num">1</td><td class="num">0.06</td></tr>
-      <tr><td>J2</td><td>JST-PH 2-pin SMD right-angle (battery)</td><td class="mono">S2B-PH-SM4-TB</td><td class="mono">C295747</td><td><span class="tag e">Ext</span></td><td class="num">1</td><td class="num">0.11</td></tr>
-      <tr><td>D2 / D3</td><td>LED red / green, 1206 reverse-mount</td><td>—</td><td><span class="tag p">lookup</span></td><td><span class="tag e">Ext</span></td><td class="num">1+1</td><td class="num">0.03 ea <span class="tag p">est</span></td></tr>
-      <tr><td>BT1</td><td>LiPo 1S, protected, 25 × 30 mm, 400–800 mAh, JST-PH lead</td><td class="mono">502530 / 802530 class</td><td>—</td><td><span class="tag h">Hand</span></td><td class="num">1</td><td class="num">1.50–3.00 <span class="tag p">est</span></td></tr>
-      <tr class="grp"><td colspan="7">Antenna</td></tr>
-      <tr><td>J3</td><td>JST-XH 2-pin header (antenna), SMD or THT</td><td class="mono">B2B-XH-A / S2B-XH-SM4</td><td><span class="tag p">lookup</span></td><td><span class="tag e">Ext</span></td><td class="num">1</td><td class="num">0.03–0.10 <span class="tag p">est</span></td></tr>
-      <tr><td>—</td><td>75 cm 26 AWG silicone wire + XH plug pigtail</td><td>—</td><td>—</td><td><span class="tag h">Kit</span></td><td class="num">1</td><td class="num">0.10–0.20</td></tr>
-      <tr><td>—</td><td>Telescopic whip, M3 screw base (optional)</td><td>—</td><td>—</td><td><span class="tag h">Kit</span></td><td class="num">0–1</td><td class="num">1.50–3.00</td></tr>
-      <tr class="grp"><td colspan="7">Passives (all 0603, Basic)</td></tr>
-      <tr><td>—</td><td>100 nF X7R</td><td class="mono">CC0603KRX7R9BB104</td><td class="mono">C14663</td><td><span class="tag b">Basic</span></td><td class="num">~8</td><td class="num">&lt;0.01</td></tr>
-      <tr><td>—</td><td>1 µF X5R</td><td class="mono">CL10A105KB8NNNC</td><td class="mono">C15849</td><td><span class="tag b">Basic</span></td><td class="num">~6</td><td class="num">&lt;0.01</td></tr>
-      <tr><td>—</td><td>10 µF X5R</td><td class="mono">CL10A106KP8NNNC</td><td class="mono">C19702</td><td><span class="tag b">Basic</span></td><td class="num">~5</td><td class="num">&lt;0.01</td></tr>
-      <tr><td>—</td><td>22 pF C0G (crystal)</td><td class="mono">CL10C220JB8NNNC</td><td class="mono">C1653</td><td><span class="tag b">Basic</span></td><td class="num">2</td><td class="num">&lt;0.01</td></tr>
-      <tr><td>—</td><td>1 nF C0G (FMI coupling)</td><td>—</td><td><span class="tag p">lookup</span></td><td><span class="tag b">Basic?</span></td><td class="num">1</td><td class="num">&lt;0.01</td></tr>
-      <tr><td>—</td><td>5.1 kΩ (CC ×2)</td><td class="mono">0603WAF5101T5E</td><td class="mono">C23186</td><td><span class="tag b">Basic</span></td><td class="num">2</td><td class="num">&lt;0.01</td></tr>
-      <tr><td>—</td><td>3.0 kΩ (PROG)</td><td class="mono">0603WAF3001T5E</td><td class="mono">C4211</td><td><span class="tag b">Basic</span></td><td class="num">1</td><td class="num">&lt;0.01</td></tr>
-      <tr><td>—</td><td>10 kΩ / 100 kΩ / 1 kΩ / 0 Ω</td><td class="mono">0603WAF…</td><td class="mono">C25804 / C25803 / C21190 <span class="tag p">verify</span></td><td><span class="tag b">Basic</span></td><td class="num">~8</td><td class="num">&lt;0.01</td></tr>
+      <tr class="grp"><td colspan="8">Tuner</td></tr>
+      <tr><td>U1</td><td>FM receiver, SOIC-16</td><td class="mono">SI4825-A10-CSR</td><td class="mono">C2654605</td><td><span class="tag e">Ext</span></td><td class="num">1</td><td class="num"><b>1.437</b></td><td class="num"><b>1.105</b></td></tr>
+      <tr><td>Y1</td><td>32.768 kHz crystal, 3215</td><td class="mono">Q13FC13500004</td><td class="mono">C32346</td><td><span class="tag b">Basic</span></td><td class="num">1</td><td class="num">0.10</td><td class="num">0.10</td></tr>
+      <tr><td>R_TUNE_H</td><td>86.6 kΩ 0.1% 0603 (station, top)</td><td class="mono">YAGEO RT0603BRD0786K6L</td><td><span class="tag p">need C#</span></td><td><span class="tag e">Ext</span></td><td class="num">1</td><td class="num"><b>0.040</b> <small>(min 20)</small></td><td class="num"><b>0.034</b></td></tr>
+      <tr><td>R_TUNE_L</td><td>11.7 kΩ 0.1% 0603 (station, bottom)</td><td class="mono">VISHAY TNPW060311K7BEEA</td><td><span class="tag p">need C#</span></td><td><span class="tag e">Ext</span></td><td class="num">1</td><td class="num"><b>0.093</b></td><td class="num"><b>0.074</b></td></tr>
+      <tr><td>RV_CAL</td><td>5 kΩ SMD trimmer footprint (calibration)</td><td>—</td><td>—</td><td>Not placed</td><td class="num">0</td><td class="num">—</td><td class="num">—</td></tr>
+      <tr><td>JP_CAL</td><td>0 Ω 0603 bypass for RV_CAL</td><td class="mono">0603WAF0000T5E</td><td><span class="tag p">verify C#</span></td><td><span class="tag b">Basic</span></td><td class="num">1</td><td class="num">&lt;0.01</td><td class="num">&lt;0.01</td></tr>
+      <tr><td>R_BAND_H / L</td><td>432 kΩ / 66.5 kΩ 1% 0603 (band FM3)</td><td>—</td><td><span class="tag p">need C#</span></td><td><span class="tag e">Ext?</span></td><td class="num">1+1</td><td class="num">0.01 ea</td><td class="num">0.01 ea</td></tr>
+      <tr><td>FB1</td><td>Ferrite bead 2.5 kΩ at 100 MHz, 200 mA, 0603</td><td class="mono">TDK MMZ1608A252BTA00</td><td><span class="tag p">need C#</span></td><td><span class="tag e">Ext</span></td><td class="num">1</td><td class="num"><b>0.021</b></td><td class="num"><b>0.017</b></td></tr>
+      <tr><td>C_TUNE</td><td>47 µF X5R 1206 (TUNE1 hold-up)</td><td class="mono">muRata GRM31CR61E476ME44L</td><td><span class="tag p">need C#</span></td><td><span class="tag e">Ext</span></td><td class="num">1</td><td class="num"><b>0.463</b></td><td class="num"><b>0.338</b></td></tr>
+      <tr><td colspan="8"><small>The 47 µF Murata is rated 25 V; this node only sees 3.3 V. A 6.3–10 V part such as Samsung <span class="mono">CL31A476MQHNNNE</span> (1206) or <span class="mono">CL21A476MQYNNNE</span> (0805) should cost about $0.02–0.04 and may be Basic. That saves roughly $0.30 per radio. Look-up L3.</small></td></tr>
+      <tr class="grp"><td colspan="8">Audio</td></tr>
+      <tr><td>U2</td><td>Class AB BTL amp, SOP-8</td><td class="mono">NS8002</td><td class="mono">C189960</td><td><span class="tag e">Ext</span></td><td class="num">1</td><td class="num">0.045</td><td class="num">0.03</td></tr>
+      <tr><td>RV1</td><td>9 mm pot, <b>B50K</b> + SPST switch, 5-pin, 15 mm knurled shaft</td><td class="mono">RV097NS</td><td>AliExpress</td><td><span class="tag h">Hand</span></td><td class="num">1</td><td class="num">≈0.50</td><td class="num">≈0.25</td></tr>
+      <tr><td>—</td><td>Knob, 6 mm knurled (18-tooth) shaft, ~20 mm</td><td>—</td><td>AliExpress</td><td><span class="tag h">Hand</span></td><td class="num">1</td><td class="num">≈0.25</td><td class="num">≈0.12</td></tr>
+      <tr><td>LS1</td><td>Speaker, Ø40 mm 8 Ω 2 W, internal magnet</td><td>generic</td><td>AliExpress</td><td><span class="tag h">Hand</span></td><td class="num">1</td><td class="num">≈0.30</td><td class="num">≈0.25</td></tr>
+      <tr class="grp"><td colspan="8">Power</td></tr>
+      <tr><td>J1</td><td>USB-C 6-pin power-only, vertical SMD, 6.8 mm</td><td class="mono">TYPE-C 6PLTH6.8-DJ</td><td class="mono">C5156600</td><td><span class="tag h">Hand</span> (top)</td><td class="num">1</td><td class="num">0.05</td><td class="num">0.05</td></tr>
+      <tr><td>U3</td><td>Li-ion linear charger, ESOP-8</td><td class="mono">TP4056-42-ESOP8</td><td class="mono">C16581</td><td><span class="tag e">Ext</span></td><td class="num">1</td><td class="num">0.17</td><td class="num">0.09</td></tr>
+      <tr><td>Q1</td><td>P-MOSFET 30 V, SOT-23 (load share)</td><td class="mono">AO3401A</td><td class="mono">C15127</td><td><span class="tag b">Basic</span></td><td class="num">1</td><td class="num">0.04</td><td class="num">0.03</td></tr>
+      <tr><td>D1</td><td>Schottky 40 V 3 A, SMA</td><td class="mono">SS34</td><td class="mono">C8678</td><td><span class="tag b">Basic</span></td><td class="num">1</td><td class="num">0.02</td><td class="num">0.02</td></tr>
+      <tr><td>U4</td><td>3.3 V LDO, SOT-23</td><td class="mono">XC6206P332MR</td><td class="mono">C5446</td><td><span class="tag b">Basic</span></td><td class="num">1</td><td class="num">0.075</td><td class="num">0.06</td></tr>
+      <tr><td>J2</td><td>JST-PH 2-pin SMD right-angle (battery)</td><td class="mono">S2B-PH-SM4-TB</td><td class="mono">C295747</td><td><span class="tag e">Ext</span></td><td class="num">1</td><td class="num">0.11</td><td class="num">0.11</td></tr>
+      <tr><td>D2</td><td>LED red, 1206 reverse-mount (charging)</td><td class="mono">EVERLIGHT 24-21SURC/S530-A3/TR8</td><td><span class="tag p">need C#</span></td><td><span class="tag e">Ext</span></td><td class="num">1</td><td class="num"><b>0.047</b></td><td class="num"><b>0.038</b></td></tr>
+      <tr><td>D3</td><td>LED green, 1206 reverse-mount (full)</td><td class="mono">EVERLIGHT 25-21/GHC-YSU/2A</td><td><span class="tag p">need C#</span></td><td><span class="tag e">Ext</span></td><td class="num">1</td><td class="num"><b>0.067</b></td><td class="num"><b>0.067</b></td></tr>
+      <tr><td colspan="8"><small>LED resistors, both from VBUS (5 V): red Vf 2.0 V → 680 Ω ≈ 4.4 mA; green Vf 3.5 V and 447 mcd → 2.2 kΩ ≈ 0.7 mA (it's very bright, so this matches the red's apparent brightness). Adjust after seeing them.</small></td></tr>
+      <tr><td>BT1</td><td>LiPo 1S protected, 502530 class, 370–450 mAh, JST-PH lead</td><td>generic</td><td>AliExpress</td><td><span class="tag h">Hand</span></td><td class="num">1</td><td class="num">≈1.50</td><td class="num">≈1.00</td></tr>
+      <tr class="grp"><td colspan="8">Antenna</td></tr>
+      <tr><td>J3</td><td>JST-XH 2-pin header (antenna), SMD right-angle</td><td class="mono">S2B-XH-SM4-TB(LF)(SN)</td><td><span class="tag p">need C#</span></td><td><span class="tag e">Ext</span></td><td class="num">1</td><td class="num">≈0.10</td><td class="num">≈0.08</td></tr>
+      <tr><td>—</td><td>75 cm 26 AWG wire on an XH 2-pin plug</td><td>—</td><td>AliExpress / Tayda</td><td><span class="tag h">Kit</span></td><td class="num">1</td><td class="num">≈0.20</td><td class="num">≈0.10</td></tr>
+      <tr><td>—</td><td>Telescopic whip, M3 screw base (optional)</td><td>—</td><td>AliExpress</td><td><span class="tag h">Kit</span></td><td class="num">0</td><td class="num">1.50–3.00</td><td class="num">—</td></tr>
+      <tr class="grp"><td colspan="8">Passives (0603, Basic)</td></tr>
+      <tr><td>—</td><td>100 nF X7R</td><td class="mono">CC0603KRX7R9BB104</td><td class="mono">C14663</td><td><span class="tag b">Basic</span></td><td class="num">~8</td><td class="num">&lt;0.01</td><td class="num">&lt;0.01</td></tr>
+      <tr><td>—</td><td>1 µF X5R</td><td class="mono">CL10A105KB8NNNC</td><td class="mono">C15849</td><td><span class="tag b">Basic</span></td><td class="num">~6</td><td class="num">&lt;0.01</td><td class="num">&lt;0.01</td></tr>
+      <tr><td>—</td><td>10 µF X5R</td><td class="mono">CL10A106KP8NNNC</td><td class="mono">C19702</td><td><span class="tag b">Basic</span></td><td class="num">~5</td><td class="num">&lt;0.01</td><td class="num">&lt;0.01</td></tr>
+      <tr><td>—</td><td>22 pF C0G (crystal)</td><td class="mono">CL10C220JB8NNNC</td><td class="mono">C1653</td><td><span class="tag b">Basic</span></td><td class="num">2</td><td class="num">&lt;0.01</td><td class="num">&lt;0.01</td></tr>
+      <tr><td>—</td><td>1 nF C0G (FMI coupling)</td><td>—</td><td><span class="tag p">need C#</span></td><td><span class="tag b">Basic?</span></td><td class="num">1</td><td class="num">&lt;0.01</td><td class="num">&lt;0.01</td></tr>
+      <tr><td>—</td><td>5.1 kΩ (CC ×2) · 3.0 kΩ (PROG) · 10 k · 100 k · 680 Ω · 2.2 k</td><td class="mono">0603WAF…</td><td class="mono">C23186 · C4211 · C25804 · C25803 · <span class="tag p">verify</span></td><td><span class="tag b">Basic</span></td><td class="num">~10</td><td class="num">&lt;0.01</td><td class="num">&lt;0.01</td></tr>
     </tbody>
   </table></div>
 
-  <h3>Rough cost per radio at 100 units</h3>
+  <h3>What the first order costs (5 boards, JLC assembles 5)</h3>
   <div class="tbl"><table>
-    <thead><tr><th>Bucket</th><th>Low</th><th>High</th><th>Notes</th></tr></thead>
+    <thead><tr><th>Line</th><th>Est.</th><th>Notes</th></tr></thead>
     <tbody>
-      <tr><td>JLC-assembled electronics</td><td class="num">$1.60</td><td class="num">$2.80</td><td>Si4825 is most of it</td></tr>
-      <tr><td>JLC fees spread over 100 (setup, stencil, ~10 Extended)</td><td class="num">$0.40</td><td class="num">$0.60</td><td>≈ $40–60 per order</td></tr>
-      <tr><td>PCB, Ø85.5 mm, 2 layers, black mask</td><td class="num">$0.40</td><td class="num">$0.90</td><td>colour and thickness change price</td></tr>
-      <tr><td>Hand parts: pot, knob, USB-C</td><td class="num">$0.50</td><td class="num">$1.10</td><td></td></tr>
-      <tr><td>Speaker</td><td class="num">$0.40</td><td class="num">$6.00</td><td>generic vs Visaton</td></tr>
-      <tr><td>LiPo cell (optional)</td><td class="num">$0.00</td><td class="num">$3.00</td><td>USB-only units skip it</td></tr>
-      <tr><td>Antenna wire / pigtail</td><td class="num">$0.10</td><td class="num">$0.20</td><td>telescopic adds $1.50–3</td></tr>
-      <tr><td><b>Total, excluding jar, ring and box</b></td><td class="num"><b>$3.40</b></td><td class="num"><b>$14.60</b></td><td>About $6–8 for a typical build: generic speaker, 450 mAh cell</td></tr>
+      <tr><td>5 PCBs, Ø85.5 mm, 2 layers, 1.6 mm, black, both-side silkscreen</td><td class="num">$2–8</td><td>Under 100 × 100 mm, black is usually the same price as green; two-sided silkscreen is free at JLC. Check the quote.</td></tr>
+      <tr><td>Assembly setup + stencil (one side)</td><td class="num">≈ $10</td><td>bottom side only</td></tr>
+      <tr><td>Extended-part fees</td><td class="num">≈ $39</td><td>13 unique Extended parts × $3. The biggest line at 5 pcs.</td></tr>
+      <tr><td>Parts (with JLC minimum-buy rounding)</td><td class="num">≈ $15</td><td>the 47 µF and the minimum-20 resistor dominate</td></tr>
+      <tr><td>Shipping (US, economy)</td><td class="num">$10–25</td><td></td></tr>
+      <tr><td>Hand parts from AliExpress (10× speaker, pot, knob, cell, pigtails)</td><td class="num">≈ $25</td><td>enough for 5 radios plus spares</td></tr>
+      <tr><td><b>Total for 5 working radios</b></td><td class="num"><b>≈ $100–120</b></td><td>about $20–24 each at this quantity</td></tr>
     </tbody>
   </table></div>
+  <h3>Per radio at 100 units</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Bucket</th><th>Est.</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>JLC-placed parts</td><td class="num">$2.10</td><td>Si4825 $1.11, 47 µF $0.34 (→ $0.03 if swapped), LEDs $0.11, the rest $0.55</td></tr>
+      <tr><td>JLC fees ÷ 100</td><td class="num">$0.50</td><td>setup + 13 Extended</td></tr>
+      <tr><td>PCB</td><td class="num">$0.40–0.80</td><td></td></tr>
+      <tr><td>Hand parts: pot, knob, USB-C, speaker</td><td class="num">$0.70</td><td>AliExpress lot prices</td></tr>
+      <tr><td>LiPo, protected (optional)</td><td class="num">$1.00</td><td>USB-only radios skip it</td></tr>
+      <tr><td>Antenna pigtail</td><td class="num">$0.10</td><td></td></tr>
+      <tr><td><b>Total, excluding jar, ring and packaging</b></td><td class="num"><b>≈ $4.80–5.20</b></td><td>≈ $4.50 with the cheaper 47 µF</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <h2><span class="ref">06b</span>AliExpress buy list</h2>
+  <div class="col"><p>AliExpress listings change daily, and I could only see search snapshots, not live product pages. Treat these as starting points and check each listing's photos and specs against the "must have" column. Buy a small lot first; parts from one seller can still vary between lots.</p></div>
+  <div class="tbl"><table>
+    <thead><tr><th>Item</th><th>Search term</th><th>Must have</th><th>Seen price</th><th>Listings found</th></tr></thead>
+    <tbody>
+      <tr><td>Speaker</td><td class="mono">40mm 8 ohm 2W internal magnet speaker</td><td>Ø40 mm round, 8 Ω, <b>internal magnet</b> (metal shell), wire leads or solder tabs, depth ≤ 20 mm</td><td>≈ $0.27/pc in 5–10 lots</td><td><a href="https://www.aliexpress.us/w/wholesale-8-ohm-2-watt-speaker-40mm.html">AliExpress search: 8 Ω 2 W 40 mm</a> · <a href="https://www.aliexpress.us/item/3256807737288314.html">2 pc 8 Ω 2 W 20–40 mm</a> (ultra-thin, a backup) · <a href="https://www.ebay.com/itm/305354112877">eBay 40 mm internal magnet</a> (reference photos)</td></tr>
+      <tr><td>LiPo cell</td><td class="mono">502530 3.7V lipo PH2.0 protection board</td><td>502530 (5 × 25 × 30 mm), <b>protection board (PCM) stated</b>, JST-PH 2.0 plug, red lead on the + pin as marked on our board</td><td>≈ $1–2/pc</td><td><a href="https://www.aliexpress.com/item/32879273117.html">502530 370 mAh</a> · <a href="https://www.aliexpress.us/w/wholesale-lipo-battery-jst-ph2.0.html">AliExpress search: LiPo JST PH2.0</a> · <a href="https://www.ebay.com/itm/335624748821">eBay 100 pc 502530 300 mAh PH2.0</a> · <a href="https://www.amazon.com/Battery-Rechargeable-Lithium-Polymer-Connector/dp/B09F9J68BN">Amazon Liter 502530 400 mAh with PCM</a> (known-good reference)</td></tr>
+      <tr><td>Volume pot</td><td class="mono">RV097NS with switch 50K 5pin 15mm</td><td>RV097NS, <b>5 pins</b> (3 pot + 2 switch), single gang, 15 mm knurled shaft; B50K is fine (see note)</td><td>≈ $0.50/pc in 5 lots</td><td><a href="https://www.aliexpress.us/item/3256806447385254.html">2 pc RV097NS with switch</a> · <a href="https://www.aliexpress.com/item/32795083723.html">5 pc RV097NS B50K/B10K with switch</a></td></tr>
+      <tr><td>Knob</td><td class="mono">knob 6mm knurled shaft 20mm</td><td>fits a 6 mm 18-tooth knurled shaft, Ø18–22 mm, skirt optional</td><td>≈ $0.10–0.25</td><td>(search; aluminium knobs for "6mm half shaft" are D-cut and won't fit)</td></tr>
+      <tr><td>Antenna lead</td><td class="mono">JST XH 2.54 2pin single head cable 50cm</td><td>XH 2.54 female housing, 26 AWG, longest available (50 cm); or a crimp kit</td><td>≈ $0.05–0.15</td><td><a href="https://www.ebay.de/itm/356475158858">XH single-head leads up to 50 cm</a> · <a href="https://taydaelectronics.com/2-pins-jst-xh-2-54-female-connector-with-wire-cable-26awg-30-cm.html">Tayda XH 2-pin 30 cm</a></td></tr>
+      <tr><td>Telescopic whip (optional)</td><td class="mono">telescopic antenna M3 7 section 75cm</td><td>M3 screw base (male or female, matched to our plated M3 hole), 15–19 cm collapsed</td><td>$1.50–3</td><td>(search)</td></tr>
+    </tbody>
+  </table></div>
+  <div class="grid2">
+    <div class="callout"><strong>Volume taper</strong>RV097NS pots with a switch are almost always B (linear). That's fine: the amp's 10 kΩ input resistor loads the wiper, which bends a linear 50 k pot into a usable audio-style curve (the classic "law-faking" trick). No extra parts needed.</div>
+    <div class="callout"><strong>Antenna lead for 75 cm</strong>XH pigtails top out around 50 cm. For 5 prototypes, solder 25–30 cm of 26 AWG to a 50 cm pigtail and heat-shrink the joint. For volume, buy XH housings, crimp terminals and a spool of silicone wire, and crimp 75 cm leads (about $0.05 each plus a ~$20 crimper).</div>
+  </div>
 </section>
 
 <section>
@@ -452,7 +488,7 @@ flowchart LR
     <div>
       <h3>One board, any station</h3>
       <p>Only R_TUNE_H and R_TUNE_L change per station, plus the silkscreen text. The scripts take a frequency and print the resistor pair, so the same design makes a WNYC jar or a KBIA jar. The old EAGLE files stay in <code>EAGLE_CAD/</code> and <code>ARCHIVE/</code> for attribution.</p>
-      <div class="callout warn"><strong>License check</strong>The upstream READMEs say CC BY 4.0 and the LICENSE file says GPL-2.0. Keep both files, credit Spencer Wright and Zach Dunham, and decide which license your fork uses (Q15).</div>
+      <div class="callout ok"><strong>License</strong>New hardware files: CERN-OHL-S 2.0, a reciprocal open-hardware license written for PCBs. The upstream LICENSE (GPL-2.0) and README (CC BY 4.0) stay in the repo with the credits to Spencer Wright and Zach Dunham.</div>
     </div>
   </div>
 </section>
@@ -466,50 +502,67 @@ flowchart LR
     <li><b>Order 5–10 assembled boards</b> (bottom side) and hand-fit the pot, USB-C, speaker and battery lead.</li>
     <li><b>Bring-up</b>: USB only, then battery only, then charging with the radio off and on; check the charger terminates while playing; check the off-current.</li>
     <li><b>Reception walk-test</b>: coiled wire vs trailing wire in a basement, downtown, and on the west side.</li>
-    <li><b>Fit test</b>: ring engagement with the 1.6 mm board, rattle, gasket; decide on 1.2 mm if needed.</li>
+    <li><b>Fit test</b>: ring engagement with the 1.6 mm board and rattle with the speaker running; add a gasket or move to 1.2 mm only if needed.</li>
     <li><b>Rev B</b>: lock in the station resistors, Rf gain, speaker and LED choice; then a small batch.</li>
   </ol>
   <div class="callout"><strong>If you plan to sell it</strong>An FM receiver is an "unintentional radiator" under FCC Part 15 Subpart B. Selling it in the US needs Class B emissions verification and a Supplier's Declaration of Conformity. A pre-scan at a local lab is a few hundred dollars. Also get KOPN's OK before putting their name or logo on the lid.</div>
 </section>
 
 <section>
-  <h2><span class="ref">09</span>Open questions</h2>
-  <div class="col"><p>Each one has my recommendation, so "go with your recommendations" is a valid answer for any of them. <b>Q1 is the only one I can't default.</b></p></div>
+  <h2><span class="ref">09</span>Decisions and what's still open</h2>
+  <h3>Decided (2026-10-20)</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>#</th><th>Topic</th><th>Decision</th></tr></thead>
+    <tbody>
+      <tr><td>Q2</td><td>Board thickness</td><td>1.6 mm standard</td></tr>
+      <tr><td>Q3</td><td>Gasket / clamp zone</td><td>No gasket for now. Everything the ring and the jar rim clamp is <b>solid ground copper on both layers</b>, stitched with vias, with no traces or parts.</td></tr>
+      <tr><td>Q4</td><td>Finish and artwork</td><td>Black mask, white silkscreen. KOPN logo and name on the top; CGW logo and name on the inside face (two-sided silkscreen is free at JLC).</td></tr>
+      <tr><td>Q5</td><td>Speaker</td><td>Cheap generic Ø40 mm 8 Ω 2 W internal-magnet speaker from AliExpress</td></tr>
+      <tr><td>Q6</td><td>Battery protection</td><td>Protected cells only; no protection chips on the board</td></tr>
+      <tr><td>Q7</td><td>Battery</td><td>502530-class protected LiPo, 25 × 30 mm footprint, 400 mA charge</td></tr>
+      <tr><td>Q8</td><td>Antenna</td><td>75 cm wire on JST-XH included; M3 telescopic footprint kept as an option</td></tr>
+      <tr><td>Q9</td><td>Volume pot</td><td>RV097NS 5-pin with switch, B50K, 15 mm knurled shaft</td></tr>
+      <tr><td>Q10</td><td>USB-C</td><td>Hand-soldered on top; JLC order stays single-sided</td></tr>
+      <tr><td>Q12</td><td>Charge LEDs</td><td>Reverse-mount Everlight 1206, red and green</td></tr>
+      <tr><td>Q13</td><td>Calibration</td><td>Trimmer footprint included but not placed; 0 Ω bypass fitted</td></tr>
+      <tr><td>Q15</td><td>License</td><td>CERN-OHL-S 2.0 for the new hardware files; upstream LICENSE and README credits kept</td></tr>
+      <tr><td>Q16</td><td>First order</td><td>5 boards, all 5 assembled</td></tr>
+      <tr><td>Q17</td><td>Mounting</td><td>Zip ties only, for the speaker and the battery</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Still open</h3>
   <ol class="qlist">
-    <li><b>Jar and ring measurements.</b> Which jar exactly (Ball/Kerr wide-mouth 8 oz?), and with calipers: flat lid OD, ring lip inner diameter, jar mouth inner diameter, ring inside height.<div class="rec">Needed before layout. If you can't measure soon, I'll assume 85.5 mm OD, a Ø72 visible window and a Ø76 mouth.</div></li>
-    <li><b>Board thickness.</b> 1.6 mm (standard, stiffest) or 1.2 mm (more thread engagement)?<div class="rec">1.6 mm, with a 1 mm gasket; switch after the fit test if the ring barely catches.</div></li>
-    <li><b>Sealing gasket.</b> Add a thin ring gasket between the board and the glass rim?<div class="rec">Yes: 1 mm adhesive EPDM or silicone foam, 76 × 86 mm ring. It stops rattle and buzz with the speaker running.</div></li>
-    <li><b>Finish and artwork.</b> Mask colour, silkscreen text, KOPN logo?<div class="rec">Black mask, white silk, "KOPN 89.5 FM · COLUMBIA MO" in text, plus the logo only once KOPN says yes.</div></li>
-    <li><b>Speaker.</b> Generic 40 mm 8 Ω (~$0.60), Visaton K 40 (~$5), or K 50 (needs a layout change)?<div class="rec">Lay out for Ø40 max; prototype both the generic and the K 40, then choose by ear.</div></li>
-    <li><b>Battery protection.</b> Rely on protected cells (PCM in the cell), or add DW01A + FS8205A on the board (+2 Extended parts, and I couldn't verify the 8205A SOT-23-6 pinout)?<div class="rec">Protected cells only. Silkscreen "PROTECTED 1S LiPo ONLY" and the polarity next to the socket.</div></li>
-    <li><b>Battery size and charge current.</b> 25 × 30 mm footprint at 400–800 mAh, 400 mA charge?<div class="rec">Yes. Use a 6–8 mm thick 502530/802530 protected cell with a JST-PH lead, and check the lead polarity.</div></li>
-    <li><b>Antenna.</b> Included 75 cm wire on JST-XH as default, plus keep the M3 telescopic mount footprint?<div class="rec">Yes to both. The M3 mount costs nothing on the board.</div></li>
-    <li><b>Volume pot.</b> Which exact 9 mm switched pot will you buy? Pin layouts differ between vendors, so I need its drawing or listing.<div class="rec">A50K "RV097NS" 5-pin vertical with a 15 mm D-shaft. Send me the listing link and I'll match the footprint.</div></li>
-    <li><b>USB-C hand soldering.</b> OK to hand-solder the top-side vertical USB-C (6 SMD pads plus shell tabs), or pay JLC for two-sided assembly?<div class="rec">Hand-solder it; that keeps the order single-sided.</div></li>
-    <li><b>Amp shutdown polarity.</b> NS8002 clones differ. Can you open the NS8002 datasheet on LCSC (C189960) and confirm whether SHUTDOWN is active-high?<div class="rec">I'll put both jumper options on the board regardless.</div></li>
-    <li><b>Charge LEDs.</b> Reverse-mount LEDs that shine up through the lid, or ordinary LEDs that light up the inside of the jar?<div class="rec">Reverse-mount, visible on the lid. The glowing-jar version is a fun alternative.</div></li>
-    <li><b>Tuning calibration.</b> Fixed 0.1% resistors only, or also the unpopulated trimmer and bypass jumper for calibration?<div class="rec">Include the trimmer footprint on rev A; drop it on rev B once proven.</div></li>
-    <li><b>Si4825 datasheet.</b> My environment can't download Skyworks PDFs. Can you drop <code>Si4825-A10.pdf</code> and <code>AN738.pdf</code> into <code>docs/</code> on the branch?<div class="rec">Strongly recommended: it lets me verify the tuning law, band table and FMI network instead of relying on secondary sources.</div></li>
-    <li><b>License for the fork.</b> GPL-2.0, CC BY 4.0, or CERN-OHL for the new hardware?<div class="rec">CERN-OHL-S 2.0 for the new KiCad files, keeping the upstream licenses and credits for anything derived.</div></li>
-    <li><b>First order size.</b> How many prototypes?<div class="rec">5 assembled boards (the JLC minimum is 2 assembled of 5 PCBs) plus 10 bare PCBs for fit tests.</div></li>
-    <li><b>Zip ties across the top face.</b> Each tie shows as a strap on the lid. Acceptable, or prefer adhesive only (foam gasket + VHB) with the slots as backup?<div class="rec">Keep the slots, use them for the battery, and glue the speaker with a foam gasket. Then the only visible straps are the two battery ties, which can be styled into the silkscreen.</div></li>
+    <li><b>Q1 · Jar and ring measurements (you, tonight).</b> With calipers:
+      <ol type="a">
+        <li>Flat lid outer diameter.</li>
+        <li>Ring top-lip inner diameter (the visible window).</li>
+        <li>Ring inside height, from under the lip to the bottom edge.</li>
+        <li>Jar mouth inner diameter.</li>
+        <li>Jar rim outer diameter.</li>
+        <li>Jar inside depth, from the rim down to the bottom.</li>
+        <li>Brand and jar model.</li>
+      </ol>
+      Also screw the ring onto the jar with the stock lid and count how far it turns: if it's barely one turn, a 1.6 mm board may not catch. A photo of the ring from the inside helps too.<div class="rec">These fix the board diameter, both keep-out rings, and the maximum height of parts on the inside face.</div></li>
+    <li><b>Q11 · NS8002 shutdown polarity.</b> From the C189960 datasheet: is pin 1 active-high (high = off)?<div class="rec">I'll still put both jumper options on the board, so this only sets which one is fitted.</div></li>
+    <li><b>Q14 · Si4825 datasheet and AN738.</b> If you can, drop the PDFs into <code>docs/</code>. They let me check the tuning law and band table before you order.<div class="rec">Not blocking, but it's the cheapest risk reduction on the whole project.</div></li>
+    <li><b>Q18 · Clamp-ring copper: exposed or covered?</b> The top ring under the metal band could be left without solder mask, so the band touches ground (better ESD path and a little extra antenna counterpoise). The bottom ring sits on glass.<div class="rec">Top ring exposed (HASL), bottom ring covered by mask. Say "both covered" if you'd rather the edge look uniformly black.</div></li>
+    <li><b>Q19 · Logo files and permission.</b> Send the KOPN and CGW logos as SVG (best) or a high-resolution PNG, plus any exact wording you want (for example "KOPN 89.5 FM · Columbia, MO"). Do you have KOPN's OK to use their logo?<div class="rec">The smallest legible silkscreen line is about 0.15 mm, so simple one-colour logos work best. I'll convert them to KiCad footprints.</div></li>
   </ol>
 
-  <h3>Lookups I need from you</h3>
+  <h3>Specs and part numbers I still need</h3>
   <div class="tbl"><table>
-    <thead><tr><th>#</th><th>Look up on LCSC / JLCPCB</th><th>What I need back</th></tr></thead>
+    <thead><tr><th>#</th><th>What</th><th>Why</th><th>What I need back</th></tr></thead>
     <tbody>
-      <tr><td>L1</td><td>SI4825-A10-CSR (C2654605)</td><td>stock, price at 10/100, Basic or Extended</td></tr>
-      <tr><td>L2</td><td>0603 0.1% resistors: 86.6 kΩ and 11.7 kΩ (backup 88.7 kΩ / 12.0 kΩ)</td><td>C-numbers</td></tr>
-      <tr><td>L3</td><td>0603 1% resistors: 432 kΩ and 66.5 kΩ</td><td>C-numbers</td></tr>
-      <tr><td>L4</td><td>0603 ferrite bead ≥2.5 kΩ at 100 MHz (BLM18BD252SN1 or equivalent)</td><td>C-number</td></tr>
-      <tr><td>L5</td><td>47 µF ≥6.3 V X5R in 1206 or 0805</td><td>C-number</td></tr>
-      <tr><td>L6</td><td>1206 reverse-mount LEDs, red and green</td><td>C-numbers + drawing (hole size)</td></tr>
-      <tr><td>L7</td><td>JST-XH 2-pin header, SMD (S2B-XH-SM4-TB) or THT (B2B-XH-A)</td><td>C-number; which you prefer</td></tr>
-      <tr><td>L8</td><td>USB-C C5156600 drawing</td><td>the PDF from the product page, for the footprint</td></tr>
-      <tr><td>L9</td><td>NS8002 (C189960) datasheet</td><td>SHUTDOWN polarity (Q11)</td></tr>
-      <tr><td>L10</td><td>Your pot, speaker and LiPo listings</td><td>links or drawings (Q5, Q7, Q9)</td></tr>
-      <tr><td>L11</td><td>1 nF C0G 0603; re-check the Basic parts listed above</td><td>C-number; any that went out of stock</td></tr>
+      <tr><td>L1</td><td>LCSC C-numbers for the parts you sent: RT0603BRD0786K6L, TNPW060311K7BEEA, MMZ1608A252BTA00, GRM31CR61E476ME44L, 24-21SURC/S530-A3/TR8, 25-21/GHC-YSU/2A</td><td>JLC's BOM needs the C-number for every placed part</td><td>six C-numbers (from each LCSC page title or URL)</td></tr>
+      <tr><td>L2</td><td>1% 0603 432 kΩ and 66.5 kΩ (band select); 1 nF C0G 0603; 0 Ω 0603; 680 Ω and 2.2 kΩ 0603</td><td>JLC BOM</td><td>C-numbers, and whether each is Basic</td></tr>
+      <tr><td>L3</td><td>Cheaper 47 µF: Samsung CL31A476MQHNNNE (1206) or CL21A476MQYNNNE (0805)</td><td>saves ≈ $0.30 per radio over the 25 V Murata</td><td>C-number, price, Basic or Extended</td></tr>
+      <tr><td>L4</td><td>JST-XH 2-pin SMD right-angle, S2B-XH-SM4-TB(LF)(SN)</td><td>antenna socket</td><td>C-number</td></tr>
+      <tr><td>L5</td><td>Everlight 24-21 and 25-21 datasheets, the "recommended PCB hole / land pattern" drawing</td><td>reverse-mount LEDs need the right hole size, and the two packages may differ</td><td>a screenshot of the land pattern, or the PDF in <code>docs/</code></td></tr>
+      <tr><td>L6</td><td>USB-C C5156600 mechanical drawing</td><td>footprint pads and shell-peg holes</td><td>the PDF from the LCSC page into <code>docs/</code></td></tr>
+      <tr><td>L7</td><td>The RV097NS listing you'll buy: its dimension drawing (pin pitch, pin row distance from shaft, mounting-tab positions)</td><td>RV097 clones differ by up to 0.5 mm; the pot is the part most likely not to fit</td><td>listing link or a photo of the drawing</td></tr>
+      <tr><td>L8</td><td>Speaker you buy: outer diameter, total depth, terminal position</td><td>keep-out circle and lead pads</td><td>numbers or the listing link</td></tr>
+      <tr><td>L9</td><td>LiPo you buy: exact L × W × T including the protection board bump, lead length, which colour wire is on which PH pin</td><td>zip-tie spacing and connector polarity silkscreen</td><td>numbers + a photo of the plug</td></tr>
     </tbody>
   </table></div>
 </section>
