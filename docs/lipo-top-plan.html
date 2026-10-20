@@ -492,4 +492,23 @@ python3 jlcdb.py search "56nH" --sub Inductor --pkg 0603 --basic</pre>
     <li><b>Q-H1 · Pot datasheets.</b> Please download the datasheets for <span class="mono">C18213422</span> (CTR R09512NS) and <span class="mono">C7029946</span> (Bourns PTV111-4220A-B104), and <span class="mono">C470643</span> (Alps RK10J) if it's easy. LCSC's product photos would also show which way the shaft points.<div class="rec">Bourns PTV111 if it's vertical with a switch: same maker as your PTV09A, 100 kΩ needs no circuit change, and it has a datasheet we can trust. CTR R09512NS is the cheaper backup.</div></li>
     <li><b>Q-H2 · If no vertical switched pot is stocked.</b> Choose one: (a) the Bourns PTV111 or similar bought from Digi-Key and consigned to JLC or hand-soldered; (b) a vertical pot without switch plus a separate power switch (you said no slide switch, but a small latching push button is an option); (c) a right-angle pot at the board edge, shaft sideways under the ring. (c) doesn't work with the jar band.<div class="rec">(a). Keeps one knob for volume and power, which is the radio's whole user interface.</div></li>
   </ol>
+
+  <h3>Rev F.11: switched-pot search result</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>LCSC</th><th>Part</th><th>Datasheet says</th><th>Verdict</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">C18213431 / C18213428</td><td>CTR R09760NS / R09710NS</td><td>Rotary switch, 12 V 1 A, off at end of travel. Body 12.9–13.2 mm deep, pins exit the bottom.</td><td>Right-angle: shaft parallel to the board. ✗</td></tr>
+      <tr><td class="mono">C18213422</td><td>CTR R09512NS</td><td>Switch + M7 bushing, 13.8 mm body, pins below.</td><td>Right-angle. ✗</td></tr>
+      <tr><td class="mono">C7029946</td><td>Bourns PTV111-4220A-B104</td><td>12 mm pot; "-2" in the code is a centre detent.</td><td>No switch. ✗</td></tr>
+      <tr><td class="mono">C470643</td><td>Alps RK10J11E0034</td><td>Ø14 thumbwheel, 1.8 mm thick.</td><td>No switch, thumbwheel. ✗</td></tr>
+    </tbody>
+  </table></div>
+  <div class="col">
+    <p>I also swept every stocked pot family in the JLC database with 5–9 joints. The vertical (shaft-up) 9 mm families JLC stocks, Alps <b>RK09K / RK09D / RK09L</b>, come without switches. Every switched 9 mm pot I've found is right-angle. <b>Conclusion: JLC doesn't stock a vertical pot with a switch.</b></p>
+    <p><b>Recommended fallback, all JLC-placed:</b> volume = Alps <b>RK09K1130ACL</b> 50 kΩ vertical (C470291, 377 in stock, $0.38); power = latching push button <b>XKB8080-Z</b> (C318860, 8 × 8 mm, push on / push off, 2,580 in stock, $0.14). The button is rated only 100 mA, so it doesn't carry the radio's current. It switches the gate of a P-FET load switch: AO3401A (Basic, already in the BOM) plus a 100 kΩ pull-up (Basic). Off-state drain is the FET's leakage plus the XB8089D's 3–6 µA. This adds 2 Extended fees ($6/order) but removes the $0.84 pot, so it costs about the same at 100.</p>
+  </div>
+  <ol class="qlist">
+    <li><b>Q-I1 · Power control.</b> (a) Alps RK09K 50k vertical pot + latching push button + P-FET, all JLC-placed. (b) Source a vertical switched pot outside LCSC (Digi-Key/AliExpress) and hand-solder it. (c) Keep looking.<div class="rec">(a). It's stocked, cheap and fully assembled. A press-on/press-off button is clear to use, and the knob only sets volume.</div></li>
+    <li><b>Q-I2 · If (a): Alps RK09K datasheet.</b> Please download it from the LCSC page for <span class="mono">C470291</span>, plus <span class="mono">C318860</span> (XKB8080-Z), so I can build both footprints from the drawings.</li>
+  </ol>
 </section>
