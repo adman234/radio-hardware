@@ -26,7 +26,7 @@ import pcbnew
 b = pcbnew.LoadBoard({BOARD!r})
 for z in list(b.Zones()):
     if not z.GetIsRuleArea():
-        b.Remove(z)
+        z.SetIsFilled(False)   # GND stays a plane: Freerouting leaves its pads to the pours
 assert pcbnew.ExportSpecctraDSN(b, {dsn!r})
 """], check=True)
     text = open(dsn).read()
@@ -57,8 +57,16 @@ assert pcbnew.ExportSpecctraDSN(b, {dsn!r})
         import stitch
         print('stitching vias:', stitch.add_stitching(board))
     pcbnew.ZONE_FILLER(board).Fill(board.Zones())
-    pcbnew.SaveBoard(BOARD, board)
     rpt = os.path.join(WORK, 'drc.rpt')
+    import fix_islands
+    for _ in range(3):   # tie isolated GND pads to the pour with a via
+        pcbnew.WriteDRCReport(board, rpt, pcbnew.EDA_UNITS_MILLIMETRES, True)
+        n = fix_islands.fix(board, open(rpt).read())
+        print('GND island vias added:', n)
+        if not n:
+            break
+        pcbnew.ZONE_FILLER(board).Fill(board.Zones())
+    pcbnew.SaveBoard(BOARD, board)
     pcbnew.WriteDRCReport(board, rpt, pcbnew.EDA_UNITS_MILLIMETRES, True)
     print(summary(rpt))
 
@@ -75,4 +83,4 @@ def summary(rpt):
 
 if __name__ == '__main__':
     import sys
-    main(finish='--finish' in sys.argv)
+    main(passes=int(os.environ.get('ROUTE_PASSES', 40)), finish='--finish' in sys.argv)
