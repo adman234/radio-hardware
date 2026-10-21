@@ -336,7 +336,7 @@ def r09512ns_rear(name='Potentiometer_CTR_R09512NS_RearMount_Switch'):
     L += rect(-5.3, -4.8, 5.3, 6.0, 'F.Fab', 0.1)
     L.append(_circle(0, 0, 3.0, 'F.Fab', 0.1))
     L.append(_circle(0, 0, 8.0, 'F.Fab', 0.1))   # 16 mm knob
-    L += rect(-6.3, -5.3, 6.3, 10.2, 'F.CrtYd', 0.05)
+    L += rect(-6.3, -10.2, 6.3, 10.2, 'F.CrtYd', 0.05)   # includes the VOL / OFF label
     L.append(_text('VOL / OFF', 0, -9.2, 'F.SilkS', 0.9))
     write(name, L)
 

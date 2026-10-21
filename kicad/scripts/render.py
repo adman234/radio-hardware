@@ -32,6 +32,7 @@ def render(face, width=1400):
     mirror = face == 'bottom'
     with tempfile.TemporaryDirectory() as d:
         edge = layer_png('Edge.Cuts', d, width, mirror)
+        svg_text = open(os.path.join(d, 'Edge.Cuts.svg')).read()
         cu = layer_png(f + '.Cu', d, width, mirror)
         mask = layer_png(f + '.Mask', d, width, mirror)
         silk = layer_png(f + '.SilkS', d, width, mirror)
@@ -52,9 +53,15 @@ def render(face, width=1400):
     # punch the drilled holes through, using the real hole list
     import pcbnew
     b = pcbnew.LoadBoard(BOARD)
+    # kicad-cli plots onto a canvas a little larger than the board (the
+    # edge line plus a margin); map holes through that same canvas
+    import re as _re
+    vb = [float(v) for v in _re.search(r'viewBox="([^"]+)"', svg_text).group(1).split()]
     bb = b.GetBoardEdgesBoundingBox()
-    x0, y0 = pcbnew.ToMM(bb.GetLeft()), pcbnew.ToMM(bb.GetTop())
-    sx = w / pcbnew.ToMM(bb.GetWidth())
+    cxm = pcbnew.ToMM(bb.GetLeft()) + pcbnew.ToMM(bb.GetWidth()) / 2
+    cym = pcbnew.ToMM(bb.GetTop()) + pcbnew.ToMM(bb.GetHeight()) / 2
+    x0, y0 = cxm - vb[2] / 2, cym - vb[3] / 2
+    sx = w / vb[2]
     img = Image.fromarray(out, 'RGBA'); dr = ImageDraw.Draw(img)
     def px(x, y):
         X = (x - x0) * sx

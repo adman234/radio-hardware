@@ -26,8 +26,9 @@ def main(passes=40, finish=False):
         # patch of pour that the routing leaves behind already has a via
         subprocess.run(['python3', '-c', f"""
 import sys; sys.path.insert(0, {HERE!r})
-import pcbnew, stitch
+import pcbnew, stitch, fanout
 b = pcbnew.LoadBoard({BOARD!r})
+print('GND fan-out vias:', fanout.fanout(b))
 print('pre-route stitching vias:', stitch.add_stitching(b, pitch=2.5, locked=True))
 pcbnew.SaveBoard({BOARD!r}, b)
 """], check=True)
@@ -84,9 +85,17 @@ assert pcbnew.ExportSpecctraDSN(b, {dsn!r})
     pcbnew.WriteDRCReport(board, rpt, pcbnew.EDA_UNITS_MILLIMETRES, True)
     # anything Freerouting left: two-pad connections get the small maze router
     import route_one, island_bridge
-    left = re.findall(r'Pad (\S+) \[[^\]]+\] of (\S+) on \S+\n\s+@\([^)]*\): Pad (\S+) \[[^\]]+\] of (\S+) on', open(rpt).read())
+    txt = open(rpt).read()
+    left = re.findall(r'Pad (\S+) \[[^\]]+\] of (\S+) on \S+\n\s+@\([^)]*\): Pad (\S+) \[[^\]]+\] of (\S+) on', txt)
     for pa, ra, pb, rb in left:
         print(f'maze-routing {ra}.{pa} -> {rb}.{pb}:', route_one.route_net(board, ra, pa, rb, pb))
+    # a pad left short of its own net's track: route it onto that net's copper
+    # anything else: join every stray piece of the affected nets to the rest of the net
+    blocks = re.findall(r'\[unconnected_items\][^\n]*\n[^\n]*\n\s+@\([^)]*\): [^\[]*\[([^\]]+)\]', txt)
+    for net in sorted(set(blocks) - {'GND'}):
+        n = route_one.join_net(board, net)
+        print(f'maze-joining net {net}:', n)
+        left = left + [net] * bool(n)
     if left:
         print('GND bridges:', island_bridge.bridge(board))
         pcbnew.SaveBoard(BOARD, board)

@@ -1,5 +1,5 @@
 """Builds docs/jar-radio-plan.html (the published plan artifact) from the
-BOM spreadsheet, the cost model, the DRC summary and the board renders."""
+JLC BOM check (docs/bom-check.csv), the DRC summary and the board renders."""
 import base64, csv, html, json, os, re
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -18,27 +18,24 @@ def esc(s):
 
 
 def bom_table():
-    rows = list(csv.DictReader(open(os.path.join(HERE, 'bom-plan.csv'))))
-    groups = [('Placed by JLCPCB (inside face, single-sided assembly)', 'JLC'),
-              ('You solder (top face / leads)', 'Hand'), ('Footprint only', 'Not placed'), ('Kit and assembly items', None)]
-    out = ['<div class="tbl"><table><thead><tr><th>Refs</th><th>Part</th><th>MPN</th><th>LCSC</th><th>Class</th>'
-           '<th>Qty</th><th>$ @10</th><th>$ @100</th><th>Status</th></tr></thead><tbody>']
-    used = set()
-    for title, who in groups:
-        sel = [r for r in rows if (r['Who'] == who if who else r['Who'] not in ('JLC', 'Hand', 'Not placed'))]
-        if not sel:
-            continue
-        out.append(f'<tr class="grp"><td colspan="9">{esc(title)}</td></tr>')
-        for r in sel:
-            need = 'need' in r['Status'] or 'PROVISIONAL' in r['Status']
-            lc = esc(r['LCSC']) if r['LCSC'] else ('<span class="tag p">need C#</span>' if 'C-number' in r['Status'] else '—')
-            cls = r['JLC class (guess)']
-            tag = 'b' if cls.startswith('Basic') else 'e' if 'Extended' in cls else 'h'
-            st = f'<span class="tag p">{esc(r["Status"])}</span>' if need else esc(r['Status'])
-            src = ' <small>(quote)</small>' if 'quote' in r['Price source'] else ''
-            out.append(f'<tr><td class="mono">{esc(r["Refs"])}</td><td>{esc(r["Value / description"])}</td><td class="mono">{esc(r["MPN"])}</td>'
-                       f'<td class="mono">{lc}</td><td><span class="tag {tag}">{esc(cls)}</span></td><td class="num">{esc(r["Qty per radio"])}</td>'
-                       f'<td class="num">{float(r["Unit $ @10"] or 0):.3f}{src}</td><td class="num">{float(r["Unit $ @100"] or 0):.3f}</td><td>{st}</td></tr>')
+    """JLC-placed parts from docs/bom-check.csv (written by kicad/scripts/jlcdb.py check)."""
+    import sys
+    sys.path.insert(0, os.path.join(HERE, '..', 'kicad', 'scripts'))
+    import circuit
+    val = {p['ref']: p['value'] for p in circuit.P}
+    rows = list(csv.DictReader(open(os.path.join(HERE, 'bom-check.csv'))))
+    qcols = [k for k in rows[0] if k.startswith('cost_per_board_at_')]
+    head = ''.join(f'<th class="num">$/board @{k.rsplit("_", 1)[1]}</th>' for k in qcols)
+    out = ['<div class="tbl"><table><thead><tr><th>Refs</th><th>Value</th><th>MPN</th><th>LCSC</th><th>Type</th>'
+           f'<th class="num">Stock</th>{head}</tr></thead><tbody>']
+    for r in rows:
+        t = r['type'].rstrip('*')
+        tag = 'b' if t == 'Basic' else 'h' if t == 'Preferred' else 'e'
+        refs = r['refs']; v = val.get(refs.split(',')[0], '')
+        stock = r['stock'] if r['stock'] != '0' else '(not in mirror)'
+        cells = ''.join(f'<td class="num">{float(r[k]):.3f}</td>' for k in qcols)
+        out.append(f'<tr><td class="mono">{esc(refs)}</td><td>{esc(v)}</td><td class="mono">{esc(r["mpn"])}</td><td class="mono">{esc(r["lcsc"])}</td>'
+                   f'<td><span class="tag {tag}">{esc(t)}</span></td><td class="num">{esc(stock)}</td>{cells}</tr>')
     out.append('</tbody></table></div>')
     return '\n'.join(out)
 
@@ -64,12 +61,13 @@ def drc():
 def main():
     t = open(os.path.join(HERE, 'plan_template.html')).read()
     d = drc()
+    top = os.path.join(HERE, 'lipo-top-plan.html')
+    t = t.replace('{{TOPSIDE}}', open(top).read() if os.path.exists(top) else '')
     rep = {
-        '{{BOM}}': bom_table(), '{{COST}}': cost_table(),
+        '{{BOM}}': bom_table(),
         '{{IMG_TOP}}': uri('board-top.png'), '{{IMG_BOT}}': uri('board-bottom.png'), '{{IMG_SCH}}': uri('schematic.png'),
         '{{IMG_CU}}': uri('board-copper.png'),
         '{{DRC}}': esc(d.get('text', 'not run')),
-        '{{TOPSIDE}}': open(os.path.join(HERE, 'lipo-top-plan.html')).read() if os.path.exists(os.path.join(HERE, 'lipo-top-plan.html')) else '',
     }
     for k, v in rep.items():
         t = t.replace(k, v)

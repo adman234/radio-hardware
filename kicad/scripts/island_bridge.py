@@ -37,7 +37,8 @@ def bridge(b):
                 if src.is_empty:
                     continue
                 # candidate start points along the fragment, nearest main point for each
-                pts = [src.exterior.interpolate(k / 40, normalized=True) for k in range(40)] + [src.representative_point()]
+                parts = list(src.geoms) if hasattr(src, 'geoms') else [src]
+                pts = [q.exterior.interpolate(k / 40, normalized=True) for q in parts for k in range(40)] + [src.representative_point()]
                 for p in pts:
                     q = nearest_points(p, mains.buffer(-W))[1]
                     d = p.distance(q)
@@ -56,6 +57,13 @@ def bridge(b):
                         if any(frag(s, i).distance(pt) < 0.1 for s, i in gr):
                             rep += f'Pad {pad.GetNumber()} [GND] of {fp.GetReference()} on\n'
                 n = fix_islands.fix(b, rep) if rep else 0
+                if not n and rep:
+                    # last resort: maze-route each stranded pad to the main pour
+                    import re as _re, route_one
+                    mF = unary_union([frag(t, j) for t, j in main if t == 'F']).buffer(-0.35)
+                    mB = unary_union([frag(t, j) for t, j in main if t == 'B']).buffer(-0.35)
+                    for num, ref in _re.findall(r'Pad (\S+) \[GND\] of (\S+) on', rep):
+                        n += route_one.route_net(b, ref, num, ref, num, margin=6.0, goal_area={0: mF, 1: mB}) > 0
                 added += n; progress += n
                 continue
             _, layer, p, q = best

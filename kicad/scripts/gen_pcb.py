@@ -34,20 +34,20 @@ HOLDER = (-10.6, 8.0, 10.6, 23.2)   # inside-face holder end face (x0, y0, x1, y
 # place.py moves them to the nearest spot where their courtyard is clear.
 PLACE = {
     # --- fixed: controls, connectors, hand-wired pads
-    'RV1': (25.0, 5.0, 0, 'F', 'fix'), 'J1': (-27.0, 10.0, 90, 'F', 'fix'), 'ANT1': (16.0, 27.5, 0, 'F', 'fix'),
-    'J2': (SLOT[0], SLOT[1], 180, 'F', 'fix'), 'J3': (16.0, 20.0, 0, 'F', 'fix'), 'J4': (21.5, -23.0, 90, 'F', 'fix'),
-    # --- battery protection, by the holder slot
-    'U6': (8.0, 29.0, 0, 'F'), 'R18': (5.5, 23.0, 90, 'F'), 'C22': (7.5, 24.0, 90, 'F'), 'F1': (-8.0, 27.0, 90, 'F'),
-    # --- tuner, upper middle
-    'U1': (8.0, 13.0, 0, 'F'), 'Y1': (15.5, 12.0, 90, 'F'), 'C1': (17.5, 15.0, 0, 'F'), 'C2': (17.5, 9.0, 0, 'F'),
-    'C3': (13.5, 17.5, 0, 'F'), 'C4': (13.5, 19.5, 0, 'F'), 'R1': (13.5, 6.0, 0, 'F'), 'C5': (13.5, 4.5, 0, 'F'),
-    'U5': (11.0, 4.5, 0, 'F'),
-    'R2': (1.0, 18.0, 90, 'F'), 'R3': (-1.0, 16.0, 90, 'F'), 'R4': (-1.0, 13.0, 90, 'F'),
-    'C6': (2.0, 14.5, 90, 'F'), 'C7': (-3.5, 18.0, 90, 'F'), 'C21': (-3.5, 14.0, 90, 'F'),
-    'R5': (1.0, 10.5, 0, 'F'), 'R17': (1.0, 8.5, 0, 'F'), 'R6': (-2.0, 8.5, 0, 'F'), 'C8': (2.0, 6.5, 0, 'F'),
-    'RV2': (-12.0, 25.0, 90, 'F'),
-    # --- antenna network, upper right next to the wire hole
-    'C9': (12.0, 21.0, 90, 'F'), 'L1': (10.0, 19.5, 90, 'F'), 'D4': (12.5, 24.0, 0, 'F'),
+    'RV1': (25.0, 5.0, 0, 'F', 'fix'), 'J1': (-27.0, 10.0, 90, 'F', 'fix'), 'ANT1': (22.5, 24.0, 0, 'F', 'fix'),
+    'J2': (SLOT[0], SLOT[1], 180, 'F', 'fix'), 'J3': (6.5, 27.0, 0, 'F', 'fix'), 'J4': (21.5, -23.0, 90, 'F', 'fix'),
+    # --- battery protection, left of the holder slot
+    'U6': (-9.0, 28.5, 0, 'F'), 'R18': (-5.5, 25.5, 90, 'F'), 'C22': (-12.5, 27.5, 90, 'F'), 'F1': (-13.5, 23.5, 90, 'F'),
+    # --- tuner, upper right between the logo and the knob
+    'U1': (15.5, 15.5, 90, 'F'), 'Y1': (11.0, 9.5, 0, 'F'), 'C1': (9.5, 12.0, 90, 'F'), 'C2': (13.0, 12.0, 90, 'F'),
+    'C3': (16.0, 20.5, 0, 'F'), 'C4': (18.5, 20.5, 0, 'F'), 'R1': (21.0, 20.0, 90, 'F'), 'C5': (22.5, 20.0, 90, 'F'),
+    'U5': (24.0, 17.0, 90, 'F'),
+    'R2': (22.0, 13.5, 90, 'F'), 'R3': (23.5, 13.5, 90, 'F'), 'R4': (25.0, 13.5, 90, 'F'),
+    'C6': (26.5, 13.5, 90, 'F'), 'C7': (28.0, 13.5, 90, 'F'), 'C21': (29.5, 14.0, 90, 'F'),
+    'R5': (11.0, 18.0, 90, 'F'), 'R17': (9.5, 18.0, 90, 'F'), 'R6': (12.5, 18.0, 90, 'F'), 'C8': (14.0, 9.5, 0, 'F'),
+    'RV2': (27.0, 19.0, 90, 'F'),
+    # --- antenna network next to the whip mount
+    'C9': (16.0, 24.0, 0, 'F'), 'L1': (13.5, 24.0, 0, 'F'), 'D4': (18.5, 24.0, 0, 'F'),
     # --- audio, right side between the knob and the speaker pads
     'C10': (18.0, 4.0, 90, 'F'), 'R22': (19.5, 1.0, 90, 'F'), 'C11': (21.0, -6.5, 0, 'F'), 'R7': (21.0, -8.5, 0, 'F'),
     'R8': (28.0, -9.0, 90, 'F'), 'U2': (24.0, -13.5, 90, 'F'), 'C12': (19.5, -11.0, 90, 'F'), 'C13': (29.0, -14.0, 90, 'F'),
@@ -57,8 +57,8 @@ PLACE = {
     # --- USB-C input, charger, load sharing: upper left
     'R11': (-23.0, 6.5, 90, 'F'), 'R12': (-23.0, 13.5, 90, 'F'), 'C15': (-22.5, 10.0, 90, 'F'),
     'U3': (-15.5, 14.0, 0, 'F'), 'R13': (-12.0, 18.5, 90, 'F'), 'R21': (-19.0, 18.5, 90, 'F'), 'R20': (-17.0, 18.5, 90, 'F'),
-    'RT1': (-15.0, 18.5, 90, 'F'), 'D2': (-9.5, 21.0, 0, 'F'), 'D3': (-9.5, 23.5, 0, 'F'), 'R14': (-12.5, 21.0, 0, 'F'),
-    'R15': (-12.5, 23.5, 0, 'F'), 'C16': (-11.0, 22.0, 90, 'F'),
+    'RT1': (-15.0, 18.5, 90, 'F'), 'D2': (-10.5, 20.0, 90, 'F'), 'D3': (-10.5, 23.0, 90, 'F'), 'R14': (-12.5, 21.0, 0, 'F'),
+    'R15': (-12.5, 23.5, 0, 'F'), 'C16': (-17.0, 17.0, 90, 'F'),
     'Q1': (-15.0, 7.0, 0, 'F'), 'R16': (-18.5, 7.0, 90, 'F'), 'D1': (-11.0, 5.5, 0, 'F'), 'C17': (-7.0, 5.0, 90, 'F'),
 }
 
@@ -67,7 +67,7 @@ MECH = [
     ('Speaker_D40_Outline', SPK[0], SPK[1], 0, 'B'),
     ('Speaker_Grille_D32', SPK[0], SPK[1], 0, 'F'),
     ('Holder_18650_EndFace_Outline', SLOT[0], SLOT[1], 180, 'B'),
-    ('Logo_KOPN_15mm', -24.0, -9.0, 0, 'F'),
+    ('Logo_KOPN_15mm', 0.0, 14.0, 0, 'F'),
     ('Logo_CGW_14mm', -19.0, 16.0, 0, 'B'),
 ]
 
@@ -242,10 +242,13 @@ def build(sch_parts, out_path):
 
     # silkscreen text
     text(board, 'COLUMBIA, MO', 0.0, -33.2, 1.1, pcbnew.F_SilkS, bold=True)
-    text(board, 'BAT+', -5.0, 23.5, 0.8, pcbnew.F_SilkS)
-    text(board, 'BAT-', -3.0, 29.0, 0.8, pcbnew.F_SilkS)
-    text(board, 'CHG', -16.0, 21.0, 0.8, pcbnew.F_SilkS)
-    text(board, 'FULL', -16.5, 23.5, 0.8, pcbnew.F_SilkS)
+    text(board, '+', SLOT[0] + 5.2, SLOT[1], 1.2, pcbnew.F_SilkS, bold=True)
+    text(board, '-', SLOT[0] - 2.2, SLOT[1] + 5.5, 1.2, pcbnew.F_SilkS, bold=True)
+    # LED labels go just left of wherever the legalizer put the LEDs
+    for ref, label in (('D2', 'CHG'), ('D3', 'FULL')):
+        f = placed[ref]; c = f.GetPosition(); bb = f.GetBoundingBox(False, False)
+        right = pcbnew.ToMM(bb.GetRight()) - CX            # label starts just right of the LED
+        text(board, label, right + 0.3 + 0.36 * len(label), CY - pcbnew.ToMM(c.y), 0.8, pcbnew.F_SilkS)
     text(board, 'KOPN 89.5 JAR RADIO rev B', 21.0, 15.5, 0.8, pcbnew.B_SilkS)
     text(board, 'COLUMBIA GADGET WORKS', 21.0, 13.5, 0.8, pcbnew.B_SilkS)
     text(board, 'CERN-OHL-S-2.0', 21.0, 11.5, 0.8, pcbnew.B_SilkS)
