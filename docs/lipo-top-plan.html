@@ -532,6 +532,7 @@ python3 jlcdb.py search "56nH" --sub Inductor --pkg 0603 --basic</pre>
       <tr><td>Layout</td><td>All 55 assembled parts on the top face. Speaker grille Ø32 centred at (0, −14), holder slot at (0, +23.5), USB-C left, knob right (shaft at (25, 5)). Whip M3 at (16, 27.5) and antenna wire hole at (16, 20), both beside the tuner input. Through-hole pins kept clear of the speaker and holder footprints on the inside.</td></tr>
       <tr><td>Routing</td><td>Freerouting, 2 layers, ground pour both sides plus stitching vias. 0 unconnected, 0 clearance/short errors. Cosmetic silkscreen warnings only.</td></tr>
       <tr><td>Checks</td><td>All 178 pad nets match <code>circuit.py</code>; schematic netlist matches (0 of 174 pins wrong).</td></tr>
+      <tr><td>Inside label</td><td>"18650 Li-ion · + END TO LID" replaces "PROTECTED 18650 ONLY". The XB8089D protects the cell, and protected 18650s (67–70 mm long) may not fit the holder, so plain flat-top cells are the right choice.</td></tr>
       <tr><td>Order files</td><td><code>kicad/jlcpcb/</code>: gerbers zip, BOM (35 lines), CPL (55 placements). DNP spots (U5, D4, R10, R20, RT1, RV2) are left out of the BOM and CPL.</td></tr>
     </tbody>
   </table></div>

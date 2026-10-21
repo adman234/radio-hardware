@@ -250,7 +250,7 @@ def build(sch_parts, out_path):
     text(board, 'COLUMBIA GADGET WORKS', 21.0, 13.5, 0.8, pcbnew.B_SilkS)
     text(board, 'CERN-OHL-S-2.0', 21.0, 11.5, 0.8, pcbnew.B_SilkS)
     text(board, 'after The Public Radio', 21.0, 9.8, 0.8, pcbnew.B_SilkS)
-    text(board, 'PROTECTED 18650 ONLY', -24.0, 4.0, 0.8, pcbnew.B_SilkS)
+    text(board, '18650 Li-ion  + END TO LID', -23.0, 4.0, 0.8, pcbnew.B_SilkS)
 
     board.SetFileName(out_path)
     pcbnew.SaveBoard(out_path, board)

@@ -4869,7 +4869,7 @@
   (gr_text "CERN-OHL-S-2.0" (at 171 88.5) (layer "B.SilkS") (tstamp 74820cf8-3728-49c8-a79c-7989e55c0f8d)
     (effects (font (size 0.8 0.8) (thickness 0.12)) (justify mirror))
   )
-  (gr_text "PROTECTED 18650 ONLY" (at 126 96) (layer "B.SilkS") (tstamp b1930929-a549-4683-b157-3fad7d125b41)
+  (gr_text "18650 Li-ion  + END TO LID" (at 127 96) (layer "B.SilkS") (tstamp b1930929-a549-4683-b157-3fad7d125b41)
     (effects (font (size 0.8 0.8) (thickness 0.12)) (justify mirror))
   )
   (gr_text "COLUMBIA GADGET WORKS" (at 171 86.5) (layer "B.SilkS") (tstamp b7589770-1067-4f37-aa69-ccc1a60cb94d)
