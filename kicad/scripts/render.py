@@ -36,11 +36,12 @@ def render(face, width=1400):
         mask = layer_png(f + '.Mask', d, width, mirror)
         silk = layer_png(f + '.SilkS', d, width, mirror)
     h, w = edge.shape
-    # board area: flood fill from the centre inside the outline
+    # board area: the round outline fills the plot, so the board is the inscribed disc
     from PIL import ImageDraw
-    im = Image.fromarray(np.where(edge, 0, 255).astype('uint8'))
-    ImageDraw.floodfill(im, (w // 2, h // 2), 128)
-    board = np.asarray(im) == 128
+    ys, xs = np.nonzero(edge)
+    cx0, cy0, rad = (xs.min() + xs.max()) / 2, (ys.min() + ys.max()) / 2, (xs.max() - xs.min()) / 2
+    yy, xx = np.mgrid[0:h, 0:w]
+    board = (xx - cx0) ** 2 + (yy - cy0) ** 2 <= rad ** 2
     # drills appear as white holes inside copper/mask plots; the edge plot has them too (NPTH)
     out = np.zeros((h, w, 4), dtype=np.uint8)
     out[board] = (*COL['mask'], 255)

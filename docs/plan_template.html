@@ -132,36 +132,36 @@ footer ul { padding-left: 18px; columns: 2 300px; }
 <div class="wrap">
 
 <header class="top">
-  <div class="eyebrow">adman234/radio-hardware · branch jar-radio-redesign · plan rev F.12 · board rev A (superseded) · 2026-10-20</div>
+  <div class="eyebrow">adman234/radio-hardware · branch jar-radio-redesign · plan rev F.12 · board rev B · 2026-10-21</div>
   <h1>KOPN 89.5 Jar Radio</h1>
-  <p class="lede">A single-station FM radio whose circuit board is the lid of a wide-mouth mason jar. It has no firmware, charges from USB-C, runs from USB alone or an optional LiPo, and has a wire or whip antenna. <strong>Board rev A is generated</strong>: schematic, layout, routing, and JLCPCB files. It is a first prototype. A few dimensions are still assumptions until the jar and parts are measured, and those are called out below.</p>
+  <p class="lede">A single-station FM radio whose circuit board is the lid of a wide-mouth 16 oz mason jar. It has no firmware, charges from USB-C, and runs from one protected 18650 cell hanging inside the jar. <strong>Board rev B is generated and routed</strong>: every electronic part is on the top face, assembled by JLCPCB in one single-sided pass. The speaker, battery holder and antenna wire are hand-fitted from inside.</p>
   <div class="status">
-    <span class="chip go">Schematic + board generated</span>
-    <span class="chip go">Netlist verified (0 mismatches)</span>
+    <span class="chip go">Schematic + board rev B generated</span>
+    <span class="chip go">Netlist verified (0 of 178 pads)</span>
+    <span class="chip go">Routed: 0 unconnected, 0 clearance errors</span>
     <span class="chip go">JLC gerbers / BOM / CPL exported</span>
-    <span class="chip hold">Jar not measured yet: board OD assumed</span>
-    <span class="chip hold">Pot footprint provisional</span>
-    <span class="chip ph">6 LCSC numbers still needed</span>
+    <span class="chip hold">Check part rotations in JLC's preview</span>
+    <span class="chip hold">Pot pin 1/3 direction: verify on first board</span>
   </div>
   <dl class="spec">
     <div><dt>Station</dt><dd>KOPN 89.5 MHz, set by 2 resistors</dd></div>
     <div><dt>Tuner</dt><dd>Si4825-A10, band FM3 (US 75 µs)</dd></div>
-    <div><dt>Amp</dt><dd>NS8002 class AB, ~0.6 W battery / 1.2 W USB</dd></div>
-    <div><dt>Speaker</dt><dd>INGHAi GSPK4935, Ø49 cavity, 8 Ω 2 W</dd></div>
-    <div><dt>Power</dt><dd>USB-C 5 V + 500 mAh protected LiPo</dd></div>
-    <div><dt>Board</dt><dd>Ø85.5 mm, 2 layers, 1.6 mm, black</dd></div>
+    <div><dt>Amp</dt><dd>NS8002 class AB BTL, gain 29</dd></div>
+    <div><dt>Speaker</dt><dd>Dragonstate HDK-4008BB-2, Ø40, 8 Ω</dd></div>
+    <div><dt>Power</dt><dd>USB-C 5 V + protected 18650 (XB8089D), 500 mA charge</dd></div>
+    <div><dt>Board</dt><dd>Ø84 mm, 2 layers, 1.6 mm, black, all parts top</dd></div>
   </dl>
 </header>
 
 {{TOPSIDE}}
 <section>
-  <h2><span class="ref">01</span>Board rev A</h2>
-  <div class="col"><p>These renders are generated from the real board files. Black mask, white silkscreen, silver pads. The top face is the outside of the lid. The inside face carries every part JLCPCB solders, so the order is single-sided assembly.</p></div>
+  <h2><span class="ref">01</span>Board rev B</h2>
+  <div class="col"><p>These renders are generated from the real board files: black mask, white silkscreen, silver pads. The top face is the outside of the lid and carries every part JLCPCB fits. The inside face only shows where to glue the speaker and the 18650 holder.</p></div>
   <div class="shots">
-    <figure class="shot"><img src="{{IMG_TOP}}" alt="Top face render: KOPN logo, speaker grille with two zip-tie bars, volume pot, USB-C, whip mount"><figcaption>Top (outside). KOPN logo, speaker grille, volume knob (with switch), USB-C, two charge LEDs shining through, M3 whip mount and antenna exit hole. The outer ring is solid ground under the band.</figcaption></figure>
-    <figure class="shot"><img src="{{IMG_BOT}}" alt="Inside face render: speaker outline, CGW logo, tuner, amplifier, charger and connectors"><figcaption>Inside (viewed from inside the jar, mirrored). Speaker outline with the CGW logo, the tuner block, the amp and the charger, plus the XH antenna socket and the vertical PH battery socket.</figcaption></figure>
+    <figure class="shot"><img src="{{IMG_TOP}}" alt="Top face render: KOPN logo, speaker grille at the bottom, USB-C left, battery slot top, whip and antenna upper right, volume knob and amplifier right"><figcaption>Top (outside). Speaker grille at the bottom, battery slot at the top (180° away). USB-C and charger on the left, with the CHG/FULL LEDs. The XB8089D sits beside the slot. M3 whip and antenna wire (with 2 tie holes) at upper right, tuner in the middle, volume/power knob and amp on the right.</figcaption></figure>
+    <figure class="shot"><img src="{{IMG_BOT}}" alt="Inside face render: 18650 holder outline under the slot, speaker outline under the grille, CGW logo"><figcaption>Inside (viewed from inside the jar, mirrored). Glue outlines for the 18650 holder (+ foot through the slot, − wire to the round pad above it) and the Ø40 speaker. Speaker wire pads lower left of this view, CGW logo, licence text.</figcaption></figure>
   </div>
-  <div class="bar"><span>DRC after autorouting: {{DRC}}</span></div>
+  <div class="bar"><span>DRC after routing: {{DRC}}</span></div>
   <h3>Schematic</h3>
   <div class="sch"><img src="{{IMG_SCH}}" alt="Full schematic: tuner, antenna, audio, power and test blocks"></div>
   <div class="grid2">
@@ -169,25 +169,25 @@ footer ul { padding-left: 18px; columns: 2 300px; }
       <h3>What's in the repo</h3>
       <ul>
         <li><code>kicad/jar-radio.kicad_pro / _sch / _pcb</code>: KiCad 7 format; opens in 8 and 9.</li>
-        <li><code>kicad/jlcpcb/</code>: <code>jar-radio-gerbers.zip</code>, <code>BOM.csv</code>, <code>CPL.csv</code>, ready for JLCPCB upload.</li>
-        <li><code>kicad/scripts/</code>: the whole design is generated by script. <code>circuit.py</code> is the single source of parts and nets; <code>build.py --route</code> rebuilds everything.</li>
-        <li><code>kicad/lib/</code>: custom footprints (USB-C, XH socket, pot, grille, logos) and symbols.</li>
-        <li><code>docs/bom-plan.csv</code> is the master spreadsheet; <code>docs/cost_model.py</code> is the price-by-quantity model.</li>
+        <li><code>kicad/jlcpcb/</code>: <code>jar-radio-gerbers.zip</code>, <code>BOM.csv</code> (35 lines), <code>CPL.csv</code> (55 placements, including the through-hole pot), ready for JLCPCB upload.</li>
+        <li><code>kicad/scripts/</code>: the whole design is generated by script. <code>circuit.py</code> holds every part and net; <code>build.py --route</code> rebuilds the schematic, places, routes (Freerouting plus a small maze router for leftovers), fixes ground islands and writes DRC; <code>export_jlc.py</code> and <code>render.py</code> make the order files and these images; <code>jlcdb.py</code> checks stock and price.</li>
+        <li><code>kicad/lib/</code>: custom footprints (USB-C, switched pot, holder slot, antenna pads, grille, outlines, logos) and symbols.</li>
       </ul>
     </div>
     <div>
       <h3>Before you click "order"</h3>
       <ol>
-        <li>Measure the jar (Q1). If the lid isn't ~85.5 mm, I change one number and rebuild.</li>
-        <li>Measure a real RV097NS pot (Q2). Its footprint is my best guess.</li>
-        <li>Fill in the missing LCSC numbers (section 09).</li>
-        <li>In JLC's assembly preview, check the rotation of each IC (pin-1 dots). Rotations from KiCad sometimes need a 90°/180° fix.</li>
-        <li>Open the board in KiCad and look it over. Autorouted, so tidy-ups are welcome.</li>
+        <li>Upload the gerbers, BOM and CPL. In JLC's assembly preview, check each IC's pin-1 dot, the USB-C and the pot. KiCad rotations sometimes need a 90°/180° fix in the CPL.</li>
+        <li>Choose through-hole assembly for RV1 (the pot), or leave it off the order and hand-solder it.</li>
+        <li>Pick 1.6 mm, black mask, white silk, HASL or ENIG. Two layers, 84 mm round.</li>
+        <li>Open the board in KiCad and look it over. It's autorouted, so tidy-ups are welcome.</li>
+        <li>On the first board: check the volume direction, and fit the holder's + foot through the slot before gluing.</li>
       </ol>
     </div>
   </div>
 </section>
 
+<div class="wrapnote callout" style="margin:24px auto;max-width:1100px"><strong>History below</strong>Sections 02 onward describe the earlier rev A board (parts inside, JST sockets, LiPo pouch) and are kept for reference. Section R and section 01 are current.</div>
 <section>
   <h2><span class="ref">02</span>Mechanical layout</h2>
   <div class="grid2">

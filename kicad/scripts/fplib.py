@@ -313,8 +313,8 @@ def batt_tab_slot_v2(name='Battery_Holder_Tab_Slot_Plus_Wire'):
     L.append('  (pad "1" thru_hole oval (at 0 0) (size 8.4 2.2) (drill oval 7.0 1.0) (layers "*.Cu" "*.Mask"))')
     L.append('  (pad "2" thru_hole circle (at 0 5.5) (size 2.4 2.4) (drill 1.2) (layers "*.Cu" "*.Mask"))')
     L.append(npth(3.5, 5.5, 1.6))
-    L.append(_text('BAT+', -6.0, 0, 'F.SilkS', 0.8))
-    L.append(_text('BAT-', -6.0, 5.5, 'F.SilkS', 0.8))
+    L.append(_text('BAT+', -6.0, 0, 'F.Fab', 0.8))
+    L.append(_text('BAT-', -3.0, 5.5, 'F.Fab', 0.8))
     L += rect(-4.6, -1.6, 5.0, 7.2, 'F.CrtYd', 0.05)
     write(name, L)
 
@@ -335,7 +335,7 @@ def r09512ns_rear(name='Potentiometer_CTR_R09512NS_RearMount_Switch'):
         L.append(f'  (pad "MP" thru_hole oval (at {x} 0) (size 2.6 2.0) (drill oval 1.8 1.2) (layers "*.Cu" "*.Mask"))')
     L += rect(-5.3, -4.8, 5.3, 6.0, 'F.Fab', 0.1)
     L.append(_circle(0, 0, 3.0, 'F.Fab', 0.1))
-    L.append(_circle(0, 0, 8.0, 'F.SilkS', 0.15))   # 16 mm knob
+    L.append(_circle(0, 0, 8.0, 'F.Fab', 0.1))   # 16 mm knob
     L += rect(-6.3, -5.3, 6.3, 10.2, 'F.CrtYd', 0.05)
     L.append(_text('VOL / OFF', 0, -9.2, 'F.SilkS', 0.9))
     write(name, L)
@@ -357,7 +357,8 @@ def holder_18650_outline(name='Holder_18650_EndFace_Outline'):
     L = _hdr(name, '18650 holder end face outline, inside face (place on B); origin at foot slot', 'exclude_from_pos_files exclude_from_bom')
     L += rect(-10.33, 0.5, 10.33, 15.4, 'F.SilkS', 0.15)
     L += rect(-10.6, 0.3, 10.6, 15.6, 'F.CrtYd', 0.05)
-    L.append(_text('18650 HOLDER (glue)  + end at slot', 0, 8.0, 'F.SilkS', 1.0))
+    L.append(_text('18650 HOLDER', 0, 7.0, 'F.SilkS', 1.0))
+    L.append(_text('+ end at slot, glue', 0, 9.0, 'F.SilkS', 0.8))
     write(name, L)
 
 

@@ -66,12 +66,31 @@ assert pcbnew.ExportSpecctraDSN(b, {dsn!r})
     if not finish:
         import stitch
         print('stitching vias:', stitch.add_stitching(board))
+    # drop vias stacked on the same spot (pre-route grid + stitching can coincide)
+    seen = set()
+    for t in list(board.GetTracks()):
+        if t.GetClass() == 'PCB_VIA':
+            k = (t.GetPosition().x, t.GetPosition().y)
+            if k in seen:
+                board.Remove(t)
+            seen.add(k)
     pcbnew.ZONE_FILLER(board).Fill(board.Zones())
     rpt = os.path.join(WORK, 'drc.rpt')
     import zone_stitch
     print('pour-joining vias:', zone_stitch.stitch(board))
+    import island_bridge
+    print('GND bridges:', island_bridge.bridge(board))
     pcbnew.SaveBoard(BOARD, board)
     pcbnew.WriteDRCReport(board, rpt, pcbnew.EDA_UNITS_MILLIMETRES, True)
+    # anything Freerouting left: two-pad connections get the small maze router
+    import route_one, island_bridge
+    left = re.findall(r'Pad (\S+) \[[^\]]+\] of (\S+) on \S+\n\s+@\([^)]*\): Pad (\S+) \[[^\]]+\] of (\S+) on', open(rpt).read())
+    for pa, ra, pb, rb in left:
+        print(f'maze-routing {ra}.{pa} -> {rb}.{pb}:', route_one.route_net(board, ra, pa, rb, pb))
+    if left:
+        print('GND bridges:', island_bridge.bridge(board))
+        pcbnew.SaveBoard(BOARD, board)
+        pcbnew.WriteDRCReport(board, rpt, pcbnew.EDA_UNITS_MILLIMETRES, True)
     print(summary(rpt))
 
 

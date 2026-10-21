@@ -12,5 +12,6 @@
   (fp_line (start 10.600 0.300) (end 10.600 15.600) (stroke (width 0.05) (type solid)) (layer "F.CrtYd"))
   (fp_line (start 10.600 15.600) (end -10.600 15.600) (stroke (width 0.05) (type solid)) (layer "F.CrtYd"))
   (fp_line (start -10.600 15.600) (end -10.600 0.300) (stroke (width 0.05) (type solid)) (layer "F.CrtYd"))
-  (fp_text user "18650 HOLDER (glue)  + end at slot" (at 0.000 8.000) (layer "F.SilkS") (effects (font (size 1.0 1.0) (thickness 0.150))))
+  (fp_text user "18650 HOLDER" (at 0.000 7.000) (layer "F.SilkS") (effects (font (size 1.0 1.0) (thickness 0.150))))
+  (fp_text user "+ end at slot, glue" (at 0.000 9.000) (layer "F.SilkS") (effects (font (size 0.8 0.8) (thickness 0.120))))
 )
