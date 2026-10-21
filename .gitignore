@@ -6,3 +6,4 @@ __pycache__/
 _autosave-*
 kicad/logs/
 .worktrees/
+kicad/logs_route.txt
