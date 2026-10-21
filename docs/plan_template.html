@@ -142,7 +142,7 @@ details.hist > summary { cursor: pointer; font-family: var(--display); font-size
     <span class="chip go">0 unconnected · 0 clearance errors</span>
     <span class="chip go">Netlist verified: 178/178 pads</span>
     <span class="chip go">JLC gerbers / BOM / CPL exported</span>
-    <span class="chip hold">2 cost-down swaps waiting for your OK (Q1)</span>
+    <span class="chip go">Cost-down swaps applied (6 Extended parts)</span>
     <span class="chip hold">Verify on first boards: station, volume direction</span>
   </div>
   <dl class="spec">
@@ -180,8 +180,7 @@ details.hist > summary { cursor: pointer; font-family: var(--display); font-size
     <div>
       <h3>Before you click "order"</h3>
       <ol>
-        <li>Answer Q1 (two cost-down swaps). I re-route and re-export after that.</li>
-        <li>Upload the gerbers, BOM and CPL. In JLC's assembly preview, check each IC's pin-1 dot, the USB-C and the pot. Fix any 90°/180° rotation in the preview.</li>
+                <li>Upload the gerbers, BOM and CPL. In JLC's assembly preview, check each IC's pin-1 dot, the USB-C and the pot. Fix any 90°/180° rotation in the preview.</li>
         <li>Choose through-hole assembly for RV1 (the pot).</li>
         <li>Board options: 2 layers, 1.6 mm, black mask, white silk, lead-free HASL, Ø84 round.</li>
         <li>Order 5 first. On those boards, check that KOPN comes in and that clockwise raises the volume.</li>
@@ -227,7 +226,7 @@ details.hist > summary { cursor: pointer; font-family: var(--display); font-size
       <ul>
         <li><b>Antenna</b> Whip (ANT1) or wire (J3) → 1 nF C9 → Si4825 FMI, with 56 nH L1 to ground (AN738 whip network). The 0.5 pF ESD diode spot D4 is unpopulated.</li>
         <li><b>Tuner</b> Si4825-A10, 32.768 kHz crystal, band FM3 set by a 498 k ladder (330k + 100k + 68k). The RC reset is R1/C5; the brown-out reset spot U5 is unpopulated.</li>
-        <li><b>Station</b> A resistor divider from TUNE1: R2 / R3 / R4 100 Ω. The frequency follows the ratio (assumed f ≈ 87 + 21 × ratio MHz; checked on the first boards). The RV2 pads take a calibration trimmer if needed.</li>
+        <li><b>Station</b> A resistor divider from TUNE1: R2 82k / R3 11k / R4 100 Ω, all 1% fee-free parts. Ratio 11.1/93.1 → 89.504 MHz on the assumed f ≈ 87 + 21 × ratio law. Worst-case 1% error is ±44 kHz (typically ±18 kHz), inside the ±50 kHz channel window. The first boards confirm the law; the RV2 pads take a calibration trimmer if needed.</li>
         <li><b>Volume</b> AOUT → 1 µF → R22 4.7k → 10k audio pot (keeps the Si4825 load ≥ 12.9k) → 100 nF → NS8002 (R7 47k, R8 680k: gain 29, BTL) → speaker.</li>
       </ul>
     </div>
@@ -277,19 +276,19 @@ details.hist > summary { cursor: pointer; font-family: var(--display); font-size
   <h2><span class="ref">05</span>Cost estimate, delivered</h2>
   <div class="col"><p>US tariff on JLC/LCSC goods is assumed ≈ 35% (JLC's FAQ; its own pages disagree, so check the checkout figure). Shipping is DHL/FedEx to Missouri. JLC part quantities include attrition and minimum buys.</p></div>
   <div class="tbl"><table>
-    <thead><tr><th></th><th class="num">5 radios, current design</th><th class="num">5 radios, with Q1 swaps</th><th class="num">50 radios, current design</th><th class="num">50 radios, with Q1 swaps</th></tr></thead>
+    <thead><tr><th></th><th class="num">5 radios</th><th class="num">50 radios</th></tr></thead>
     <tbody>
-      <tr><td>PCB (Ø84, 2-layer, black)</td><td class="num">$6</td><td class="num">$6</td><td class="num">$25</td><td class="num">$25</td></tr>
-      <tr><td>Assembly: setup, stencil, joints</td><td class="num">$11</td><td class="num">$11</td><td class="num">$23</td><td class="num">$23</td></tr>
-      <tr><td>Extended part fees</td><td class="num">8 × $3 = $24</td><td class="num">6 × $3 = $18</td><td class="num">$24</td><td class="num">$18</td></tr>
-      <tr><td>Through-hole fitting (pot)</td><td class="num">$4</td><td class="num">$4</td><td class="num">$9</td><td class="num">$9</td></tr>
-      <tr><td>Parts JLC places</td><td class="num">$38</td><td class="num">$35</td><td class="num">$271</td><td class="num">$233</td></tr>
-      <tr><td>Tariff (~35%)</td><td class="num">$29</td><td class="num">$26</td><td class="num">$123</td><td class="num">$108</td></tr>
-      <tr><td>JLC shipping</td><td class="num">$22</td><td class="num">$22</td><td class="num">$35</td><td class="num">$35</td></tr>
-      <tr><td>Speaker + holder (LCSC), tariff, combined shipping</td><td class="num">$13</td><td class="num">$13</td><td class="num">$68</td><td class="num">$68</td></tr>
-      <tr><td>18650 cells + shipping</td><td class="num">$30</td><td class="num">$30</td><td class="num">$165</td><td class="num">$165</td></tr>
-      <tr><td>M3 whips + nuts</td><td class="num">$7</td><td class="num">$7</td><td class="num">$55</td><td class="num">$55</td></tr>
-      <tr><td><b>All electrical</b></td><td class="num"><b>≈ $184 ($37 each)</b></td><td class="num"><b>≈ $172 ($34 each)</b></td><td class="num"><b>≈ $798 ($16.00 each)</b></td><td class="num"><b>≈ $739 ($14.80 each)</b></td></tr>
+      <tr><td>PCB (Ø84, 2-layer, black)</td><td class="num">$6</td><td class="num">$25</td></tr>
+      <tr><td>Assembly: setup, stencil, joints</td><td class="num">$11</td><td class="num">$23</td></tr>
+      <tr><td>Extended part fees: tuner, L1, pot, amp, USB-C, XB8089D</td><td class="num">6 × $3 = $18</td><td class="num">$18</td></tr>
+      <tr><td>Through-hole fitting (pot)</td><td class="num">$4</td><td class="num">$9</td></tr>
+      <tr><td>Parts JLC places</td><td class="num">$35</td><td class="num">$233</td></tr>
+      <tr><td>Tariff (~35%)</td><td class="num">$26</td><td class="num">$108</td></tr>
+      <tr><td>JLC shipping</td><td class="num">$22</td><td class="num">$35</td></tr>
+      <tr><td>Speaker + holder (LCSC), tariff, combined shipping</td><td class="num">$13</td><td class="num">$68</td></tr>
+      <tr><td>18650 cells + shipping</td><td class="num">$30</td><td class="num">$165</td></tr>
+      <tr><td>M3 whips + nuts</td><td class="num">$7</td><td class="num">$55</td></tr>
+      <tr><td><b>All electrical, delivered</b></td><td class="num"><b>≈ $172 ($34 each)</b></td><td class="num"><b>≈ $739 ($14.80 each)</b></td></tr>
     </tbody>
   </table></div>
   <h3>Other costs</h3>
@@ -305,7 +304,6 @@ details.hist > summary { cursor: pointer; font-family: var(--display); font-size
 <section>
   <h2><span class="ref">06</span>Open questions</h2>
   <ol class="qlist">
-    <li><b>Apply the two cost-down swaps?</b> (a) C7/C21: 22 µF 0805 → 22 µF 0603 6.3 V (C59461, Basic), and C18 → 10 µF 0603 (C19702, Basic): −$0.62 per board. (b) Station resistors 86.6k/11.7k 0.1% → 82k (C23254, Basic) / 11k (C25950, Preferred) 1%. That removes 2 Extended fees, and the nominal moves from 18 kHz to 4 kHz off 89.5. Worst-case 1% error is ±44 kHz, typically ±18 kHz, inside the ±50 kHz channel window.<div class="rec">Yes to both. I re-route and re-export afterwards (about 10 minutes).</div></li>
     <li><b>Knob.</b> The R09512NS has a 6 mm D-flat ("FB") shaft, 15 mm long. Pick a knob style and colour. Is a shaft tip ~29 mm above the lid OK, or do you want a low, wide knob that hides most of it?<div class="rec">A Ø20 mm aluminium or black knob, set-screw or D push-fit.</div></li>
     <li><b>Whip listing.</b> Make sure it has an <b>M3 male stud</b>, not a female thread or M2.5. Collapsed length should be under about 20 cm so it stands neatly on a jar. Extended, aim for 60–80 cm (a quarter wave at 89.5 MHz is about 84 cm).<div class="rec">Send me a listing and I'll check the thread and length.</div></li>
     <li><b>Cells.</b> Which 18650 and from where? It must be flat-top and unprotected, and about 65 mm long, to fit the holder.<div class="rec">Samsung 30Q, Molicel P26A or LG HG2 from a reputable US cell shop. Avoid unbranded "9900 mAh" cells.</div></li>
@@ -329,6 +327,7 @@ details.hist > summary { cursor: pointer; font-family: var(--display); font-size
       <tr><td>Speaker</td><td>Dragonstate HDK-4008BB-2, hand-wired and glued.</td></tr>
       <tr><td>Antenna</td><td>M3 whip with every radio; wire hole kept but unpopulated.</td></tr>
       <tr><td>USB-C</td><td>ShouHan TYPE-C 6P LTH6.8 108 (C30167335), vertical.</td></tr>
+      <tr><td>Cost-down</td><td>Station resistors 82k/11k 1% (fee-free) instead of 0.1%; C7/C21 22 µF 0603 and C18 10 µF 0603 instead of 22 µF 0805.</td></tr>
       <tr><td>Quantities</td><td>5 prototypes, then probably 50.</td></tr>
     </tbody>
   </table></div>

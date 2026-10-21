@@ -82,12 +82,14 @@ part('R1', 'R', '100k', R0603, 'C25803', '0603WAF1003T5E', {'1': '+3V3', '2': 'R
 part('C5', 'C', '100nF', C0603, 'C14663', 'CC0603KRX7R9BB104', {'1': 'RST', '2': 'GND'}, block=B)
 part('U5', 'XC61CN', 'XC61CN2702MR', SOT23, 'C112139', 'XC61CN2702MR-G', {'3': '+3V3', '2': 'GND', '1': 'RST'}, block=B, dnp=True)   # upgrade: brown-out reset
 # station divider: TUNE1 -> R2 -> TUNE2 -> R3 -> TUNE_LO -> R4 -> GND
-part('R2', 'R', '86.6k 0.1%', R0603, 'C861580', 'RT0603BRD0786K6L', {'1': 'TUNE1', '2': 'TUNE2'}, block=B, station=True)
-part('R3', 'R', '11.7k 0.1%', R0603, 'C4553285', 'TNPW060311K7BEEA', {'1': 'TUNE2', '2': 'TUNE_LO'}, block=B, station=True)
+# ratio (R3+R4)/(R2+R3+R4) = 11.1/93.1 -> 89.504 MHz on the assumed 87 + 21*ratio law;
+# 1% parts: worst case +/-44 kHz, inside the +/-50 kHz channel window
+part('R2', 'R', '82k', R0603, 'C23254', '0603WAF8202T5E', {'1': 'TUNE1', '2': 'TUNE2'}, block=B, station=True)
+part('R3', 'R', '11k', R0603, 'C25950', '0603WAF1102T5E', {'1': 'TUNE2', '2': 'TUNE_LO'}, block=B, station=True)
 part('R4', 'R', '100R', R0603, 'C22775', '0603WAF1000T5E', {'1': 'TUNE_LO', '2': 'GND'}, block=B)
 part('C6', 'C', '100nF', C0603, 'C14663', 'CC0603KRX7R9BB104', {'1': 'TUNE1', '2': 'GND'}, block=B)
-part('C7', 'C', '22uF', C0805, 'C45783', 'CL21A226MAQNNNE', {'1': 'TUNE1', '2': 'GND'}, block=B)
-part('C21', 'C', '22uF', C0805, 'C45783', 'CL21A226MAQNNNE', {'1': 'TUNE1', '2': 'GND'}, block=B)   # 2x22u = AN738's 47u
+part('C7', 'C', '22uF', C0603, 'C59461', 'CL10A226MQ8NRNC', {'1': 'TUNE1', '2': 'GND'}, block=B)
+part('C21', 'C', '22uF', C0603, 'C59461', 'CL10A226MQ8NRNC', {'1': 'TUNE1', '2': 'GND'}, block=B)   # 2x22u = AN738's 47u
 part('RV2', 'Trim_3', '100k CAL (DNP)', 'Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical', '', '3296W-1-104',
      {'1': 'TUNE1', '2': 'TUNE2', '3': 'TUNE_LO'}, block=B, dnp=True, hand=True)
 # band ladder 330k + 100k + 68k = 498k (AN738: 500k +/-1%), all Basic parts
@@ -157,7 +159,7 @@ part('Q1', 'AO3401A', 'AO3401A', SOT23, 'C15127', 'AO3401A', {'1': 'VBUS', '2': 
 part('R16', 'R', '100k', R0603, 'C25803', '0603WAF1003T5E', {'1': 'VBUS', '2': 'GND'}, block=B)
 part('D1', 'D', 'B5819W', 'Diode_SMD:D_SOD-123', 'C8598', 'B5819W SL', {'1': 'VSYS', '2': 'VBUS'}, block=B)
 part('C17', 'C', '10uF', C0603, 'C19702', 'CL10A106KP8NNNC', {'1': 'VSYS', '2': 'GND'}, block=B)
-part('C18', 'C', '22uF', C0805, 'C45783', 'CL21A226MAQNNNE', {'1': 'VSW', '2': 'GND'}, block=B)
+part('C18', 'C', '10uF', C0603, 'C19702', 'CL10A106KP8NNNC', {'1': 'VSW', '2': 'GND'}, block=B)
 part('U4', 'XC6206', 'XC6206P332MR', SOT23, 'C5446', 'XC6206P332MR', {'3': 'VSW', '1': 'GND', '2': '+3V3'}, block=B)
 part('C19', 'C', '1uF', C0603, 'C15849', 'CL10A105KB8NNNC', {'1': 'VSW', '2': 'GND'}, block=B)
 part('C20', 'C', '1uF', C0603, 'C15849', 'CL10A105KB8NNNC', {'1': '+3V3', '2': 'GND'}, block=B)
