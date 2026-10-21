@@ -1,5 +1,5 @@
 """Writes the JLCPCB order files into kicad/jlcpcb/:
-gerbers + drill zip, BOM.csv and CPL.csv (inside face only), plus PNG
+gerbers + drill zip, BOM.csv and CPL.csv (all on the top face), plus PNG
 renders of both faces into docs/img/."""
 import csv, os, subprocess, zipfile, shutil, glob
 import circuit

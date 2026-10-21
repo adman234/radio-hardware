@@ -339,3 +339,28 @@ def r09512ns_rear(name='Potentiometer_CTR_R09512NS_RearMount_Switch'):
     L += rect(-6.3, -5.3, 6.3, 10.2, 'F.CrtYd', 0.05)
     L.append(_text('VOL / OFF', 0, -9.2, 'F.SilkS', 0.9))
     write(name, L)
+
+
+def speaker_d40(name='Speaker_D40_Outline'):
+    """Inside-face outline of the Dragonstate HDK-4008BB-2 (Ø40 x 5.3 mm),
+    hot-glued face-down under the grille."""
+    L = _hdr(name, 'Ø40 speaker outline, inside face (place on B)', 'exclude_from_pos_files exclude_from_bom')
+    L.append(_circle(0, 0, 20.0, 'F.SilkS', 0.15))
+    L.append(_circle(0, 0, 20.5, 'F.CrtYd', 0.05))
+    L.append(_text('SPEAKER (glue)', 0, 17.0, 'F.SilkS', 1.0))
+    write(name, L)
+
+
+def holder_18650_outline(name='Holder_18650_EndFace_Outline'):
+    """Inside-face outline of the BH-18650-B1BA002 end face (20.65 x 14.9 mm)
+    standing on end; origin = the foot slot, body on the +Y side."""
+    L = _hdr(name, '18650 holder end face outline, inside face (place on B); origin at foot slot', 'exclude_from_pos_files exclude_from_bom')
+    L += rect(-10.33, 0.5, 10.33, 15.4, 'F.SilkS', 0.15)
+    L += rect(-10.6, 0.3, 10.6, 15.6, 'F.CrtYd', 0.05)
+    L.append(_text('18650 HOLDER (glue)  + end at slot', 0, 8.0, 'F.SilkS', 1.0))
+    write(name, L)
+
+
+def build_f12():
+    sound_grille('Speaker_Grille_D32', 32.0, hole=1.8, pitch=2.6)
+    speaker_d40(); holder_18650_outline(); r09512ns_rear(); usb_c_vertical_6p_108()

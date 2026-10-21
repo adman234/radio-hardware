@@ -7,7 +7,7 @@ parts and holes block both faces.
 """
 import math
 import pcbnew
-from gen_pcb import CX, CY, SPK, GEOM, P
+from gen_pcb import CX, CY, SPK, GEOM, P, GRILLE_R, SPK_R, HOLDER
 
 MARGIN = pcbnew.FromMM(0.1)
 
@@ -30,16 +30,29 @@ def overlap(a, b):
     return not (a[2] <= b[0] or b[2] <= a[0] or a[3] <= b[1] or b[3] <= a[1])
 
 
-def inside(bb, face):
+def _circle_hits(bb, cx_mm, cy_mm, r_mm):
+    sx, sy = pcbnew.FromMM(CX + cx_mm), pcbnew.FromMM(CY - cy_mm)
+    nx = min(max(sx, bb[0]), bb[2]); ny = min(max(sy, bb[1]), bb[3])
+    return math.hypot(nx - sx, ny - sy) < pcbnew.FromMM(r_mm)
+
+
+def inside(bb, face, tht=False):
+    """Courtyard inside the usable circle and clear of the grille (top face);
+    through-hole parts must also clear the speaker and the 18650 holder that
+    sit against the inside face."""
     cx, cy = pcbnew.FromMM(CX), pcbnew.FromMM(CY)
     rmax = pcbnew.FromMM((GEOM['bot_keep'] if face == 'B' else GEOM['top_keep']) - 0.2)
     for x, y in ((bb[0], bb[1]), (bb[2], bb[1]), (bb[0], bb[3]), (bb[2], bb[3])):
         if math.hypot(x - cx, y - cy) > rmax:
             return False
-    if face == 'B':
-        sx, sy = pcbnew.FromMM(CX + SPK[0]), pcbnew.FromMM(CY - SPK[1])
-        nx = min(max(sx, bb[0]), bb[2]); ny = min(max(sy, bb[1]), bb[3])
-        if math.hypot(nx - sx, ny - sy) < pcbnew.FromMM(25.4):
+    if face == 'F' and _circle_hits(bb, SPK[0], SPK[1], GRILLE_R):
+        return False
+    if tht or face == 'B':
+        if _circle_hits(bb, SPK[0], SPK[1], SPK_R):
+            return False
+        hx0, hy1 = pcbnew.FromMM(CX + HOLDER[0]), pcbnew.FromMM(CY - HOLDER[1])
+        hx1, hy0 = pcbnew.FromMM(CX + HOLDER[2]), pcbnew.FromMM(CY - HOLDER[3])
+        if overlap(bb, (hx0, hy0, hx1, hy1)):
             return False
     return True
 
@@ -53,10 +66,11 @@ def legalize(board, placed, mech, PLACE):
             blocked[f].append(bb)
 
     for fp in mech:
-        if fp.GetFPID().GetLibItemName() in ('Speaker_D49_Keepout',) or 'Logo' in str(fp.GetFPID().GetLibItemName()) \
-                or 'Grille' in str(fp.GetFPID().GetLibItemName()):
-            continue
-        block(fp, 'FB')
+        name = str(fp.GetFPID().GetLibItemName())
+        if name.startswith('Logo') and not fp.IsFlipped():
+            block(fp, 'F')          # top logo: keep parts off it
+        elif not any(k in name for k in ('Speaker', 'Grille', 'Holder', 'Logo')):
+            block(fp, 'FB')         # holes
     auto = []
     for ref, fp in placed.items():
         spec = PLACE[ref]
@@ -82,7 +96,7 @@ def legalize(board, placed, mech, PLACE):
                     fp.SetPosition(P(x, y))
                     fp.SetOrientationDegrees(r)
                     bb = bbox(fp)
-                    if not inside(bb, face):
+                    if not inside(bb, face, is_tht(fp)):
                         continue
                     faces = 'FB' if is_tht(fp) else face
                     if any(overlap(bb, o) for f in faces for o in blocked[f]):
