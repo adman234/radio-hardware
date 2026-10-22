@@ -380,37 +380,49 @@ SPK_BLOCK_ALT = [(-4.29, 9.39), (3.88, 8.90), (3.72, 14.12), (3.73, 15.26), (-4.
 
 
 def speaker_top(name='Speaker_HDK-4008BB-2_TopMount'):
-    """HDK-4008BB-2 sitting on the top face, back down. Board cutout: one
-    Ø31 hole under the magnet cup and the felt vents (so the back of the cone
-    breathes into the jar), two fingers carrying the tab pads, and a slot
-    between them for the potted terminal block. Pads are plated through with
-    copper on both faces: heat from the inside face and solder flows up into
-    the speaker's tabs."""
+    """HDK-4008BB-2 sitting on the top face, back down. Board cutout: a
+    Ø16.8 hole for the Ø16.2 magnet cup, joined to a slot for the potted
+    terminal block. The two tab pads are mirror images about the speaker's
+    centre line (the DXF's slight asymmetry is drafting, not the part), each
+    covering both renderings of both tabs. Pads are plated through with copper
+    on both faces: heat from the inside face and solder flows up into the
+    speaker's tabs."""
     from shapely.geometry import Polygon, Point, box
     from shapely.ops import unary_union
+    from shapely import affinity
     L = _hdr(name, 'Dragonstate HDK-4008BB-2 Ø40 speaker, top mount, soldered by its two back tabs; board cutout included')
-    pads = {k: unary_union([Polygon(SPK_PADS[k]), Polygon(SPK_PADS_ALT[k])]).convex_hull for k in SPK_PADS}
-    block = unary_union([Polygon(SPK_BLOCK), Polygon(SPK_BLOCK_ALT)]).buffer(0.35, join_style=2)
-    slot = unary_union([block, box(block.bounds[0], 7.0, block.bounds[2], block.bounds[1] + 0.5)])
-    fingers = box(-9.6, 7.6, 9.0, 16.6)
-    hole = unary_union([Point(0, 0).buffer(15.5, resolution=32).difference(fingers), slot])
+    mirror = lambda g: affinity.scale(g, xfact=-1, origin=(0, 0))
+    # left tab: hull of every rendering of both tabs, folded onto the left side
+    tabs = [Polygon(SPK_PADS['1']), Polygon(SPK_PADS_ALT['1']),
+            mirror(Polygon(SPK_PADS['2'])), mirror(Polygon(SPK_PADS_ALT['2']))]
+    left = unary_union(tabs).convex_hull
+    blk = unary_union([Polygon(SPK_BLOCK), Polygon(SPK_BLOCK_ALT)])
+    bw = max(-blk.bounds[0], blk.bounds[2]) + 0.35                 # symmetric slot half-width
+    cup_r = 16.8 / 2                                               # Ø16.2 cup + 0.3 per side
+    slot = box(-bw, 0, bw, blk.bounds[3] + 0.35)
+    hole = unary_union([Point(0, 0).buffer(cup_r, resolution=64), slot])
     hole = hole.buffer(0.5, resolution=8).buffer(-0.5, resolution=8)       # round inside corners (router bit)
     ring = list(hole.exterior.coords)
     for (x1, y1), (x2, y2) in zip(ring, ring[1:]):
         L.append(_line(x1, y1, x2, y2, 'Edge.Cuts', 0.1))
-    for k, g in pads.items():
-        cu = g.buffer(0.4, join_style=2).difference(slot.buffer(0.3, join_style=2))
-        cu = cu.buffer(0.15).buffer(-0.15)
-        c = cu.representative_point()
+    cu_l = left.buffer(0.4, join_style=2).difference(hole.buffer(0.45, join_style=2))
+    cu_l = cu_l.buffer(0.15).buffer(-0.15)
+    if cu_l.geom_type != 'Polygon':
+        cu_l = max(cu_l.geoms, key=lambda g: g.area)
+    for k, cu in (('1', cu_l), ('2', mirror(cu_l))):
         # anchor: the point deepest inside the pad, for the plated hole
-        best, bd = c, -1
+        best, bd = cu.representative_point(), -1
         x0, y0, x1, y1 = cu.bounds
-        for i in range(31):
-            for j in range(31):
-                p = Point(x0 + (x1 - x0) * i / 30, y0 + (y1 - y0) * j / 30)
+        for i in range(41):
+            for j in range(41):
+                p = Point(x0 + (x1 - x0) * i / 40, y0 + (y1 - y0) * j / 40)
                 if cu.contains(p) and cu.exterior.distance(p) > bd:
                     best, bd = p, cu.exterior.distance(p)
         ax, ay = best.x, best.y
+        if k == '1':
+            anchor = (ax, ay)
+        else:
+            ax, ay = -anchor[0], anchor[1]                            # exact mirror of pad 1
         pts = ' '.join(f'(xy {x - ax:.3f} {y - ay:.3f})' for x, y in list(cu.exterior.coords)[:-1])
         L.append(f'  (pad "{k}" thru_hole custom (at {ax:.3f} {ay:.3f}) (size 1.6 1.6) (drill 1.0) (layers "*.Cu" "*.Mask")'
                  f' (options (clearance outline) (anchor circle))'
