@@ -7,3 +7,4 @@ _autosave-*
 kicad/logs/
 .worktrees/
 kicad/logs_route.txt
+kicad/scripts/logs/
