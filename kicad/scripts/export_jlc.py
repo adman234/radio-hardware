@@ -55,7 +55,8 @@ def bom():
 #   SOT-23:    pin 1 on the opposite corner -> +180
 ROT_CORR = [(r'^SOIC-', -90), (r'^SOT-23$', 180)]
 # footprint-local offset (mm, KiCad axes) from our origin to the centre JLC uses
-POS_CORR = {'USB_C_Receptacle_ShouHan_TYPE-C-6P-LTH6.8-108_Vertical': (0.0, -0.93)}   # origin is the pad row; JLC centres the body
+POS_CORR = {'USB_C_Receptacle_ShouHan_TYPE-C-6P-LTH6.8-108_Vertical': (0.0, -0.93),   # origin is the pad row; JLC centres the body
+            'Potentiometer_CTR_R09512NS_RearMount_Switch': (0.0, 4.43)}               # origin is the shaft; JLC centres the pads
 
 
 def cpl():
