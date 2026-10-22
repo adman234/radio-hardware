@@ -254,14 +254,18 @@ def build(sch_parts, out_path):
         bb = fp.GetBoundingBox(False, False)
         return (pcbnew.ToMM(bb.GetLeft()) - CX, CY - pcbnew.ToMM(bb.GetBottom()), pcbnew.ToMM(bb.GetRight()) - CX, CY - pcbnew.ToMM(bb.GetTop()))
     others = [mmbox(f) for f in board.GetFootprints() if not f.IsFlipped()]
-    labels = []
+    labels = [(JMP[0] - 7.8, JMP[1] + 2.2, JMP[0] + 4.0, JMP[1] + 4.9)]     # jumper labels, drawn below
     for refs, label in ((('D2',), 'CHG'), (('D3',), 'FULL')):
         bbs = [mmbox(placed[r]) for r in refs]
         x0, y0 = min(b[0] for b in bbs), min(b[1] for b in bbs)
         x1, y1 = max(b[2] for b in bbs), max(b[3] for b in bbs)
         cy = (y0 + y1) / 2; cx = (x0 + x1) / 2
         hw, hh = 0.36 * len(label) + 0.1, 0.5
-        for tx, ty in ((x1 + 0.3 + hw, cy), (x0 - 0.3 - hw, cy), (cx, y1 + 0.3 + hh), (cx, y0 - 0.3 - hh)):
+        sides = [(x1 + 0.3 + hw, cy), (x0 - 0.3 - hw, cy), (cx, y1 + 0.3 + hh), (cx, y0 - 0.3 - hh)]
+        # all four sides taken: nearest clear spot within 5 mm of the LED
+        ring = sorted(((cx + dx * 0.25, cy + dy * 0.25) for dx in range(-24, 25) for dy in range(-24, 25)),
+                      key=lambda q: math.hypot(q[0] - cx, q[1] - cy))
+        for tx, ty in sides + ring:
             box = (tx - hw, ty - hh, tx + hw, ty + hh)
             if not any(box[0] < o[2] and o[0] < box[2] and box[1] < o[3] and o[1] < box[3] for o in others + labels):
                 break
