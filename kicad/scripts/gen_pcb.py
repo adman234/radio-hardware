@@ -42,8 +42,8 @@ PLACE = {
     'J2': (SOCK[0], SOCK[1], 270, 'F', 'fix'), 'J3': (7.0, 31.0, 0, 'F', 'fix'), 'J4': (SPK[0], SPK[1], 90, 'F', 'fix'),
     # --- battery protection, between the socket and the whip mount
     # polarity crossover beside the socket: R23/R24 fitted, R25/R26 the swapped pair
-    'R25': (JMP[0] - 6.0, JMP[1], 90, 'F', 'fix'), 'R26': (JMP[0] - 3.8, JMP[1], 90, 'F', 'fix'),
-    'R23': (JMP[0] + 0.0, JMP[1], 90, 'F', 'fix'), 'R24': (JMP[0] + 2.2, JMP[1], 90, 'F', 'fix'),
+    'R25': (JMP[0] - 6.2, JMP[1], 90, 'F', 'fix'), 'R26': (JMP[0] - 3.8, JMP[1], 90, 'F', 'fix'),
+    'R23': (JMP[0] + 0.0, JMP[1], 90, 'F', 'fix'), 'R24': (JMP[0] + 2.4, JMP[1], 90, 'F', 'fix'),
     'U6': (-1.0, 27.5, 0, 'F'), 'R18': (3.0, 24.5, 90, 'F'), 'C22': (3.0, 28.5, 90, 'F'), 'F1': (-5.5, 24.0, 90, 'F'),
     # --- tuner, upper right between the logo and the knob
     'U1': (15.5, 15.5, 90, 'F'), 'Y1': (11.0, 9.5, 0, 'F'), 'C1': (9.5, 12.0, 90, 'F'), 'C2': (13.0, 12.0, 90, 'F'),
@@ -217,7 +217,7 @@ def build(sch_parts, out_path):
         put(board, fp, x, y, rot, side)
 
     import place
-    place.legalize(board, placed, mech_fps, PLACE, keepouts=[(JMP[0] - 7.6, JMP[1] + 2.2, JMP[0] + 3.8, JMP[1] + 4.9, 'F')])   # jumper labels
+    place.legalize(board, placed, mech_fps, PLACE, keepouts=[(JMP[0] - 7.8, JMP[1] + 2.2, JMP[0] + 4.0, JMP[1] + 4.9, 'F')])   # jumper labels
 
     # copper: GND pour on both faces, clamp ring kept free of tracks
     R = GEOM['od'] / 2 - 0.4
@@ -268,8 +268,8 @@ def build(sch_parts, out_path):
         labels.append(box)
         text(board, label, tx, ty, 0.8, pcbnew.F_SilkS)
     # battery polarity jumpers: fit one pair only (both pairs short the cell)
-    text(board, 'SWAP', JMP[0] - 4.9, JMP[1] + 2.9, 0.8, pcbnew.F_SilkS)
-    text(board, 'STD', JMP[0] + 1.1, JMP[1] + 2.9, 0.8, pcbnew.F_SilkS)
+    text(board, 'SWAP', JMP[0] - 5.0, JMP[1] + 2.9, 0.8, pcbnew.F_SilkS)
+    text(board, 'STD', JMP[0] + 1.2, JMP[1] + 2.9, 0.8, pcbnew.F_SilkS)
     text(board, 'FIT ONE PAIR', JMP[0] - 1.9, JMP[1] + 4.2, 0.8, pcbnew.F_SilkS)
     # speaker placement ring: what goes there and how big the cutout is
     text(board, '40mm SPEAKER', SPK[0], SPK[1] - 15.5, 1.0, pcbnew.F_SilkS)
