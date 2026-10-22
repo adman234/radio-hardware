@@ -31,6 +31,7 @@ BATT = (-9.25, 7.75, 52.0)   # 102050 LiPo on the inside face: centre x, y and l
                               # USB-C legs and whip nut; this pose has the most clearance (~1.5 mm)
 BATT_SIZE = (51.0, 21.0)      # 50 x 20 cell + 0.5 mm all round
 SOCK = (-13.5, 20.5)          # PH2.0 socket on the top face, mouth facing -x at the plug cutout
+JMP = (-8.0, 27.6)            # battery polarity jumpers above the socket: R25 R26 (SWAP) | R23 R24 (STD)
 
 # ref: (x, y_up, rotation_deg_seen_from_top, side[, 'fix'])
 # Everything sits on the top face. Parts without 'fix' are a starting point:
@@ -40,6 +41,9 @@ PLACE = {
     'RV1': (25.0, 5.0, 0, 'F', 'fix'), 'J1': (-27.0, 10.0, 90, 'F', 'fix'), 'ANT1': (22.5, 24.0, 0, 'F', 'fix'),
     'J2': (SOCK[0], SOCK[1], 270, 'F', 'fix'), 'J3': (7.0, 31.0, 0, 'F', 'fix'), 'J4': (SPK[0], SPK[1], 90, 'F', 'fix'),
     # --- battery protection, between the socket and the whip mount
+    # polarity crossover beside the socket: R23/R24 fitted, R25/R26 the swapped pair
+    'R25': (JMP[0] - 6.0, JMP[1], 90, 'F', 'fix'), 'R26': (JMP[0] - 3.8, JMP[1], 90, 'F', 'fix'),
+    'R23': (JMP[0] + 0.0, JMP[1], 90, 'F', 'fix'), 'R24': (JMP[0] + 2.2, JMP[1], 90, 'F', 'fix'),
     'U6': (-1.0, 27.5, 0, 'F'), 'R18': (3.0, 24.5, 90, 'F'), 'C22': (3.0, 28.5, 90, 'F'), 'F1': (-5.5, 24.0, 90, 'F'),
     # --- tuner, upper right between the logo and the knob
     'U1': (15.5, 15.5, 90, 'F'), 'Y1': (11.0, 9.5, 0, 'F'), 'C1': (9.5, 12.0, 90, 'F'), 'C2': (13.0, 12.0, 90, 'F'),
@@ -72,7 +76,7 @@ MECH = [
     ('Logo_CGW_11mm', -26.5, -1.4, 0, 'F'),
 ]
 
-POWER_NETS = {'GND', 'VBUS', 'VBAT', 'VSYS', 'VSW', 'SPK+', 'SPK-', 'BAT_P', 'BAT_N'}
+POWER_NETS = {'GND', 'VBUS', 'VBAT', 'VSYS', 'VSW', 'SPK+', 'SPK-', 'BAT_P', 'BAT_N', 'BATJ1', 'BATJ2'}
 
 
 def P(x, y):
@@ -213,7 +217,7 @@ def build(sch_parts, out_path):
         put(board, fp, x, y, rot, side)
 
     import place
-    place.legalize(board, placed, mech_fps, PLACE)
+    place.legalize(board, placed, mech_fps, PLACE, keepouts=[(JMP[0] - 7.6, JMP[1] + 2.2, JMP[0] + 3.8, JMP[1] + 4.9, 'F')])   # jumper labels
 
     # copper: GND pour on both faces, clamp ring kept free of tracks
     R = GEOM['od'] / 2 - 0.4
@@ -251,8 +255,11 @@ def build(sch_parts, out_path):
         return (pcbnew.ToMM(bb.GetLeft()) - CX, CY - pcbnew.ToMM(bb.GetBottom()), pcbnew.ToMM(bb.GetRight()) - CX, CY - pcbnew.ToMM(bb.GetTop()))
     others = [mmbox(f) for f in board.GetFootprints() if not f.IsFlipped()]
     labels = []
-    for ref, label in (('D2', 'CHG'), ('D3', 'FULL')):
-        x0, y0, x1, y1 = mmbox(placed[ref]); cy = (y0 + y1) / 2; cx = (x0 + x1) / 2
+    for refs, label in ((('D2',), 'CHG'), (('D3',), 'FULL')):
+        bbs = [mmbox(placed[r]) for r in refs]
+        x0, y0 = min(b[0] for b in bbs), min(b[1] for b in bbs)
+        x1, y1 = max(b[2] for b in bbs), max(b[3] for b in bbs)
+        cy = (y0 + y1) / 2; cx = (x0 + x1) / 2
         hw, hh = 0.36 * len(label) + 0.1, 0.5
         for tx, ty in ((x1 + 0.3 + hw, cy), (x0 - 0.3 - hw, cy), (cx, y1 + 0.3 + hh), (cx, y0 - 0.3 - hh)):
             box = (tx - hw, ty - hh, tx + hw, ty + hh)
@@ -260,6 +267,10 @@ def build(sch_parts, out_path):
                 break
         labels.append(box)
         text(board, label, tx, ty, 0.8, pcbnew.F_SilkS)
+    # battery polarity jumpers: fit one pair only (both pairs short the cell)
+    text(board, 'SWAP', JMP[0] - 4.9, JMP[1] + 2.9, 0.8, pcbnew.F_SilkS)
+    text(board, 'STD', JMP[0] + 1.1, JMP[1] + 2.9, 0.8, pcbnew.F_SilkS)
+    text(board, 'FIT ONE PAIR', JMP[0] - 1.9, JMP[1] + 4.2, 0.8, pcbnew.F_SilkS)
     # speaker placement ring: what goes there and how big the cutout is
     text(board, '40mm SPEAKER', SPK[0], SPK[1] - 15.5, 1.0, pcbnew.F_SilkS)
     text(board, 'CUTOUT \u00d816.8mm', SPK[0], SPK[1] - 10.3, 0.8, pcbnew.F_SilkS)

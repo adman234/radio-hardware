@@ -68,8 +68,12 @@ def inside(bb, face, tht=False):
     return True
 
 
-def legalize(board, placed, mech, PLACE):
+def legalize(board, placed, mech, PLACE, keepouts=()):
+    """keepouts: (x0, y0, x1, y1, face) boxes in mm, y up, kept free of
+    parts (silkscreen labels drawn later)."""
     blocked = {'F': [], 'B': []}
+    for x0, y0, x1, y1, f in keepouts:
+        blocked[f].append((pcbnew.FromMM(CX + x0), pcbnew.FromMM(CY - y1), pcbnew.FromMM(CX + x1), pcbnew.FromMM(CY - y0)))
 
     def block(fp, faces):
         bb = bbox(fp)

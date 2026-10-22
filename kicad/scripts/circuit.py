@@ -150,7 +150,13 @@ part('C16', 'C', '10uF', C0603, 'C19702', 'CL10A106KP8NNNC', {'1': 'VBAT', '2': 
 # standard polarity, so check each batch: red must land on the '+' pin (pad 2).
 # The XB8089D below also survives a reversed cell.
 part('J2', 'Conn_2_MP', 'BATT PH2.0', JR + 'Battery_PH2.0_RightAngle_SMD_PlugCutout', 'C7429689', 'ZX-PH2.0-WT2P',
-     {'1': 'BAT_N', '2': 'BAT_P', 'MP': 'GND'}, block=B, top=True)
+     {'1': 'BATJ1', '2': 'BATJ2', 'MP': 'GND'}, block=B, top=True)
+# polarity crossover, 1206 0R (same part as F1, easy to move by hand). Fit R23+R24
+# (pin 2 = +) OR R25+R26 (pin 1 = +), never both pairs: that shorts the cell.
+part('R23', 'R', '0R (pin1 = -)', 'Resistor_SMD:R_1206_3216Metric', 'C17888', '1206W4F0000T5E', {'1': 'BATJ1', '2': 'BAT_N'}, block=B)
+part('R24', 'R', '0R (pin2 = +)', 'Resistor_SMD:R_1206_3216Metric', 'C17888', '1206W4F0000T5E', {'1': 'BATJ2', '2': 'BAT_P'}, block=B)
+part('R25', 'R', '0R (DNP, pin1 = +)', 'Resistor_SMD:R_1206_3216Metric', 'C17888', '1206W4F0000T5E', {'1': 'BATJ1', '2': 'BAT_P'}, block=B, dnp=True)
+part('R26', 'R', '0R (DNP, pin2 = -)', 'Resistor_SMD:R_1206_3216Metric', 'C17888', '1206W4F0000T5E', {'1': 'BATJ2', '2': 'BAT_N'}, block=B, dnp=True)
 # protection: PTC in BAT+, XB8089D (OV 4.25 / UV 2.5 V, 10 A OC, 40 A short, reverse cell) in BAT-
 # F1 is fitted with a 0R 1206 jumper; upgrade = PTC SMD1206B110TFT (C269119) on the same pads
 part('F1', 'R', '0R (PTC spot)', 'Fuse:Fuse_1206_3216Metric', 'C17888', '1206W4F0000T5E', {'1': 'BAT_P', '2': 'VBAT'}, block=B)
