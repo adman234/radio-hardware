@@ -48,21 +48,41 @@ def bom():
     return path
 
 
+# JLC's library parts don't share KiCad's zero orientation or origin. These
+# were checked against JLC's assembly preview (pink dot = JLC pin 1):
+#   SOIC/ESOP: JLC zero has the pins along top/bottom with pin 1 bottom-left,
+#              KiCad has them along left/right with pin 1 top-left -> -90
+#   SOT-23:    pin 1 on the opposite corner -> +180
+ROT_CORR = [(r'^SOIC-', -90), (r'^SOT-23$', 180)]
+# footprint-local offset (mm, KiCad axes) from our origin to the centre JLC uses
+POS_CORR = {'USB_C_Receptacle_ShouHan_TYPE-C-6P-LTH6.8-108_Vertical': (0.0, -0.93)}   # origin is the pad row; JLC centres the body
+
+
 def cpl():
-    tmp = os.path.join(OUT, 'pos-raw.csv')
-    run('kicad-cli', 'pcb', 'export', 'pos', BOARD, '-o', tmp, '--side', 'both', '--format', 'csv', '--units', 'mm',
-        )
+    import math, re
+    import pcbnew
+    b = pcbnew.LoadBoard(BOARD)
     path = os.path.join(OUT, 'CPL.csv')
     placed = {p['ref'] for p in circuit.P if not (p.get('dnp') or p.get('hand') or p.get('nobom'))}
-    with open(tmp) as f, open(path, 'w', newline='') as o:
+    rows = []
+    for fp in b.GetFootprints():
+        ref = fp.GetReference()
+        if ref not in placed:
+            continue
+        name = str(fp.GetFPID().GetLibItemName())
+        rot = fp.GetOrientationDegrees()
+        rot = (rot + sum(d for pat, d in ROT_CORR if re.search(pat, name))) % 360
+        c = fp.GetPosition(); x, y = pcbnew.ToMM(c.x), pcbnew.ToMM(c.y)
+        ox, oy = POS_CORR.get(name, (0.0, 0.0))
+        a = math.radians(fp.GetOrientationDegrees())      # KiCad: CCW on screen, y down
+        x += ox * math.cos(a) + oy * math.sin(a)
+        y += -ox * math.sin(a) + oy * math.cos(a)
+        rows.append((ref, f'{x:.4f}mm', f'{-y:.4f}mm', 'Bottom' if fp.IsFlipped() else 'Top', f'{rot:.0f}'))
+    rows.sort(key=lambda r: (r[0].rstrip('0123456789'), int(r[0][len(r[0].rstrip('0123456789')):] or 0)))
+    with open(path, 'w', newline='') as o:
         w = csv.writer(o)
         w.writerow(['Designator', 'Mid X', 'Mid Y', 'Layer', 'Rotation'])
-        for r in csv.DictReader(f):
-            if r['Ref'] not in placed:
-                continue
-            w.writerow([r['Ref'], r['PosX'] + 'mm', r['PosY'] + 'mm', 'Bottom' if r['Side'] == 'bottom' else 'Top',
-                        f"{float(r['Rot']):.0f}"])
-    os.remove(tmp)
+        w.writerows(rows)
     return path
 
 
