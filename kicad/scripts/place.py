@@ -75,6 +75,8 @@ def legalize(board, placed, mech, PLACE):
     for ref, fp in placed.items():
         spec = PLACE[ref]
         if len(spec) > 4 and spec[4] == 'fix':
+            if 'Speaker' in str(fp.GetFPID().GetLibItemName()):
+                continue            # round keep-out (GRILLE_R) covers it, not its square bbox
             face = 'B' if fp.IsFlipped() else 'F'
             block(fp, 'FB' if is_tht(fp) else face)
         else:

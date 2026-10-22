@@ -37,20 +37,9 @@ def render(face, width=1400):
         mask = layer_png(f + '.Mask', d, width, mirror)
         silk = layer_png(f + '.SilkS', d, width, mirror)
     h, w = edge.shape
-    # board area: the round outline fills the plot, so the board is the inscribed disc
+    # board area: rasterise the real outline (outer edge minus cutouts) below;
+    # drilled holes are punched afterwards from the real hole list
     from PIL import ImageDraw
-    ys, xs = np.nonzero(edge)
-    cx0, cy0, rad = (xs.min() + xs.max()) / 2, (ys.min() + ys.max()) / 2, (xs.max() - xs.min()) / 2
-    yy, xx = np.mgrid[0:h, 0:w]
-    board = (xx - cx0) ** 2 + (yy - cy0) ** 2 <= rad ** 2
-    # drills appear as white holes inside copper/mask plots; the edge plot has them too (NPTH)
-    out = np.zeros((h, w, 4), dtype=np.uint8)
-    out[board] = (*COL['mask'], 255)
-    out[board & cu & ~mask] = (*COL['cu_under'], 255)
-    out[board & mask] = (*COL['pad'], 255)
-    out[board & silk & ~mask] = (*COL['silk'], 255)
-    out[edge] = (60, 60, 60, 255)
-    # punch the drilled holes through, using the real hole list
     import pcbnew
     b = pcbnew.LoadBoard(BOARD)
     # kicad-cli plots onto a canvas a little larger than the board (the
@@ -62,10 +51,26 @@ def render(face, width=1400):
     cym = pcbnew.ToMM(bb.GetTop()) + pcbnew.ToMM(bb.GetHeight()) / 2
     x0, y0 = cxm - vb[2] / 2, cym - vb[3] / 2
     sx = w / vb[2]
-    img = Image.fromarray(out, 'RGBA'); dr = ImageDraw.Draw(img)
     def px(x, y):
         X = (x - x0) * sx
         return (w - X if mirror else X), (y - y0) * sx
+    outl = pcbnew.SHAPE_POLY_SET()
+    b.GetBoardPolygonOutlines(outl)
+    mask_im = Image.new('L', (w, h), 0); md = ImageDraw.Draw(mask_im)
+    for i in range(outl.OutlineCount()):
+        ring = outl.Outline(i)
+        md.polygon([px(pcbnew.ToMM(ring.CPoint(k).x), pcbnew.ToMM(ring.CPoint(k).y)) for k in range(ring.PointCount())], fill=255)
+        for hh in range(outl.HoleCount(i)):
+            hr = outl.Hole(i, hh)
+            md.polygon([px(pcbnew.ToMM(hr.CPoint(k).x), pcbnew.ToMM(hr.CPoint(k).y)) for k in range(hr.PointCount())], fill=0)
+    board = np.asarray(mask_im) > 0
+    out = np.zeros((h, w, 4), dtype=np.uint8)
+    out[board] = (*COL['mask'], 255)
+    out[board & cu & ~mask] = (*COL['cu_under'], 255)
+    out[board & mask] = (*COL['pad'], 255)
+    out[board & silk & ~mask] = (*COL['silk'], 255)
+    out[edge] = (60, 60, 60, 255)
+    img = Image.fromarray(out, 'RGBA'); dr = ImageDraw.Draw(img)
     for fp in b.GetFootprints():
         for pad in fp.Pads():
             if pad.GetDrillSize().x <= 0:

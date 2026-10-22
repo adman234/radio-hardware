@@ -3,6 +3,8 @@ islands between parts join the solid ground on the outside face."""
 import math
 import pcbnew
 from gen_pcb import CX, CY, P, GEOM
+from shapely.geometry import Point
+import edges
 
 VIA_D, VIA_DRILL, CLR = 0.6, 0.3, 0.3
 
@@ -38,6 +40,7 @@ def add_stitching(board, pitch=3.0, rmax=None, locked=False):
                 obst.append(('r', pcbnew.ToMM(bb.GetLeft()), pcbnew.ToMM(bb.GetTop()), pcbnew.ToMM(bb.GetRight()), pcbnew.ToMM(bb.GetBottom())))
     n = 0
     R = VIA_D / 2 + CLR
+    area = edges.usable(board, VIA_D / 2 + 0.35)
     steps = int(rmax / pitch) + 1
     for i in range(-steps, steps + 1):
         for j in range(-steps, steps + 1):
@@ -45,6 +48,8 @@ def add_stitching(board, pitch=3.0, rmax=None, locked=False):
             if math.hypot(x, y) > rmax:
                 continue
             px, py = CX + x, CY - y
+            if not area.contains(Point(px, py)):
+                continue
             ok = True
             for o in obst:
                 if o[0] == 'c':

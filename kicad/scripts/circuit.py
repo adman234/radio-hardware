@@ -122,7 +122,7 @@ part('C13', 'C', '10uF', C0603, 'C19702', 'CL10A106KP8NNNC', {'1': 'VSW', '2': '
 part('C14', 'C', '100nF', C0603, 'C14663', 'CC0603KRX7R9BB104', {'1': 'VSW', '2': 'GND'}, block=B)
 part('R9', 'R', '0R', R0603, 'C21189', '0603WAF0000T5E', {'1': 'AMP_SD', '2': 'GND'}, block=B)
 part('R10', 'R', '0R (DNP)', R0603, 'C21189', '0603WAF0000T5E', {'1': 'AMP_SD', '2': 'VSW'}, block=B, dnp=True)
-part('J4', 'Conn_2', 'SPK wires', JR + 'Speaker_Wire_Pads_P5', '', 'HDK-4008BB-2 (hand-wired)', {'1': 'SPK+', '2': 'SPK-'}, block=B, hand=True, nobom=True)
+part('J4', 'Conn_2', 'SPEAKER', JR + 'Speaker_HDK-4008BB-2_TopMount', '', 'HDK-4008BB-2 (C22371323, hand-soldered by its tabs)', {'1': 'SPK+', '2': 'SPK-'}, block=B, hand=True, nobom=True)   # polarity is irrelevant for one speaker
 
 # Power -------------------------------------------------------------------
 B = 'power'

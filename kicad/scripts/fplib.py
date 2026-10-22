@@ -365,3 +365,58 @@ def holder_18650_outline(name='Holder_18650_EndFace_Outline'):
 def build_f12():
     sound_grille('Speaker_Grille_D32', 32.0, hole=1.8, pitch=2.6)
     speaker_d40(); holder_18650_outline(); r09512ns_rear(); usb_c_vertical_6p_108()
+
+
+# Dragonstate HDK-4008BB-2 back face, from the user's DXF ("rendering 2", KiCad
+# axes: y down, terminal block pointing +y). Two exposed triangular tab pads
+# flank the potted terminal block; the magnet cup is Ø16.2 x 3 mm.
+SPK_PADS = {'1': [(-7.78, 12.63), (-4.33, 8.67), (-4.85, 14.28)],
+            '2': [(4.12, 14.43), (3.97, 9.03), (7.14, 13.02)]}
+SPK_BLOCK = [(-4.33, 8.67), (3.97, 9.03), (4.12, 14.43), (4.12, 15.75), (-4.85, 15.36), (-4.85, 14.28)]
+# the DXF's second rendering, rotated onto the first and aligned on the block
+SPK_PADS_ALT = {'1': [(-7.33, 13.45), (-4.29, 9.39), (-4.45, 14.71)],
+                '2': [(3.72, 14.12), (3.88, 8.90), (6.58, 12.38)]}
+SPK_BLOCK_ALT = [(-4.29, 9.39), (3.88, 8.90), (3.72, 14.12), (3.73, 15.26), (-4.49, 15.97), (-4.45, 14.71)]
+
+
+def speaker_top(name='Speaker_HDK-4008BB-2_TopMount'):
+    """HDK-4008BB-2 sitting on the top face, back down. Board cutout: one
+    Ø31 hole under the magnet cup and the felt vents (so the back of the cone
+    breathes into the jar), two fingers carrying the tab pads, and a slot
+    between them for the potted terminal block. Pads are plated through with
+    copper on both faces: heat from the inside face and solder flows up into
+    the speaker's tabs."""
+    from shapely.geometry import Polygon, Point, box
+    from shapely.ops import unary_union
+    L = _hdr(name, 'Dragonstate HDK-4008BB-2 Ø40 speaker, top mount, soldered by its two back tabs; board cutout included')
+    pads = {k: unary_union([Polygon(SPK_PADS[k]), Polygon(SPK_PADS_ALT[k])]).convex_hull for k in SPK_PADS}
+    block = unary_union([Polygon(SPK_BLOCK), Polygon(SPK_BLOCK_ALT)]).buffer(0.35, join_style=2)
+    slot = unary_union([block, box(block.bounds[0], 7.0, block.bounds[2], block.bounds[1] + 0.5)])
+    fingers = box(-9.6, 7.6, 9.0, 16.6)
+    hole = unary_union([Point(0, 0).buffer(15.5, resolution=32).difference(fingers), slot])
+    hole = hole.buffer(0.5, resolution=8).buffer(-0.5, resolution=8)       # round inside corners (router bit)
+    ring = list(hole.exterior.coords)
+    for (x1, y1), (x2, y2) in zip(ring, ring[1:]):
+        L.append(_line(x1, y1, x2, y2, 'Edge.Cuts', 0.1))
+    for k, g in pads.items():
+        cu = g.buffer(0.4, join_style=2).difference(slot.buffer(0.3, join_style=2))
+        cu = cu.buffer(0.15).buffer(-0.15)
+        c = cu.representative_point()
+        # anchor: the point deepest inside the pad, for the plated hole
+        best, bd = c, -1
+        x0, y0, x1, y1 = cu.bounds
+        for i in range(31):
+            for j in range(31):
+                p = Point(x0 + (x1 - x0) * i / 30, y0 + (y1 - y0) * j / 30)
+                if cu.contains(p) and cu.exterior.distance(p) > bd:
+                    best, bd = p, cu.exterior.distance(p)
+        ax, ay = best.x, best.y
+        pts = ' '.join(f'(xy {x - ax:.3f} {y - ay:.3f})' for x, y in list(cu.exterior.coords)[:-1])
+        L.append(f'  (pad "{k}" thru_hole custom (at {ax:.3f} {ay:.3f}) (size 1.6 1.6) (drill 1.0) (layers "*.Cu" "*.Mask")'
+                 f' (options (clearance outline) (anchor circle))'
+                 f' (primitives (gr_poly (pts {pts}) (width 0) (fill yes))))')
+    L.append(_circle(0, 0, 20.0, 'F.Fab', 0.1))
+    L.append(_circle(0, 0, 20.2, 'F.SilkS', 0.15))            # placement ring, hidden once the speaker is on
+    L.append(_circle(0, 0, 20.6, 'F.CrtYd', 0.05))
+    L.append(_text('SPEAKER', 0, -17.5, 'F.Fab', 1.0))
+    write(name, L)

@@ -100,7 +100,54 @@ assert pcbnew.ExportSpecctraDSN(b, {dsn!r})
         print('GND bridges:', island_bridge.bridge(board))
         pcbnew.SaveBoard(BOARD, board)
         pcbnew.WriteDRCReport(board, rpt, pcbnew.EDA_UNITS_MILLIMETRES, True)
+    n = prune_dangling(board, rpt)
+    if n:
+        print('dangling stubs removed:', n)
+        pcbnew.SaveBoard(BOARD, board)
     print(summary(rpt))
+
+
+def prune_dangling(board, rpt=None):
+    """Deletes track stubs with a free end (touching no pad, via or other
+    track of the same net on that layer), repeating until none are left.
+    Pure geometry: re-running DRC between deletions upsets pcbnew's bindings."""
+    from shapely.geometry import Point, LineString, box
+    removed = 0
+    for _ in range(10):
+        tracks = [t for t in board.GetTracks() if t.GetClass() != 'PCB_VIA']
+        geo = {}
+        for t in board.GetTracks():
+            k = t.GetNetCode()
+            if t.GetClass() == 'PCB_VIA':
+                p = t.GetPosition()
+                g = Point(pcbnew.ToMM(p.x), pcbnew.ToMM(p.y)).buffer(pcbnew.ToMM(t.GetWidth()) / 2)
+                geo.setdefault((k, 'F.Cu'), []).append((t, g)); geo.setdefault((k, 'B.Cu'), []).append((t, g))
+            else:
+                a, e = t.GetStart(), t.GetEnd()
+                g = LineString([(pcbnew.ToMM(a.x), pcbnew.ToMM(a.y)), (pcbnew.ToMM(e.x), pcbnew.ToMM(e.y))]).buffer(pcbnew.ToMM(t.GetWidth()) / 2)
+                geo.setdefault((k, t.GetLayerName()), []).append((t, g))
+        for fp in board.GetFootprints():
+            for pad in fp.Pads():
+                bb = pad.GetBoundingBox()
+                g = box(pcbnew.ToMM(bb.GetLeft()), pcbnew.ToMM(bb.GetTop()), pcbnew.ToMM(bb.GetRight()), pcbnew.ToMM(bb.GetBottom()))
+                for L in ('F.Cu', 'B.Cu'):
+                    if pad.IsOnLayer(pcbnew.F_Cu if L == 'F.Cu' else pcbnew.B_Cu):
+                        geo.setdefault((pad.GetNetCode(), L), []).append((pad, g))
+        dead = []
+        for t in tracks:
+            a, e = t.GetStart(), t.GetEnd()
+            others = [g for o, g in geo.get((t.GetNetCode(), t.GetLayerName()), []) if o is not t]
+            for q in (a, e):
+                pt = Point(pcbnew.ToMM(q.x), pcbnew.ToMM(q.y))
+                if not any(g.distance(pt) < 1e-3 for g in others):
+                    dead.append(t)
+                    break
+        if not dead:
+            break
+        for t in dead:
+            board.Remove(t); removed += 1
+    pcbnew.ZONE_FILLER(board).Fill(board.Zones())
+    return removed
 
 
 def summary(rpt):

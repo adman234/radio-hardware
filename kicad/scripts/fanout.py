@@ -3,6 +3,8 @@ to the inside-face pour before Freerouting runs, so no ground pin can end up
 walled in by signal tracks (Freerouting leaves GND pins to the pours)."""
 import math
 import pcbnew
+from shapely.geometry import Point, LineString
+import edges
 
 mm = pcbnew.ToMM
 W, CLR, VIA, DRILL = 0.3, 0.22, 0.6, 0.3
@@ -23,6 +25,8 @@ def fanout(b):
                 others.append((mm(bb.GetLeft()), mm(bb.GetTop()), mm(bb.GetRight()), mm(bb.GetBottom())))
     vias = [(mm(t.GetPosition().x), mm(t.GetPosition().y)) for t in b.GetTracks() if t.GetClass() == 'PCB_VIA']
     added = 0
+    area = edges.usable(b, VIA / 2 + 0.35)
+    tarea = edges.usable(b, W / 2 + 0.25)
     for fp in b.GetFootprints():
         fc = fp.GetPosition()
         for p in fp.Pads():
@@ -39,6 +43,8 @@ def fanout(b):
                     a = base + math.radians(k if k <= 180 else k - 360)
                     reach = d + min(abs(hw / math.cos(a)) if math.cos(a) else 1e9, abs(hh / math.sin(a)) if math.sin(a) else 1e9)
                     x, y = cx + reach * math.cos(a), cy + reach * math.sin(a)
+                    if not area.contains(Point(x, y)) or not tarea.contains(LineString([(cx, cy), (x, y)])):
+                        continue
                     if any(_rect_dist(x, y, o) < VIA / 2 + CLR for o in others):
                         continue
                     if any(math.hypot(x - vx, y - vy) < VIA + CLR for vx, vy in vias):

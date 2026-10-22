@@ -8,6 +8,7 @@ import heapq, math, sys
 import pcbnew
 from fix_islands import dseg
 from shapely.geometry import Point as _Pt
+import edges
 
 W, CLR, VIA, DRILL, STEP = 0.25, 0.22, 0.6, 0.3, 0.1
 mm = pcbnew.ToMM
@@ -55,12 +56,12 @@ def maze(b, net, start_xy, start_layer, goal_area, margin=8.0):
         k = (i, j, L)
         if k not in free:
             x, y = x0 + i * STEP, y0 + j * STEP
-            free[k] = all(dobs(x, y, s) >= W / 2 + CLR + 0.02 for s in obs[layers[L]])
+            free[k] = edges.usable(b, W / 2 + 0.25).contains(_Pt(x, y)) and all(dobs(x, y, s) >= W / 2 + CLR + 0.02 for s in obs[layers[L]])
         return free[k]
 
     def via_ok(i, j):
         x, y = x0 + i * STEP, y0 + j * STEP
-        return all(dobs(x, y, s) >= VIA / 2 + CLR + 0.02 for L in layers for s in obs[L])
+        return edges.usable(b, VIA / 2 + 0.25).contains(_Pt(x, y)) and all(dobs(x, y, s) >= VIA / 2 + CLR + 0.02 for L in layers for s in obs[L])
     start = (round(margin / STEP), round(margin / STEP), start_layer)
     tgt = {L: g.representative_point() for L, g in goal_area.items()}
     h = lambda n: min(math.hypot(x0 + n[0] * STEP - p.x, y0 + n[1] * STEP - p.y) for p in tgt.values()) / STEP
@@ -132,12 +133,12 @@ def route_net(b, a_ref, a_pad, b_ref, b_pad, margin=8.0, goal_area=None):
         k = (i, j, L)
         if k not in free:
             x, y = x0 + i * STEP, y0 + j * STEP
-            free[k] = all(dobs(x, y, s) >= W / 2 + CLR + 0.02 for s in obs[layers[L]])
+            free[k] = edges.usable(b, W / 2 + 0.25).contains(_Pt(x, y)) and all(dobs(x, y, s) >= W / 2 + CLR + 0.02 for s in obs[layers[L]])
         return free[k]
 
     def via_ok(i, j):
         x, y = x0 + i * STEP, y0 + j * STEP
-        return all(dobs(x, y, s) >= VIA / 2 + CLR + 0.02 for L in layers for s in obs[L])
+        return edges.usable(b, VIA / 2 + 0.25).contains(_Pt(x, y)) and all(dobs(x, y, s) >= VIA / 2 + CLR + 0.02 for L in layers for s in obs[L])
     ga = (round((ax - x0) / STEP), round((ay - y0) / STEP))
     gb = (round((bx - x0) / STEP), round((by - y0) / STEP))
     la = 0 if pa.IsOnLayer(pcbnew.F_Cu) else 1

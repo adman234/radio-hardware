@@ -23,9 +23,9 @@ GEOM = dict(
     clamp=37.2,       # outside this radius: solid GND both sides, no tracks
 )
 CX, CY = 150.0, 100.0     # board centre in KiCad page coordinates
-SPK = (0.0, -14.0)        # speaker centre (inside face, under the grille)
-GRILLE_R = 17.0           # top-face keep-out around the grille
-SPK_R = 20.5              # inside-face keep-out: Ø40 speaker
+SPK = (0.0, -14.0)        # speaker centre: Ø40 HDK-4008BB-2 on the top face, back down over a cutout
+GRILLE_R = 20.8           # top-face keep-out: the speaker itself
+SPK_R = 20.8              # through-hole parts can't sit under the speaker either
 SLOT = (0.0, 23.5)        # 18650 holder foot slot, 180 deg from the speaker
 HOLDER = (-10.6, 8.0, 10.6, 23.2)   # inside-face holder end face (x0, y0, x1, y1), y up
 
@@ -35,7 +35,7 @@ HOLDER = (-10.6, 8.0, 10.6, 23.2)   # inside-face holder end face (x0, y0, x1, y
 PLACE = {
     # --- fixed: controls, connectors, hand-wired pads
     'RV1': (25.0, 5.0, 0, 'F', 'fix'), 'J1': (-27.0, 10.0, 90, 'F', 'fix'), 'ANT1': (22.5, 24.0, 0, 'F', 'fix'),
-    'J2': (SLOT[0], SLOT[1], 180, 'F', 'fix'), 'J3': (6.5, 27.0, 0, 'F', 'fix'), 'J4': (21.5, -23.0, 90, 'F', 'fix'),
+    'J2': (SLOT[0], SLOT[1], 180, 'F', 'fix'), 'J3': (6.5, 27.0, 0, 'F', 'fix'), 'J4': (SPK[0], SPK[1], 90, 'F', 'fix'),
     # --- battery protection, left of the holder slot
     'U6': (-9.0, 28.5, 0, 'F'), 'R18': (-5.5, 25.5, 90, 'F'), 'C22': (-12.5, 27.5, 90, 'F'), 'F1': (-13.5, 23.5, 90, 'F'),
     # --- tuner, upper right between the logo and the knob
@@ -64,11 +64,9 @@ PLACE = {
 
 # mechanical items: (footprint, x, y_up, rot, side)
 MECH = [
-    ('Speaker_D40_Outline', SPK[0], SPK[1], 0, 'B'),
-    ('Speaker_Grille_D32', SPK[0], SPK[1], 0, 'F'),
     ('Holder_18650_EndFace_Outline', SLOT[0], SLOT[1], 180, 'B'),
     ('Logo_KOPN_15mm', 0.0, 14.0, 0, 'F'),
-    ('Logo_CGW_14mm', -19.0, 16.0, 0, 'B'),
+    ('Logo_CGW_11mm', -26.5, -1.4, 0, 'F'),
 ]
 
 POWER_NETS = {'GND', 'VBUS', 'VBAT', 'VSYS', 'VSW', 'SPK+', 'SPK-', 'BAT_P', 'BAT_N'}
@@ -241,7 +239,8 @@ def build(sch_parts, out_path):
         board.Add(g)
 
     # silkscreen text
-    text(board, 'COLUMBIA, MO', 0.0, -33.2, 1.1, pcbnew.F_SilkS, bold=True)
+    text(board, 'COLUMBIA', -26.5, -8.3, 0.9, pcbnew.F_SilkS, bold=True)          # under the CGW logo
+    text(board, 'GADGET WORKS', -26.5, -9.7, 0.9, pcbnew.F_SilkS, bold=True)
     text(board, '+', SLOT[0] + 5.2, SLOT[1], 1.2, pcbnew.F_SilkS, bold=True)
     text(board, '-', SLOT[0] - 2.2, SLOT[1] + 5.5, 1.2, pcbnew.F_SilkS, bold=True)
     # LED labels go just left of wherever the legalizer put the LEDs
@@ -250,7 +249,7 @@ def build(sch_parts, out_path):
         right = pcbnew.ToMM(bb.GetRight()) - CX            # label starts just right of the LED
         text(board, label, right + 0.3 + 0.36 * len(label), CY - pcbnew.ToMM(c.y), 0.8, pcbnew.F_SilkS)
     text(board, 'KOPN 89.5 JAR RADIO rev B', 21.0, 15.5, 0.8, pcbnew.B_SilkS)
-    text(board, 'COLUMBIA GADGET WORKS', 21.0, 13.5, 0.8, pcbnew.B_SilkS)
+    text(board, 'COLUMBIA, MO', 21.0, 13.5, 0.8, pcbnew.B_SilkS)
     text(board, 'CERN-OHL-S-2.0', 21.0, 11.5, 0.8, pcbnew.B_SilkS)
     text(board, 'after The Public Radio', 21.0, 9.8, 0.8, pcbnew.B_SilkS)
     text(board, '18650 Li-ion  + END TO LID', -23.0, 4.0, 0.8, pcbnew.B_SilkS)
