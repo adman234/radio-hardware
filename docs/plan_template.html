@@ -136,7 +136,7 @@ details.hist > summary { cursor: pointer; font-family: var(--display); font-size
 <header class="top">
   <div class="eyebrow">adman234/radio-hardware · master · board rev B · plan updated 2026-10-21</div>
   <h1>KOPN 89.5 Jar Radio</h1>
-  <p class="lede">A single-station FM radio whose circuit board is the lid of a wide-mouth 16 oz mason jar. It has no firmware: turn the knob and it plays KOPN 89.5. It charges from USB-C and runs from a flat 102050 LiPo pouch taped to the inside face. JLCPCB assembles every electronic part on the top face in one pass, including the battery socket. You fit the speaker and whip by hand and plug the battery in.</p>
+  <p class="lede">A single-station FM radio whose circuit board is the lid of a wide-mouth mason jar (quart or 16 oz). It has no firmware: turn the knob and it plays KOPN 89.5. It charges from USB-C and runs from a flat 102050 LiPo pouch taped to the inside face. JLCPCB assembles every electronic part on the top face in one pass, including the battery socket. You fit the speaker and antenna wire by hand and plug the battery in.</p>
   <div class="status">
     <span class="chip go">Board rev B designed and routed</span>
     <span class="chip go">0 unconnected · 0 clearance errors</span>
@@ -151,9 +151,9 @@ details.hist > summary { cursor: pointer; font-family: var(--display); font-size
     <div><dt>Audio</dt><dd>NS8002 class AB BTL, gain 29, Ø40 8 Ω speaker</dd></div>
     <div><dt>Controls</dt><dd>One knob: volume, click-off at the end</dd></div>
     <div><dt>Power</dt><dd>USB-C 5 V, 500 mA charge, 102050 LiPo (1000 mAh) on a PH2.0 plug + XB8089D protection</dd></div>
-    <div><dt>Antenna</dt><dd>M3 telescopic whip (wire hole kept as an option)</dd></div>
+    <div><dt>Antenna</dt><dd>75 cm wire inside the jar (M3 whip mount kept as an option)</dd></div>
     <div><dt>Board</dt><dd>Ø84 mm, 2 layers, 1.6 mm, black / white</dd></div>
-    <div><dt>Jar</dt><dd>16 oz wide-mouth, stock band clamps the board</dd></div>
+    <div><dt>Jar</dt><dd>Wide-mouth quart (16 oz also fits), stock band clamps the board</dd></div>
   </dl>
 </header>
 
@@ -183,7 +183,7 @@ details.hist > summary { cursor: pointer; font-family: var(--display); font-size
                 <li>Upload the gerbers, BOM and CPL. In JLC's assembly preview, check each IC's pin-1 dot, the USB-C and the pot. Fix any 90°/180° rotation in the preview.</li>
         <li>Choose through-hole assembly for RV1 (the pot).</li>
         <li>Board options: 2 layers, 1.6 mm, black mask, white silk, lead-free HASL, Ø84 round.</li>
-        <li>Order 5 first. On those boards, check that KOPN comes in and that clockwise raises the volume.</li>
+        <li>The first run is 30 with no 5-board prototype run, so the preview checks in section 06 matter more: the PH socket's mouth facing the cutout, the pot and USB-C positions, and the board outline.</li>
       </ol>
     </div>
   </div>
@@ -196,7 +196,7 @@ details.hist > summary { cursor: pointer; font-family: var(--display); font-size
       <h3>Hand assembly, per radio</h3>
       <ol class="steps">
         <li><b>Speaker</b> Set the HDK-4008BB-2 on the top face, back down: magnet cup into the round cutout, potted terminal block into the slot between the pads, its two exposed tabs on the triangular pads. From the inside face, heat each pad (about 300 °C, 2–3 s) and feed solder into the plated hole until it wets the tab. A dab of glue at the rim is optional. One speaker on its own, so polarity doesn't matter. Then put three small dabs of neutral-cure silicone (or hot glue) between the speaker rim and the board. That stops buzzing and takes strain off the solder joints.</li>
-        <li><b>Whip</b> Put the M3 stud through the WHIP hole, then add a washer and nut inside. A drop of thread-lock is optional.</li>
+        <li><b>Antenna wire</b> Strip 3 mm of a 75 cm length of 24 AWG stranded hook-up wire, push it into the ANT hole from the inside face and solder it on top. Put a dab of hot glue over the wire where it leaves the hole on the inside face (strain relief). Inside the jar, run it as a loose spiral down the glass wall (about 2½ turns in a quart), not bunched up and not wrapped around the battery. The WHIP mount stays empty for now.</li>
         <li><b>Knob</b> Push a 6 mm D-shaft knob onto the pot.</li>
         <li><b>Cell</b> First check polarity on one cell from each batch: clone PH plugs have no standard, and the red wire must land on the socket's + pin. If a batch is the other way round, move the two 1206 0 Ω jumpers from the STD pads (R23, R24) to the SWAP pads (R25, R26) beside the socket. Fit one pair only: both pairs short the cell. Push the plug up through the cutout from the inside face and into the socket. Stick the cell inside the diagonal outline with double-sided foam tape (about 1 mm), wire end toward the cutout, and tuck the spare wire. Charge from USB-C until FULL lights.</li>
         <li><b>Jar</b> Set the board on the jar mouth and screw the original band over it. The outer ring of the board is ground, clamped by the band.</li>
@@ -209,7 +209,7 @@ details.hist > summary { cursor: pointer; font-family: var(--display); font-size
         <li><b>Speaker</b> Ø40 × 5.3 mm on the top face, centred 14 mm below the board centre. The board cutout is a Ø16.8 hole for the Ø16.2 × 3 mm magnet cup (0.3 mm clearance per side), joined to a 10.4 mm wide slot for the potted terminal block. The two tab pads are mirror images 6.8 mm either side of centre, with 11.3 mm of board between them and 0.45 mm of bare board to the slot edge. The speaker's back face rests flat on the board.</li>
         <li><b>Battery</b> 102050 LiPo pouch, 50 × 20 × 10 mm, 1000 mAh, with its own protection board and a PH2.0 plug. It lies flat on the inside face at 52°: a 50 mm cell clears the speaker cup, pot pins, USB-C legs and whip nut only on that diagonal (about 1.5 mm clearance). The plug cutout is 7.5 × 5.5 mm, top left, about 30 mm from the cell's ends, so the cell needs leads of 45 mm or more (80–100 mm is easier).</li>
         <li><b>Knob</b> The pot shaft rises about 29 mm above the lid. The R09512NS also has an M7 thread with an O-ring, which is unused.</li>
-        <li><b>Antenna wire hole</b> (J3, a single 1.0 mm plated hole marked ANT, top centre above the logo, clear of the battery) stays on the board, unpopulated, as an alternative to the whip. No strain-relief holes.</li>
+        <li><b>Antenna wire hole</b> (J3, a single 1.0 mm plated hole marked ANT, top centre above the logo, clear of the battery) is the antenna for the first runs: 75 cm of 24 AWG stranded wire, hot-glued at the hole. No strain-relief holes. The M3 WHIP mount (ANT1) stays on the board, empty, for a whip later.</li>
         <li><b>About 8 hand joints per radio</b>, plus 2 glue blobs and a nut.</li>
       </ul>
     </div>
@@ -263,39 +263,40 @@ details.hist > summary { cursor: pointer; font-family: var(--display); font-size
     <tbody>
       <tr><td>Speaker</td><td>Dragonstate HDK-4008BB-2, Ø40 8 Ω (C22371323)</td><td>LCSC, 63 in stock</td><td class="num">$0.46–0.65</td></tr>
       <tr><td>Cell</td><td>102050 LiPo pouch, 3.7 V 1000 mAh, with protection board and PH2.0 plug, leads 45 mm or longer</td><td>AliExpress</td><td class="num">≈ $1.54 ($77 / 50)</td></tr>
-      <tr><td>Whip</td><td>Telescopic antenna, <b>M3 male stud</b>, ≥ 60 cm, + M3 nut and washer</td><td>AliExpress / eBay</td><td class="num">≈ $1</td></tr>
+      <tr><td>Antenna wire</td><td>24 AWG stranded PVC hook-up wire, 75 cm per radio (45 m for 60)</td><td>any</td><td class="num">≈ $0.10</td></tr>
       <tr><td>Knob</td><td>6 mm D-shaft knob, Ø15–20 mm</td><td>AliExpress</td><td class="num">$0.10–0.50</td></tr>
-      <tr><td>Jar</td><td>16 oz wide-mouth mason jar with band (the flat lid is not used)</td><td>local / case of 12</td><td class="num">$0.90–1.50</td></tr>
+      <tr><td>Jar</td><td><b>Wide-mouth</b> quart mason jar with band (the flat lid is not used). A regular-mouth quart has a 70 mm lid and will not fit.</td><td>case of 12</td><td class="num">$1.67 ($19.99 / 12)</td></tr>
+      <tr><td>Foam tape</td><td>Double-sided foam tape, about 1 mm, for the cell</td><td>any</td><td class="num">—</td></tr>
     </tbody>
   </table></div>
 </section>
 
 <section>
-  <h2><span class="ref">05</span>Cost estimate, delivered</h2>
-  <div class="col"><p>US tariff on JLC/LCSC goods is assumed ≈ 35% (JLC's FAQ; its own pages disagree, so check the checkout figure). Shipping is DHL/FedEx to Missouri. JLC part quantities include attrition and minimum buys.</p></div>
+  <h2><span class="ref">05</span>Cost: 30 now, 30 later</h2>
+  <div class="col"><p>Your quotes, October 2026. Batch 1 buys all 63 speakers (enough for both batches) and 36 jars; batch 2 is the re-order. The boards ship to LCSC's warehouse and come over with the speakers. The 10% contingency covers a dead board, spares and small price changes. Labour, packaging and shipping radios to people are not included.</p></div>
   <div class="tbl"><table>
-    <thead><tr><th></th><th class="num">5 radios</th><th class="num">50 radios</th></tr></thead>
+    <thead><tr><th></th><th class="num">Batch 1 (30, now)</th><th class="num">Batch 2 (30, later)</th></tr></thead>
     <tbody>
-      <tr><td>PCB (Ø84, 2-layer, black)</td><td class="num">$6</td><td class="num">$25</td></tr>
-      <tr><td>Assembly: setup, stencil, joints</td><td class="num">$11</td><td class="num">$23</td></tr>
-      <tr><td>Extended part fees: tuner, L1, pot, amp, USB-C, XB8089D, battery socket</td><td class="num">7 × $3 = $21</td><td class="num">$21</td></tr>
-      <tr><td>Through-hole fitting (pot)</td><td class="num">$4</td><td class="num">$9</td></tr>
-      <tr><td>Parts JLC places</td><td class="num">$35</td><td class="num">$235</td></tr>
-      <tr><td>Tariff (~35%)</td><td class="num">$27</td><td class="num">$109</td></tr>
-      <tr><td>JLC shipping</td><td class="num">$22</td><td class="num">$35</td></tr>
-      <tr><td>Speakers (LCSC), tariff, combined shipping</td><td class="num">$10</td><td class="num">$41</td></tr>
-      <tr><td>102050 cells, delivered</td><td class="num">≈ $20</td><td class="num">$77</td></tr>
-      <tr><td>M3 whips + nuts</td><td class="num">$7</td><td class="num">$55</td></tr>
-      <tr><td><b>All electrical, delivered</b></td><td class="num"><b>≈ $163 ($33 each)</b></td><td class="num"><b>≈ $630 ($12.60 each)</b></td></tr>
+      <tr><td>30 assembled boards, JLC</td><td class="num">$206.52 (to LCSC)</td><td class="num">≈ $235 (to US)</td></tr>
+      <tr><td>Re-ship boards LCSC → US, combined with the speakers</td><td class="num">≈ $20</td><td class="num">—</td></tr>
+      <tr><td>63 speakers, LCSC, shipped to US (covers both batches)</td><td class="num">$51.15</td><td class="num">—</td></tr>
+      <tr><td>Wide-mouth quart jars, $19.99 / 12</td><td class="num">36: $59.97</td><td class="num">24: $39.98</td></tr>
+      <tr><td>102050 cells × 30</td><td class="num">$47.49</td><td class="num">$47.49</td></tr>
+      <tr><td>Knobs × 30 (estimate)</td><td class="num">≈ $8</td><td class="num">≈ $8</td></tr>
+      <tr><td>Foam tape</td><td class="num">$10</td><td class="num">$10</td></tr>
+      <tr><td>Hot glue, solder, antenna wire</td><td class="num">$10</td><td class="num">$10</td></tr>
+      <tr><td>Subtotal</td><td class="num">$413.13</td><td class="num">$350.47</td></tr>
+      <tr><td>Contingency, 10%</td><td class="num">$41.31</td><td class="num">$35.05</td></tr>
+      <tr><td><b>Total</b></td><td class="num"><b>$454.44 ($15.15 per radio)</b></td><td class="num"><b>$385.52 ($12.85 per radio)</b></td></tr>
     </tbody>
   </table></div>
-  <h3>Other costs</h3>
+  <div class="callout"><strong>For KOPN</strong>First 30: <b>$455</b> ($15.15 each). Second 30: <b>$386</b> ($12.85 each). All 60: <b>$841</b> ($14.02 each). Parts and materials only; no labour.</div>
+  <h3>Watch for</h3>
   <ul>
-    <li><b>Jars</b> $0.90–1.50 each. <b>Knobs</b> $0.10–0.50. <b>Hot glue, solder, thread-lock</b> ≈ $10 total.</li>
-    <li><b>Packaging</b>, sticker or instruction card: $0.50–2 per radio. A USB-C cable, if you include one: $1–2.</li>
+    <li><b>US import duty.</b> Check whether the JLC and LCSC checkout totals included US duty. If not, the carrier bills it on delivery, and it could be more than the contingency (tens of dollars per batch).</li>
+    <li><b>Knobs</b> weren't in your list. Allow about $0.25 each for a 6 mm D-shaft knob.</li>
+    <li><b>Stock for batch 2.</b> The pot had about 64 at JLC and the Si4825 about 96. Batch 1 uses about 32 of each. Buying 30 more of each into your JLC parts inventory now (about $100: pot $1.50–1.94, tuner $1.71) guarantees batch 2, and batch 2's board price drops by about the same amount.</li>
     <li><b>Shipping radios</b>: a cell inside equipment ships as UN3481. USPS allows it by ground only, with a lithium label; about $6–10 per parcel.</li>
-    <li><b>Labour</b>: 2 speaker joints, a few glue dabs, battery plugged in and taped, whip and knob, plus a listen test per radio.</li>
-    <li><b>Contingency</b>: budget one more 5-board run in case the prototypes need a fix.</li>
   </ul>
 </section>
 
@@ -303,9 +304,9 @@ details.hist > summary { cursor: pointer; font-family: var(--display); font-size
   <h2><span class="ref">06</span>Open questions</h2>
   <ol class="qlist">
     <li><b>Knob.</b> The R09512NS has a 6 mm D-flat ("FB") shaft, 15 mm long. Pick a knob style and colour. Is a shaft tip ~29 mm above the lid OK, or do you want a low, wide knob that hides most of it?<div class="rec">A Ø20 mm aluminium or black knob, set-screw or D push-fit.</div></li>
-    <li><b>Whip listing.</b> Make sure it has an <b>M3 male stud</b>, not a female thread or M2.5. Collapsed length should be under about 20 cm so it stands neatly on a jar. Extended, aim for 60–80 cm (a quarter wave at 89.5 MHz is about 84 cm).<div class="rec">Send me a listing and I'll check the thread and length.</div></li>
-    <li><b>Cells.</b> 102050 with PH2.0 plug, $77 for 50. Before ordering 50: buy a few, measure them (50 × 20 × 10 mm or under), check the leads are 45 mm or longer, check which pin the red wire is on, and check the capacity.<div class="rec">The socket's pin 2 is + as built (STD jumpers). If your samples have red on pin 1, I can switch the BOM to fit the SWAP pair instead before ordering, so JLC builds it that way. No hand rework needed.</div></li>
-    <li><b>Stock for 50.</b> The pot had 64 at JLC (late September data), the speaker 63 at LCSC, and the Si4825 was 96 when you last looked. All cover 50 today, but not by much.<div class="rec">Order the 50-run parts soon after the prototypes pass, or pre-buy into your JLC parts library.</div></li>
+    <li><b>Whip listing (later).</b> Make sure it has an <b>M3 male stud</b>, not a female thread or M2.5. Collapsed length should be under about 20 cm so it stands neatly on a jar. Extended, aim for 60–80 cm (a quarter wave at 89.5 MHz is about 84 cm).<div class="rec">Send me a listing and I'll check the thread and length.</div></li>
+    <li><b>Cells.</b> 102050 with PH2.0 plug, $47.49 for 30. When they arrive: buy a few, measure them (50 × 20 × 10 mm or under), check the leads are 45 mm or longer, check which pin the red wire is on, and check the capacity.<div class="rec">The socket's pin 2 is + as built (STD jumpers). If your samples have red on pin 1, I can switch the BOM to fit the SWAP pair instead before ordering, so JLC builds it that way. No hand rework needed.</div></li>
+    <li><b>Stock for batch 2.</b> The pot had 64 at JLC (late September data) and the Si4825 96; the speakers are covered (63 bought now). Batch 1 uses about 32 pots and tuners, which leaves batch 2 at risk.<div class="rec">Buy 30 more pots and 30 more Si4825 into your JLC parts inventory with batch 1 (about $100, which comes off batch 2's board price).</div></li>
     <li><b>First-board checks</b> (no answer needed now): KOPN comes in clean (otherwise calibrate on RV2); clockwise raises the volume (otherwise I swap two pot pads); the battery plug passes the cutout and reaches the socket; in JLC's placement preview the PH socket's mouth faces the cutout (clone footprints can be drawn rotated, and I correct the rotation if so); the speaker sits flat with its tabs on the pads (the pads were drawn from your sketch, so check the fit on a real speaker); the board seats under the band.</li>
     <li><b>Protecting the cone.</b> The speaker now faces out on top of the lid, so its Mylar cone is exposed. Do you want a cover later, for example a 3D-printed or laser-cut grille ring that sits on the speaker rim?<div class="rec">Not for the prototypes. Listen first, then decide.</div></li>
   </ol>
@@ -317,7 +318,7 @@ details.hist > summary { cursor: pointer; font-family: var(--display); font-size
   <div class="tbl"><table>
     <thead><tr><th>Topic</th><th>Decision</th></tr></thead>
     <tbody>
-      <tr><td>Jar</td><td>16 oz wide-mouth (lid 84.3, window 74, ID 74.3). Board Ø84.</td></tr>
+      <tr><td>Jar</td><td>Wide-mouth quart (cheaper than 8 oz; same 86 mm band and mouth as the 16 oz the board was measured on: lid 84.3, window 74, ID 74.3). Board Ø84. Regular-mouth jars do not fit.</td></tr>
       <tr><td>Assembly</td><td>All electronics on the top face, single-sided JLC assembly. One connector: the battery's PH2.0 socket.</td></tr>
       <tr><td>Layout</td><td>Speaker at the bottom; KOPN logo top centre; battery socket and plug cutout top left; CGW logo and name on the front, left of the speaker; the cell lies diagonally across the inside face.</td></tr>
       <tr><td>Speaker mount</td><td>On the top face, soldered by its two back tabs to plated pads (solder from the inside face); board cutout for the cup and potting (Ø16.8 hole plus slot); pads symmetric. Branch <code>speaker-top-mount</code>.</td></tr>
@@ -325,10 +326,10 @@ details.hist > summary { cursor: pointer; font-family: var(--display); font-size
       <tr><td>Protection</td><td>XB8089D. PTC, temperature sensor, reset IC and ESD diode left as unfitted upgrade spots.</td></tr>
       <tr><td>Controls</td><td>CTR R09512NS 10k audio pot with rotary switch, fitted by JLC (through-hole). No slide switch.</td></tr>
       <tr><td>Speaker</td><td>Dragonstate HDK-4008BB-2.</td></tr>
-      <tr><td>Antenna</td><td>M3 whip with every radio; wire hole kept but unpopulated.</td></tr>
+      <tr><td>Antenna</td><td>75 cm of 24 AWG stranded wire in the ANT hole, spiralled inside the jar. The M3 whip mount is kept for later.</td></tr>
       <tr><td>USB-C</td><td>ShouHan TYPE-C 6P LTH6.8 108 (C30167335), vertical.</td></tr>
       <tr><td>Cost-down</td><td>Station resistors 82k/11k 1% (fee-free) instead of 0.1%; C7/C21 22 µF 0603 and C18 10 µF 0603 instead of 22 µF 0805.</td></tr>
-      <tr><td>Quantities</td><td>5 prototypes, then probably 50.</td></tr>
+      <tr><td>Quantities</td><td>30 now (no prototype run), 30 later. All 63 speakers bought now.</td></tr><tr><td>Venting</td><td>Not sealed and no extra holes. The plug cutout leaves a small gap, which vents the jar (pressure, and a failing cell). The jar is the speaker's back box.</td></tr>
     </tbody>
   </table></div>
 </section>
