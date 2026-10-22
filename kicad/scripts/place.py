@@ -7,7 +7,7 @@ parts and holes block both faces.
 """
 import math
 import pcbnew
-from gen_pcb import CX, CY, SPK, GEOM, P, GRILLE_R, SPK_R, HOLDER
+from gen_pcb import CX, CY, SPK, GEOM, P, GRILLE_R, SPK_R, BATT, BATT_SIZE
 
 MARGIN = pcbnew.FromMM(0.1)
 
@@ -36,9 +36,22 @@ def _circle_hits(bb, cx_mm, cy_mm, r_mm):
     return math.hypot(nx - sx, ny - sy) < pcbnew.FromMM(r_mm)
 
 
+def _battery():
+    from shapely.geometry import box
+    from shapely import affinity
+    w, h = BATT_SIZE
+    return affinity.rotate(box(BATT[0] - w / 2, BATT[1] - h / 2, BATT[0] + w / 2, BATT[1] + h / 2), BATT[2], origin=BATT[:2])
+
+
+def _mm_box(bb):
+    """Courtyard bbox (KiCad units, y down) as a shapely box in mm, y up."""
+    from shapely.geometry import box
+    return box(pcbnew.ToMM(bb[0]) - CX, CY - pcbnew.ToMM(bb[3]), pcbnew.ToMM(bb[2]) - CX, CY - pcbnew.ToMM(bb[1]))
+
+
 def inside(bb, face, tht=False):
     """Courtyard inside the usable circle and clear of the grille (top face);
-    through-hole parts must also clear the speaker and the 18650 holder that
+    through-hole parts must also clear the speaker and the battery that
     sit against the inside face."""
     cx, cy = pcbnew.FromMM(CX), pcbnew.FromMM(CY)
     rmax = pcbnew.FromMM((GEOM['bot_keep'] if face == 'B' else GEOM['top_keep']) - 0.2)
@@ -50,9 +63,7 @@ def inside(bb, face, tht=False):
     if tht or face == 'B':
         if _circle_hits(bb, SPK[0], SPK[1], SPK_R):
             return False
-        hx0, hy1 = pcbnew.FromMM(CX + HOLDER[0]), pcbnew.FromMM(CY - HOLDER[1])
-        hx1, hy0 = pcbnew.FromMM(CX + HOLDER[2]), pcbnew.FromMM(CY - HOLDER[3])
-        if overlap(bb, (hx0, hy0, hx1, hy1)):
+        if _battery().intersects(_mm_box(bb)):
             return False
     return True
 
@@ -69,7 +80,7 @@ def legalize(board, placed, mech, PLACE):
         name = str(fp.GetFPID().GetLibItemName())
         if name.startswith('Logo') and not fp.IsFlipped():
             block(fp, 'F')          # top logo: keep parts off it
-        elif not any(k in name for k in ('Speaker', 'Grille', 'Holder', 'Logo')):
+        elif not any(k in name for k in ('Speaker', 'Grille', 'Holder', 'Battery', 'Logo')):
             block(fp, 'FB')         # holes
     auto = []
     for ref, fp in placed.items():

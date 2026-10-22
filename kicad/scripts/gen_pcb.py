@@ -4,7 +4,7 @@ route.py (Freerouting).
 
 Coordinates in PLACE are millimetres from the board centre, X right and
 Y UP as seen from the top (outside) face. All parts sit on the top face; the
-inside face carries only the speaker and 18650 holder outlines.
+inside face carries only the battery outline.
 Board geometry is from the measured wide-mouth jar (see GEOM).
 """
 import math, os
@@ -26,8 +26,11 @@ CX, CY = 150.0, 100.0     # board centre in KiCad page coordinates
 SPK = (0.0, -14.0)        # speaker centre: Ø40 HDK-4008BB-2 on the top face, back down over a cutout
 GRILLE_R = 20.8           # top-face keep-out: the speaker itself
 SPK_R = 20.8              # through-hole parts can't sit under the speaker either
-SLOT = (0.0, 23.5)        # 18650 holder foot slot, 180 deg from the speaker
-HOLDER = (-10.6, 8.0, 10.6, 23.2)   # inside-face holder end face (x0, y0, x1, y1), y up
+BATT = (-9.25, 7.75, 52.0)   # 102050 LiPo on the inside face: centre x, y and long-axis angle.
+                              # Diagonal is the only way a 50 mm cell clears the speaker cup, pot,
+                              # USB-C legs and whip nut; this pose has the most clearance (~1.5 mm)
+BATT_SIZE = (51.0, 21.0)      # 50 x 20 cell + 0.5 mm all round
+SOCK = (-13.5, 20.5)          # PH2.0 socket on the top face, mouth facing -x at the plug cutout
 
 # ref: (x, y_up, rotation_deg_seen_from_top, side[, 'fix'])
 # Everything sits on the top face. Parts without 'fix' are a starting point:
@@ -35,9 +38,9 @@ HOLDER = (-10.6, 8.0, 10.6, 23.2)   # inside-face holder end face (x0, y0, x1, y
 PLACE = {
     # --- fixed: controls, connectors, hand-wired pads
     'RV1': (25.0, 5.0, 0, 'F', 'fix'), 'J1': (-27.0, 10.0, 90, 'F', 'fix'), 'ANT1': (22.5, 24.0, 0, 'F', 'fix'),
-    'J2': (SLOT[0], SLOT[1], 180, 'F', 'fix'), 'J3': (6.5, 27.0, 0, 'F', 'fix'), 'J4': (SPK[0], SPK[1], 90, 'F', 'fix'),
-    # --- battery protection, left of the holder slot
-    'U6': (-9.0, 28.5, 0, 'F'), 'R18': (-5.5, 25.5, 90, 'F'), 'C22': (-12.5, 27.5, 90, 'F'), 'F1': (-13.5, 23.5, 90, 'F'),
+    'J2': (SOCK[0], SOCK[1], 270, 'F', 'fix'), 'J3': (6.5, 27.0, 0, 'F', 'fix'), 'J4': (SPK[0], SPK[1], 90, 'F', 'fix'),
+    # --- battery protection, between the socket and the whip mount
+    'U6': (-1.0, 27.5, 0, 'F'), 'R18': (3.0, 24.5, 90, 'F'), 'C22': (3.0, 28.5, 90, 'F'), 'F1': (-5.5, 24.0, 90, 'F'),
     # --- tuner, upper right between the logo and the knob
     'U1': (15.5, 15.5, 90, 'F'), 'Y1': (11.0, 9.5, 0, 'F'), 'C1': (9.5, 12.0, 90, 'F'), 'C2': (13.0, 12.0, 90, 'F'),
     'C3': (16.0, 20.5, 0, 'F'), 'C4': (18.5, 20.5, 0, 'F'), 'R1': (21.0, 20.0, 90, 'F'), 'C5': (22.5, 20.0, 90, 'F'),
@@ -64,7 +67,7 @@ PLACE = {
 
 # mechanical items: (footprint, x, y_up, rot, side)
 MECH = [
-    ('Holder_18650_EndFace_Outline', SLOT[0], SLOT[1], 180, 'B'),
+    ('Battery_LiPo_102050_Outline', BATT[0], BATT[1], BATT[2], 'B'),
     ('Logo_KOPN_15mm', 0.0, 14.0, 0, 'F'),
     ('Logo_CGW_11mm', -26.5, -1.4, 0, 'F'),
 ]
@@ -241,18 +244,30 @@ def build(sch_parts, out_path):
     # silkscreen text
     text(board, 'COLUMBIA', -26.5, -8.3, 0.9, pcbnew.F_SilkS, bold=True)          # under the CGW logo
     text(board, 'GADGET WORKS', -26.5, -9.7, 0.9, pcbnew.F_SilkS, bold=True)
-    text(board, '+', SLOT[0] + 5.2, SLOT[1], 1.2, pcbnew.F_SilkS, bold=True)
-    text(board, '-', SLOT[0] - 2.2, SLOT[1] + 5.5, 1.2, pcbnew.F_SilkS, bold=True)
-    # LED labels go just left of wherever the legalizer put the LEDs
+    # LED labels: beside wherever the legalizer put the LEDs, on the first
+    # side (right, left, above, below) where they overlap no other part
+    def mmbox(fp):
+        bb = fp.GetBoundingBox(False, False)
+        return (pcbnew.ToMM(bb.GetLeft()) - CX, CY - pcbnew.ToMM(bb.GetBottom()), pcbnew.ToMM(bb.GetRight()) - CX, CY - pcbnew.ToMM(bb.GetTop()))
+    others = [mmbox(f) for f in board.GetFootprints() if not f.IsFlipped()]
+    labels = []
     for ref, label in (('D2', 'CHG'), ('D3', 'FULL')):
-        f = placed[ref]; c = f.GetPosition(); bb = f.GetBoundingBox(False, False)
-        right = pcbnew.ToMM(bb.GetRight()) - CX            # label starts just right of the LED
-        text(board, label, right + 0.3 + 0.36 * len(label), CY - pcbnew.ToMM(c.y), 0.8, pcbnew.F_SilkS)
-    text(board, 'KOPN 89.5 JAR RADIO rev B', 21.0, 15.5, 0.8, pcbnew.B_SilkS)
-    text(board, 'COLUMBIA, MO', 21.0, 13.5, 0.8, pcbnew.B_SilkS)
-    text(board, 'CERN-OHL-S-2.0', 21.0, 11.5, 0.8, pcbnew.B_SilkS)
-    text(board, 'after The Public Radio', 21.0, 9.8, 0.8, pcbnew.B_SilkS)
-    text(board, '18650 Li-ion  + END TO LID', -23.0, 4.0, 0.8, pcbnew.B_SilkS)
+        x0, y0, x1, y1 = mmbox(placed[ref]); cy = (y0 + y1) / 2; cx = (x0 + x1) / 2
+        hw, hh = 0.36 * len(label) + 0.1, 0.5
+        for tx, ty in ((x1 + 0.3 + hw, cy), (x0 - 0.3 - hw, cy), (cx, y1 + 0.3 + hh), (cx, y0 - 0.3 - hh)):
+            box = (tx - hw, ty - hh, tx + hw, ty + hh)
+            if not any(box[0] < o[2] and o[0] < box[2] and box[1] < o[3] and o[1] < box[3] for o in others + labels):
+                break
+        labels.append(box)
+        text(board, label, tx, ty, 0.8, pcbnew.F_SilkS)
+    # inside face, below the speaker cup (the battery covers the middle)
+    text(board, 'KOPN 89.5 JAR RADIO rev B', 0.0, -25.0, 0.8, pcbnew.B_SilkS)
+    text(board, 'COLUMBIA, MO', 0.0, -26.8, 0.8, pcbnew.B_SilkS)
+    text(board, 'CERN-OHL-S-2.0', 0.0, -28.6, 0.8, pcbnew.B_SilkS)
+    text(board, 'after The Public Radio', 0.0, -30.4, 0.8, pcbnew.B_SilkS)
+    # plug cutout, seen from the inside face: the battery plug goes up through here
+    text(board, 'BATT PLUG UP', SOCK[0] - 9.0, SOCK[1] + 5.0, 0.8, pcbnew.B_SilkS)
+    text(board, 'red = +', SOCK[0] - 9.0, SOCK[1] - 5.0, 0.8, pcbnew.B_SilkS)
 
     board.SetFileName(out_path)
     pcbnew.SaveBoard(out_path, board)

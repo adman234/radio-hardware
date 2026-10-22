@@ -136,7 +136,7 @@ details.hist > summary { cursor: pointer; font-family: var(--display); font-size
 <header class="top">
   <div class="eyebrow">adman234/radio-hardware · master · board rev B · plan updated 2026-10-21</div>
   <h1>KOPN 89.5 Jar Radio</h1>
-  <p class="lede">A single-station FM radio whose circuit board is the lid of a wide-mouth 16 oz mason jar. It has no firmware: turn the knob and it plays KOPN 89.5. It charges from USB-C and runs from one 18650 cell hanging inside the jar. JLCPCB assembles every electronic part on the top face in one pass. You fit the speaker, battery holder and whip by hand.</p>
+  <p class="lede">A single-station FM radio whose circuit board is the lid of a wide-mouth 16 oz mason jar. It has no firmware: turn the knob and it plays KOPN 89.5. It charges from USB-C and runs from a flat 102050 LiPo pouch taped to the inside face. JLCPCB assembles every electronic part on the top face in one pass, including the battery socket. You fit the speaker and whip by hand and plug the battery in.</p>
   <div class="status">
     <span class="chip go">Board rev B designed and routed</span>
     <span class="chip go">0 unconnected · 0 clearance errors</span>
@@ -150,7 +150,7 @@ details.hist > summary { cursor: pointer; font-family: var(--display); font-size
     <div><dt>Tuner</dt><dd>Si4825-A10, band FM3 (87–108 MHz, 75 µs)</dd></div>
     <div><dt>Audio</dt><dd>NS8002 class AB BTL, gain 29, Ø40 8 Ω speaker</dd></div>
     <div><dt>Controls</dt><dd>One knob: volume, click-off at the end</dd></div>
-    <div><dt>Power</dt><dd>USB-C 5 V, 500 mA charge, 18650 + XB8089D protection</dd></div>
+    <div><dt>Power</dt><dd>USB-C 5 V, 500 mA charge, 102050 LiPo (1000 mAh) on a PH2.0 plug + XB8089D protection</dd></div>
     <div><dt>Antenna</dt><dd>M3 telescopic whip (wire hole kept as an option)</dd></div>
     <div><dt>Board</dt><dd>Ø84 mm, 2 layers, 1.6 mm, black / white</dd></div>
     <div><dt>Jar</dt><dd>16 oz wide-mouth, stock band clamps the board</dd></div>
@@ -161,8 +161,8 @@ details.hist > summary { cursor: pointer; font-family: var(--display); font-size
   <h2><span class="ref">01</span>Board rev B</h2>
   <div class="col"><p>These renders are generated from the real board files: black mask, white silkscreen, silver pads, holes punched from the drill data. The top face is the outside of the lid.</p></div>
   <div class="shots">
-    <figure class="shot"><img src="{{IMG_TOP}}" alt="Top face render: battery slot at the top, KOPN logo top centre, speaker cutout and tab pads below it, USB-C and charger on the left, tuner, whip, knob and amplifier on the right"><figcaption>Top (outside). From the top down: the battery slot (+) and − wire pad, the KOPN logo, and the speaker position. The speaker sits on this face, back down: the round cutout takes its magnet cup, the slot takes the potted terminal block, and the two mirror-image pads either side of the slot meet its two back tabs. Left: USB-C, charger, CHG/FULL LEDs, and the CGW gear with "COLUMBIA GADGET WORKS" under it. Right: tuner, M3 whip mount (and the unused wire hole), the volume/off knob and the amplifier next to the speaker pads.</figcaption></figure>
-    <figure class="shot"><img src="{{IMG_BOT}}" alt="Inside face render: holder outline under the slot, speaker cutout, the two speaker pads, CGW logo, label text"><figcaption>Inside (viewed from inside the jar, mirrored). The holder glue outline, the speaker cutout, and the back of the two speaker pads, where you solder (the plated holes carry the solder up to the speaker tabs). licence text and "18650 Li-ion + END TO LID".</figcaption></figure>
+    <figure class="shot"><img src="{{IMG_TOP}}" alt="Top face render: battery socket and plug cutout top left, KOPN logo top centre, speaker cutout and tab pads below it, USB-C and charger on the left, tuner, whip, knob and amplifier on the right"><figcaption>Top (outside). Top left: the battery socket (right-angle PH2.0, − and + marked) with the cutout the battery plug comes up through. Then the KOPN logo and the speaker position. The speaker sits on this face, back down: the round cutout takes its magnet cup, the slot takes the potted terminal block, and the two mirror-image pads either side of the slot meet its two back tabs. Left: USB-C, charger, CHG/FULL LEDs, and the CGW gear with "COLUMBIA GADGET WORKS" under it. Right: tuner, M3 whip mount (and the unused wire hole), the volume/off knob and the amplifier next to the speaker pads.</figcaption></figure>
+    <figure class="shot"><img src="{{IMG_BOT}}" alt="Inside face render: diagonal battery outline, plug cutout, speaker cutout, the two speaker pads, CGW logo, label text"><figcaption>Inside (viewed from inside the jar, mirrored). The diagonal 102050 outline (foam tape goes inside it; nothing sharp sits under it), the plug cutout marked "BATT PLUG UP", the speaker cutout, and the back of the two speaker pads, where you solder (the plated holes carry the solder up to the speaker tabs). Licence text below the speaker.</figcaption></figure>
   </div>
   <div class="bar"><span>DRC: {{DRC}}</span></div>
   <h3>Schematic</h3>
@@ -174,7 +174,7 @@ details.hist > summary { cursor: pointer; font-family: var(--display); font-size
         <li><code>kicad/jar-radio.kicad_pro / _sch / _pcb</code>: KiCad 7 format; opens in 8 and 9.</li>
         <li><code>kicad/jlcpcb/</code>: <code>jar-radio-gerbers.zip</code>, <code>BOM.csv</code> and <code>CPL.csv</code>, ready to upload.</li>
         <li><code>kicad/scripts/</code>: the whole design is generated. <code>circuit.py</code> holds every part and net. <code>build.py</code> then <code>route.py</code> place, fan out ground, route (Freerouting plus a small maze router), repair ground islands and write the DRC report. <code>export_jlc.py</code> and <code>render.py</code> make the order files and these images. <code>jlcdb.py</code> checks stock and price against a local JLC parts database.</li>
-        <li><code>kicad/lib/</code>: custom footprints (USB-C, switched pot, holder slot, antenna pads, top-mount speaker with its cutout, outlines, logos).</li>
+        <li><code>kicad/lib/</code>: custom footprints (USB-C, switched pot, battery socket with plug cutout, antenna pads, top-mount speaker with its cutout, outlines, logos).</li>
       </ul>
     </div>
     <div>
@@ -195,12 +195,10 @@ details.hist > summary { cursor: pointer; font-family: var(--display); font-size
     <div>
       <h3>Hand assembly, per radio</h3>
       <ol class="steps">
-        <li><b>Holder</b> Push the BH-18650-B1BA002's + foot up through the plated slot, solder it on top, and hot-glue the holder's end face inside the outline.</li>
-        <li><b>− wire</b> Run a short wire from the holder's far (−) foot up through the round pad above the slot, then solder it.</li>
         <li><b>Speaker</b> Set the HDK-4008BB-2 on the top face, back down: magnet cup into the round cutout, potted terminal block into the slot between the pads, its two exposed tabs on the triangular pads. From the inside face, heat each pad (about 300 °C, 2–3 s) and feed solder into the plated hole until it wets the tab. A dab of glue at the rim is optional. One speaker on its own, so polarity doesn't matter. Then put three small dabs of neutral-cure silicone (or hot glue) between the speaker rim and the board. That stops buzzing and takes strain off the solder joints.</li>
         <li><b>Whip</b> Put the M3 stud through the WHIP hole, then add a washer and nut inside. A drop of thread-lock is optional.</li>
         <li><b>Knob</b> Push a 6 mm D-shaft knob onto the pot.</li>
-        <li><b>Cell</b> Insert a flat-top 18650, + end toward the lid (the label inside says so). Charge it from USB-C until FULL lights.</li>
+        <li><b>Cell</b> First check polarity on one cell from each batch: clone PH plugs have no standard, and the red wire must land on the socket's + pin. Push the plug up through the cutout from the inside face and into the socket. Stick the cell inside the diagonal outline with double-sided foam tape (about 1 mm), wire end toward the cutout, and tuck the spare wire. Charge from USB-C until FULL lights.</li>
         <li><b>Jar</b> Set the board on the jar mouth and screw the original band over it. The outer ring of the board is ground, clamped by the band.</li>
       </ol>
     </div>
@@ -209,7 +207,7 @@ details.hist > summary { cursor: pointer; font-family: var(--display); font-size
       <ul>
         <li><b>Board Ø84.0 mm</b> (measured lid 84.3). Parts stay inside Ø72. Under the band (Ø74.3–84) both faces are solid ground with stitching vias, solder-masked.</li>
         <li><b>Speaker</b> Ø40 × 5.3 mm on the top face, centred 14 mm below the board centre. The board cutout is a Ø16.8 hole for the Ø16.2 × 3 mm magnet cup (0.3 mm clearance per side), joined to a 10.4 mm wide slot for the potted terminal block. The two tab pads are mirror images 6.8 mm either side of centre, with 11.3 mm of board between them and 0.45 mm of bare board to the slot edge. The speaker's back face rests flat on the board.</li>
-        <li><b>Holder</b> 77 mm long (86 mm over the feet), standing on end inside the jar from the slot, 180° from the speaker. Its 14.9 × 20.65 mm end face is glued between the slot and the speaker.</li>
+        <li><b>Battery</b> 102050 LiPo pouch, 50 × 20 × 10 mm, 1000 mAh, with its own protection board and a PH2.0 plug. It lies flat on the inside face at 52°: a 50 mm cell clears the speaker cup, pot pins, USB-C legs and whip nut only on that diagonal (about 1.5 mm clearance). The plug cutout is 7.5 × 5.5 mm, top left, about 30 mm from the cell's ends, so the cell needs leads of 45 mm or more (80–100 mm is easier).</li>
         <li><b>Knob</b> The pot shaft rises about 29 mm above the lid. The R09512NS also has an M7 thread with an O-ring, which is unused.</li>
         <li><b>Antenna wire hole</b> (J3, 2 tie holes) stays on the board, unpopulated, as an alternative to the whip.</li>
         <li><b>About 8 hand joints per radio</b>, plus 2 glue blobs and a nut.</li>
@@ -263,8 +261,7 @@ details.hist > summary { cursor: pointer; font-family: var(--display); font-size
     <thead><tr><th>Item</th><th>Part</th><th>Where</th><th class="num">Each</th></tr></thead>
     <tbody>
       <tr><td>Speaker</td><td>Dragonstate HDK-4008BB-2, Ø40 8 Ω (C22371323)</td><td>LCSC, 63 in stock</td><td class="num">$0.46–0.65</td></tr>
-      <tr><td>18650 holder</td><td>MYOUNG BH-18650-B1BA002 (C2988620)</td><td>LCSC</td><td class="num">≈ $0.40</td></tr>
-      <tr><td>Cell</td><td>18650 Li-ion, flat top, <b>unprotected</b> (protection is on the board; protected cells are 67–70 mm and may not fit), 2500–3000 mAh</td><td>reputable US cell seller</td><td class="num">$3–4</td></tr>
+      <tr><td>Cell</td><td>102050 LiPo pouch, 3.7 V 1000 mAh, with protection board and PH2.0 plug, leads 45 mm or longer</td><td>AliExpress</td><td class="num">≈ $1.54 ($77 / 50)</td></tr>
       <tr><td>Whip</td><td>Telescopic antenna, <b>M3 male stud</b>, ≥ 60 cm, + M3 nut and washer</td><td>AliExpress / eBay</td><td class="num">≈ $1</td></tr>
       <tr><td>Knob</td><td>6 mm D-shaft knob, Ø15–20 mm</td><td>AliExpress</td><td class="num">$0.10–0.50</td></tr>
       <tr><td>Jar</td><td>16 oz wide-mouth mason jar with band (the flat lid is not used)</td><td>local / case of 12</td><td class="num">$0.90–1.50</td></tr>
@@ -280,15 +277,15 @@ details.hist > summary { cursor: pointer; font-family: var(--display); font-size
     <tbody>
       <tr><td>PCB (Ø84, 2-layer, black)</td><td class="num">$6</td><td class="num">$25</td></tr>
       <tr><td>Assembly: setup, stencil, joints</td><td class="num">$11</td><td class="num">$23</td></tr>
-      <tr><td>Extended part fees: tuner, L1, pot, amp, USB-C, XB8089D</td><td class="num">6 × $3 = $18</td><td class="num">$18</td></tr>
+      <tr><td>Extended part fees: tuner, L1, pot, amp, USB-C, XB8089D, battery socket</td><td class="num">7 × $3 = $21</td><td class="num">$21</td></tr>
       <tr><td>Through-hole fitting (pot)</td><td class="num">$4</td><td class="num">$9</td></tr>
-      <tr><td>Parts JLC places</td><td class="num">$35</td><td class="num">$233</td></tr>
-      <tr><td>Tariff (~35%)</td><td class="num">$26</td><td class="num">$108</td></tr>
+      <tr><td>Parts JLC places</td><td class="num">$35</td><td class="num">$235</td></tr>
+      <tr><td>Tariff (~35%)</td><td class="num">$27</td><td class="num">$109</td></tr>
       <tr><td>JLC shipping</td><td class="num">$22</td><td class="num">$35</td></tr>
-      <tr><td>Speaker + holder (LCSC), tariff, combined shipping</td><td class="num">$13</td><td class="num">$68</td></tr>
-      <tr><td>18650 cells + shipping</td><td class="num">$30</td><td class="num">$165</td></tr>
+      <tr><td>Speakers (LCSC), tariff, combined shipping</td><td class="num">$10</td><td class="num">$41</td></tr>
+      <tr><td>102050 cells, delivered</td><td class="num">≈ $20</td><td class="num">$77</td></tr>
       <tr><td>M3 whips + nuts</td><td class="num">$7</td><td class="num">$55</td></tr>
-      <tr><td><b>All electrical, delivered</b></td><td class="num"><b>≈ $172 ($34 each)</b></td><td class="num"><b>≈ $739 ($14.80 each)</b></td></tr>
+      <tr><td><b>All electrical, delivered</b></td><td class="num"><b>≈ $163 ($33 each)</b></td><td class="num"><b>≈ $630 ($12.60 each)</b></td></tr>
     </tbody>
   </table></div>
   <h3>Other costs</h3>
@@ -296,7 +293,7 @@ details.hist > summary { cursor: pointer; font-family: var(--display); font-size
     <li><b>Jars</b> $0.90–1.50 each. <b>Knobs</b> $0.10–0.50. <b>Hot glue, solder, thread-lock</b> ≈ $10 total.</li>
     <li><b>Packaging</b>, sticker or instruction card: $0.50–2 per radio. A USB-C cable, if you include one: $1–2.</li>
     <li><b>Shipping radios</b>: a cell inside equipment ships as UN3481. USPS allows it by ground only, with a lithium label; about $6–10 per parcel.</li>
-    <li><b>Labour</b>: about 8 joints, 2 glue blobs, whip and knob, plus a listen test per radio.</li>
+    <li><b>Labour</b>: 2 speaker joints, a few glue dabs, battery plugged in and taped, whip and knob, plus a listen test per radio.</li>
     <li><b>Contingency</b>: budget one more 5-board run in case the prototypes need a fix.</li>
   </ul>
 </section>
@@ -306,9 +303,9 @@ details.hist > summary { cursor: pointer; font-family: var(--display); font-size
   <ol class="qlist">
     <li><b>Knob.</b> The R09512NS has a 6 mm D-flat ("FB") shaft, 15 mm long. Pick a knob style and colour. Is a shaft tip ~29 mm above the lid OK, or do you want a low, wide knob that hides most of it?<div class="rec">A Ø20 mm aluminium or black knob, set-screw or D push-fit.</div></li>
     <li><b>Whip listing.</b> Make sure it has an <b>M3 male stud</b>, not a female thread or M2.5. Collapsed length should be under about 20 cm so it stands neatly on a jar. Extended, aim for 60–80 cm (a quarter wave at 89.5 MHz is about 84 cm).<div class="rec">Send me a listing and I'll check the thread and length.</div></li>
-    <li><b>Cells.</b> Which 18650 and from where? It must be flat-top and unprotected, and about 65 mm long, to fit the holder.<div class="rec">Samsung 30Q, Molicel P26A or LG HG2 from a reputable US cell shop. Avoid unbranded "9900 mAh" cells.</div></li>
+    <li><b>Cells.</b> 102050 with PH2.0 plug, $77 for 50. Before ordering 50: buy a few, measure them (50 × 20 × 10 mm or under), check the leads are 45 mm or longer, check which pin the red wire is on, and check the capacity.<div class="rec">The socket's pin 2 is + (marked on the board). If the samples have red on the other pin, ask the seller to swap it, or I swap the two socket nets before ordering.</div></li>
     <li><b>Stock for 50.</b> The pot has 64 at JLC, the speaker 63 at LCSC, and the Si4825 was 96 when you last looked. All cover 50 today, but not by much.<div class="rec">Order the 50-run parts soon after the prototypes pass, or pre-buy into your JLC parts library.</div></li>
-    <li><b>First-board checks</b> (no answer needed now): KOPN comes in clean (otherwise calibrate on RV2); clockwise raises the volume (otherwise I swap two pot pads); the holder foot fits the slot; the speaker sits flat with its tabs on the pads (the pads were drawn from your sketch, so check the fit on a real speaker); the board seats under the band.</li>
+    <li><b>First-board checks</b> (no answer needed now): KOPN comes in clean (otherwise calibrate on RV2); clockwise raises the volume (otherwise I swap two pot pads); the battery plug passes the cutout and reaches the socket; the speaker sits flat with its tabs on the pads (the pads were drawn from your sketch, so check the fit on a real speaker); the board seats under the band.</li>
     <li><b>Protecting the cone.</b> The speaker now faces out on top of the lid, so its Mylar cone is exposed. Do you want a cover later, for example a 3D-printed or laser-cut grille ring that sits on the speaker rim?<div class="rec">Not for the prototypes. Listen first, then decide.</div></li>
   </ol>
   <div class="callout ok"><strong>No other component questions</strong>Every assembled part has an LCSC number, a stocked part, and a footprint drawn from its datasheet. The DNP spots are documented in section 03.</div>
@@ -323,7 +320,7 @@ details.hist > summary { cursor: pointer; font-family: var(--display); font-size
       <tr><td>Assembly</td><td>All electronics on the top face, single-sided JLC assembly; no JST connectors.</td></tr>
       <tr><td>Layout</td><td>Speaker at the bottom, battery at the top (180° apart); KOPN logo top centre; CGW logo and name on the front, left of the speaker.</td></tr>
       <tr><td>Speaker mount</td><td>On the top face, soldered by its two back tabs to plated pads (solder from the inside face); board cutout for the cup and potting (Ø16.8 hole plus slot); pads symmetric. Branch <code>speaker-top-mount</code>.</td></tr>
-      <tr><td>Battery</td><td>One 18650 in a BH-18650-B1BA002, + foot through the slot, − on a jumper wire, hot glue, no zip ties. 500 mA charging.</td></tr>
+      <tr><td>Battery</td><td>102050 LiPo (1000 mAh) on a PH2.0 plug into a right-angle SMD socket JLC fits (C7429689), plug through a board cutout, cell foam-taped diagonally on the inside face. XB8089D kept (reverse-plug insurance). 500 mA charging (0.5C).</td></tr>
       <tr><td>Protection</td><td>XB8089D. PTC, temperature sensor, reset IC and ESD diode left as unfitted upgrade spots.</td></tr>
       <tr><td>Controls</td><td>CTR R09512NS 10k audio pot with rotary switch, fitted by JLC (through-hole). No slide switch.</td></tr>
       <tr><td>Speaker</td><td>Dragonstate HDK-4008BB-2.</td></tr>
@@ -341,7 +338,7 @@ details.hist > summary { cursor: pointer; font-family: var(--display); font-size
 </details>
 
 <footer>
-  <p>Sources: Si4825-A10 datasheet and Skyworks AN738, NS8002, TP4056, XB8089D, XC6206, CTR R09512NS, ShouHan TYPE-C 6P LTH6.8 108, MYOUNG BH-18650-B1BA002 and Dragonstate HDK-4008BB-2 datasheets (in <code>docs/datasheets</code> or supplied); JLC parts data via <a href="https://github.com/yaqwsx/jlcparts">yaqwsx/jlcparts</a>; tariff: <a href="https://jlcpcb.com/help/article/us-tariff-policy-faq">JLCPCB US tariff FAQ</a>. Based on <a href="https://github.com/the-public-radio">The Public Radio</a>.</p>
+  <p>Sources: Si4825-A10 datasheet and Skyworks AN738, NS8002, TP4056, XB8089D, XC6206, CTR R09512NS, ShouHan TYPE-C 6P LTH6.8 108, Megastar ZX-PH2.0-WT2P and Dragonstate HDK-4008BB-2 datasheets (in <code>docs/datasheets</code> or supplied); JLC parts data via <a href="https://github.com/yaqwsx/jlcparts">yaqwsx/jlcparts</a>; tariff: <a href="https://jlcpcb.com/help/article/us-tariff-policy-faq">JLCPCB US tariff FAQ</a>. Based on <a href="https://github.com/the-public-radio">The Public Radio</a>.</p>
 </footer>
 
 </div>

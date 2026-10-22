@@ -362,6 +362,49 @@ def holder_18650_outline(name='Holder_18650_EndFace_Outline'):
     write(name, L)
 
 
+PH_STD = '/usr/share/kicad/footprints/Connector_JST.pretty/JST_PH_S2B-PH-SM4-TB_1x02-1MP_P2.00mm_Horizontal.kicad_mod'
+PH_SLOT = (0.0, 9.0, 7.5, 5.5)      # plug cutout: centre x, y, width (along the pin row), length
+
+
+def ph2_ra_cutout(name='Battery_PH2.0_RightAngle_SMD_PlugCutout'):
+    """Right-angle SMD JST-PH 2-pin socket (S2B-PH-SM4-TB pattern; LCSC
+    C7429689 ZX-PH2.0-WT2P) plus a board cutout just past its mouth. The
+    battery's crimped plug (6.0 x 4.5 mm) is pushed up through the cutout
+    from the inside face and plugged in; with it plugged in, the plug sits
+    over the near half of the cutout and its wires drop straight down into
+    the jar. Mouth faces +y. Pad 1 = BAT-, pad 2 = BAT+."""
+    import re
+    from shapely.geometry import box
+    L = _hdr(name, 'JST PH 2P right-angle SMD socket (S2B-PH-SM4-TB pattern, LCSC C7429689) with a cutout for the plug to pass through the board', 'smd')
+    std = open(PH_STD).read()
+    for pad in re.findall(r'\(pad [^\n]*', std):
+        L.append('  ' + pad.strip())
+    for blk in re.findall(r'\(fp_line[^\n]*\n?[^\n]*?\(layer "?F\.Fab"?\)', std):
+        L.append('  ' + ' '.join(blk.split()) + ')')
+    cx, cy, w, h = PH_SLOT
+    cut = box(cx - w / 2, cy - h / 2, cx + w / 2, cy + h / 2).buffer(-1.0).buffer(1.0, resolution=8)   # r1 corners
+    ring = list(cut.exterior.coords)
+    for (x1, y1), (x2, y2) in zip(ring, ring[1:]):
+        L.append(_line(x1, y1, x2, y2, 'Edge.Cuts', 0.1))
+    L.append(_text('-', -1.0, -5.6, 'F.SilkS', 1.2))
+    L.append(_text('+', 1.0, -5.6, 'F.SilkS', 1.2))
+    L.append(_text('BATT', 3.6, -5.6, 'F.SilkS', 0.8))
+    L += rect(-4.6, -6.4, 4.6, cy + h / 2 + 0.3, 'F.CrtYd', 0.05)
+    write(name, L)
+
+
+def lipo_outline(name='Battery_LiPo_102050_Outline', w=51.0, h=21.0):
+    """Inside-face outline of a 102050 pouch cell (50 x 20 x 10 mm, drawn
+    with 0.5 mm margin all round), centred on the origin, long axis along x:
+    where the double-sided foam tape and the cell go."""
+    L = _hdr(name, '102050 LiPo outline for foam-tape placement, inside face (place on B)', 'exclude_from_pos_files exclude_from_bom')
+    L += rect(-w / 2, -h / 2, w / 2, h / 2, 'F.SilkS', 0.15)
+    L += rect(-w / 2 - 0.2, -h / 2 - 0.2, w / 2 + 0.2, h / 2 + 0.2, 'F.CrtYd', 0.05)
+    L.append(_text('LiPo 102050  1000mAh', 0, -1.4, 'F.SilkS', 1.2))
+    L.append(_text('foam tape here, nothing sharp underneath', 0, 1.2, 'F.SilkS', 0.8))
+    write(name, L)
+
+
 def build_f12():
     sound_grille('Speaker_Grille_D32', 32.0, hole=1.8, pitch=2.6)
     speaker_d40(); holder_18650_outline(); r09512ns_rear(); usb_c_vertical_6p_108()

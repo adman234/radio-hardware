@@ -146,8 +146,11 @@ part('D3', 'LED', 'GREEN full', 'LED_SMD:LED_0805_2012Metric', 'C2297', 'KT-0805
      {'1': 'STDBY', '2': 'LEDG_A'}, block=B)
 part('R15', 'R', '1k', R0603, 'C21190', '0603WAF1001T5E', {'1': 'VBUS', '2': 'LEDG_A'}, block=B)
 part('C16', 'C', '10uF', C0603, 'C19702', 'CL10A106KP8NNNC', {'1': 'VBAT', '2': 'GND'}, block=B)
-part('J2', 'Conn_2', '18650 holder', JR + 'Battery_Holder_Tab_Slot_Plus_Wire', '', 'BH-18650-B1BA002 (C2988620, hand)',
-     {'1': 'BAT_P', '2': 'BAT_N'}, block=B, hand=True, nobom=True)   # slot = + foot, pad 2 = - jumper wire
+# battery: 102050 LiPo (1000 mAh, own PCM) on a JST-PH 2.0 plug. Clone PH plugs have no
+# standard polarity, so check each batch: red must land on the '+' pin (pad 2).
+# The XB8089D below also survives a reversed cell.
+part('J2', 'Conn_2_MP', 'BATT PH2.0', JR + 'Battery_PH2.0_RightAngle_SMD_PlugCutout', 'C7429689', 'ZX-PH2.0-WT2P',
+     {'1': 'BAT_N', '2': 'BAT_P', 'MP': 'GND'}, block=B, top=True)
 # protection: PTC in BAT+, XB8089D (OV 4.25 / UV 2.5 V, 10 A OC, 40 A short, reverse cell) in BAT-
 # F1 is fitted with a 0R 1206 jumper; upgrade = PTC SMD1206B110TFT (C269119) on the same pads
 part('F1', 'R', '0R (PTC spot)', 'Fuse:Fuse_1206_3216Metric', 'C17888', '1206W4F0000T5E', {'1': 'BAT_P', '2': 'VBAT'}, block=B)
