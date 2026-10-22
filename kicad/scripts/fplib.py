@@ -295,13 +295,12 @@ def ptv09_rear(name='Potentiometer_Bourns_PTV09A-4_RearMount'):
 
 
 def ant_solder_tie(name='Antenna_Wire_Solder_D1.0'):
-    """Antenna wire solder hole + a pair of zip-tie holes for strain relief."""
-    L = _hdr(name, 'Antenna wire solder hole (1.0 mm PTH) + 2 zip-tie holes for strain relief')
+    """Antenna wire solder hole on its own (no strain-relief holes: the
+    whip is the fitted antenna, this is only an alternative)."""
+    L = _hdr(name, 'Antenna wire solder hole (1.0 mm PTH)')
     L.append('  (pad "1" thru_hole circle (at 0 0) (size 2.0 2.0) (drill 1.0) (layers "*.Cu" "*.Mask"))')
-    for x in (3.5, 7.5):
-        L.append(f'  (pad "" np_thru_hole oval (at {x} 0) (size 1.4 3.0) (drill oval 1.4 3.0) (layers "*.Cu" "*.Mask"))')
     L.append(_text('ANT', 0, -2.0, 'F.SilkS', 0.8))
-    L += rect(-1.3, -2.0, 8.6, 2.0, 'F.CrtYd', 0.05)
+    L += rect(-1.3, -2.6, 1.3, 1.3, 'F.CrtYd', 0.05)
     write(name, L)
 
 

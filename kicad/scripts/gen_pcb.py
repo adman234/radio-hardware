@@ -38,7 +38,7 @@ SOCK = (-13.5, 20.5)          # PH2.0 socket on the top face, mouth facing -x at
 PLACE = {
     # --- fixed: controls, connectors, hand-wired pads
     'RV1': (25.0, 5.0, 0, 'F', 'fix'), 'J1': (-27.0, 10.0, 90, 'F', 'fix'), 'ANT1': (22.5, 24.0, 0, 'F', 'fix'),
-    'J2': (SOCK[0], SOCK[1], 270, 'F', 'fix'), 'J3': (6.5, 27.0, 0, 'F', 'fix'), 'J4': (SPK[0], SPK[1], 90, 'F', 'fix'),
+    'J2': (SOCK[0], SOCK[1], 270, 'F', 'fix'), 'J3': (7.0, 31.0, 0, 'F', 'fix'), 'J4': (SPK[0], SPK[1], 90, 'F', 'fix'),
     # --- battery protection, between the socket and the whip mount
     'U6': (-1.0, 27.5, 0, 'F'), 'R18': (3.0, 24.5, 90, 'F'), 'C22': (3.0, 28.5, 90, 'F'), 'F1': (-5.5, 24.0, 90, 'F'),
     # --- tuner, upper right between the logo and the knob
@@ -260,6 +260,9 @@ def build(sch_parts, out_path):
                 break
         labels.append(box)
         text(board, label, tx, ty, 0.8, pcbnew.F_SilkS)
+    # speaker placement ring: what goes there and how big the cutout is
+    text(board, '40mm SPEAKER', SPK[0], SPK[1] - 15.5, 1.0, pcbnew.F_SilkS)
+    text(board, 'CUTOUT \u00d816.8mm', SPK[0], SPK[1] - 10.3, 0.8, pcbnew.F_SilkS)
     # inside face, below the speaker cup (the battery covers the middle)
     text(board, 'KOPN 89.5 JAR RADIO rev B', 0.0, -25.0, 0.8, pcbnew.B_SilkS)
     text(board, 'COLUMBIA, MO', 0.0, -26.8, 0.8, pcbnew.B_SilkS)
