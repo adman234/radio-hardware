@@ -56,7 +56,6 @@
   (fp_line (start 3.750 10.750) (end 3.750 7.250) (stroke (width 0.1) (type solid)) (layer "Edge.Cuts"))
   (fp_text user "-" (at -1.000 -5.600) (layer "F.SilkS") (effects (font (size 1.2 1.2) (thickness 0.180))))
   (fp_text user "+" (at 1.000 -5.600) (layer "F.SilkS") (effects (font (size 1.2 1.2) (thickness 0.180))))
-  (fp_text user "BATT" (at 3.600 -5.600) (layer "F.SilkS") (effects (font (size 0.8 0.8) (thickness 0.120))))
   (fp_line (start -4.600 -6.400) (end 4.600 -6.400) (stroke (width 0.05) (type solid)) (layer "F.CrtYd"))
   (fp_line (start 4.600 -6.400) (end 4.600 12.050) (stroke (width 0.05) (type solid)) (layer "F.CrtYd"))
   (fp_line (start 4.600 12.050) (end -4.600 12.050) (stroke (width 0.05) (type solid)) (layer "F.CrtYd"))

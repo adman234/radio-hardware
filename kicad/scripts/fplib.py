@@ -387,7 +387,6 @@ def ph2_ra_cutout(name='Battery_PH2.0_RightAngle_SMD_PlugCutout'):
         L.append(_line(x1, y1, x2, y2, 'Edge.Cuts', 0.1))
     L.append(_text('-', -1.0, -5.6, 'F.SilkS', 1.2))
     L.append(_text('+', 1.0, -5.6, 'F.SilkS', 1.2))
-    L.append(_text('BATT', 3.6, -5.6, 'F.SilkS', 0.8))
     L += rect(-4.6, -6.4, 4.6, cy + h / 2 + 0.3, 'F.CrtYd', 0.05)
     write(name, L)
 
