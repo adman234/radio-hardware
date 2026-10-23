@@ -5,6 +5,8 @@
 MODE picks which pixels are ink:
   dark    - anything that isn't near-white (KOPN logo on white)
   orange  - saturated orange on a dark background (CGW gear)
+  disc    - light art inside a black disc (KOPN circle logo), plus a thin
+            ring at the disc edge so the circle still reads on a black board
 
 The bitmap is upscaled, thresholded and traced with potrace (geojson
 backend), then each polygon with holes is cut into hole-free pieces so
@@ -28,6 +30,16 @@ def ink_mask(img, mode):
         return (r + g + b) / 3 < 200
     if mode == 'orange':
         return (r > 120) & (r - b > 60) & (r - g > 40)
+    if mode == 'disc':
+        dark = (r + g + b) / 3 < 60
+        ys, xs = np.nonzero(dark)
+        cx, cy = (xs.min() + xs.max()) / 2, (ys.min() + ys.max()) / 2
+        rad = (xs.max() - xs.min()) / 2
+        yy, xx = np.mgrid[0:a.shape[0], 0:a.shape[1]]
+        d = np.hypot(xx - cx, yy - cy)
+        light = (r + g + b) / 3 > 110
+        ring = (d <= rad) & (d > rad * (1 - 0.016))          # ~0.25 mm at 15.5 mm
+        return (light & (d < rad * 0.985)) | ring
     raise SystemExit('unknown mode ' + mode)
 
 

@@ -72,7 +72,7 @@ PLACE = {
 # mechanical items: (footprint, x, y_up, rot, side)
 MECH = [
     ('Battery_LiPo_102050_Outline', BATT[0], BATT[1], BATT[2], 'B'),
-    ('Logo_KOPN_15mm', 0.0, 14.0, 0, 'F'),
+    ('Logo_KOPN_Circle_15.5mm', 0.0, 14.6, 0, 'F'),
     ('Logo_CGW_11mm', -26.5, -1.4, 0, 'F'),
 ]
 
